@@ -13,23 +13,23 @@
   },
   "https://www.ice.gov/detain/detainee-death-reporting": {
     "checked": "2026-08-23",
-    "etag": "\"1787476474\"",
+    "etag": "\"1787480652\"",
     "flagged_lm": "2026-08-23",
     "last_modified": "2026-08-23",
     "pending_lm": "2026-08-23"
   },
   "https://www.ice.gov/statistics": {
     "checked": "2026-08-23",
-    "etag": "\"1787475344\"",
+    "etag": "\"1787482376\"",
     "flagged_lm": "2026-08-23",
     "last_modified": "2026-08-23",
     "pending_lm": "2026-08-23"
   },
   "https://www.justice.gov/pardon/clemency-statistics": {
     "checked": "2026-08-23",
-    "etag": "\"1787320597-gzip\"",
-    "last_modified": "2026-08-21",
-    "pending_lm": "2026-08-21"
+    "etag": "\"1787250617-gzip\"",
+    "last_modified": "2026-08-20",
+    "pending_lm": "2026-08-20"
   },
   "https://www.justice.gov/usao-dc/capitol-breach-cases": {
     "checked": "2026-08-23",
