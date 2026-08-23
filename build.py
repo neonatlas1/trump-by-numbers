@@ -1468,8 +1468,17 @@ def payload(m, loaded):
         attach_views(pct_moi=False)
     elif mid == "real_wages":
         attach_views(pct_moi=True, base_by=3)
+        # This-term / Full-history show the dollar level, not the %-change of the moi view.
+        if fx.get("ownHist"):
+            fx["ownHist"]["fmt"] = "usd"
     elif mid in ALIGNED_PCT:
         attach_views(pct_moi=True)
+        # Months-in-office compares presidents as % change (correct). But This-term and
+        # Full-history show the underlying LEVEL, so they must use the level's own unit —
+        # not the %-change formatter the primary view carries. Workforce is stored in
+        # thousands of employees; wages are constant dollars.
+        if fx.get("ownHist"):
+            fx["ownHist"]["fmt"] = "thou" if mid == "federal_workforce" else "usd"
     elif mid in FY_OVERLAY:
         attach_fy()
     elif mid == "real_gdp" and S and fx.get("series"):
