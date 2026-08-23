@@ -523,12 +523,10 @@ def tile(m):
         d = m.get("detail") or {}
         if d:
             noconv = d["pending_criminal_charges"] + d["other_immigration_violators"]
-            delta = (f'<span class="delta neutral">{num(noconv)} of {num(d["total_detained"])} people '
-                     "detained &#8212; ICE&#8217;s own categories</span>")
+            delta = (f'<span class="delta neutral">{num(noconv)} of {num(d["total_detained"])} '
+                     "detained have no criminal conviction</span>")
             bars = render_bars([("No conviction", noconv, num(noconv), "accent"),
-                                ("of which pending charges", d["pending_criminal_charges"],
-                                 num(d["pending_criminal_charges"]), "muted"),
-                                ("Convicted criminal", d["convicted_criminal"],
+                                ("Convicted", d["convicted_criminal"],
                                  num(d["convicted_criminal"]), "muted")], accent)
 
     elif m["id"] == "ice_custody_deaths":
@@ -549,7 +547,7 @@ def tile(m):
         sub = m["note"].split(". ")[0] + "."
         if m.get("ceiling"):
             c = m["ceiling"]
-            delta = (f'<span class="delta neutral">{c["label"]}: {num(c["value"])} &#8212; '
+            delta = (f'<span class="delta neutral">Above the {num(c["value"])} {c["label"]}; '
                      "court-ordered cases sit outside it</span>")
             bars = render_bars([("Arrivals FYTD", m["value"], num(m["value"]), "accent"),
                                 ("Ceiling", c["value"], num(c["value"]), "muted")], accent)
@@ -1386,7 +1384,7 @@ def payload(m, loaded):
                     {"label": "Convicted of a crime", "value": conv, "pct": pc(conv), "tone": "muted"},
                 ],
                 "caption": (f"Of {tot:,} people in ICE detention, as of {pretty_date(m['as_of'])}. "
-                            "Captured biweekly — the trend line draws itself as snapshots accrue."),
+                            "Captured biweekly; a trend line appears as more snapshots accrue."),
             })
         else:
             accrue("Detention composition, ICE's own categories",
@@ -1614,10 +1612,8 @@ def frozen_callout(today=None):
         return ""
     return f"""
     <section class="callout" id="frozen">
-      <div class="callout-body">
-        <h2>Government data that stopped updating</h2>
-        <p>Since January 2025, <b>{gov} official data sources</b> this board draws on have been frozen, deleted, or narrowed. Where a source went dark, the board switched to a still-current official one — so the numbers here stay live. That the windows closed at all is part of the record.</p>
-      </div>
+      <h2>Government data that stopped updating</h2>
+      <p>Since January 2025, <b>{gov} official data sources</b> this board draws on have been frozen, deleted, or narrowed. Where one went dark, the board switched to a still-current source, so the numbers here stay live.</p>
       <a class="callout-link" href="/transparency">See what went dark <span aria-hidden="true">&rarr;</span></a>
     </section>"""
 
@@ -1628,7 +1624,7 @@ def frozen_page_content(today=None):
     instead), then any non-government source in a separate, labelled block."""
     rows, gov, verified = _frozen_rows(today)
     if not rows:
-        return '<section class="block"><p>Nothing to report — every tracked source is currently publishing.</p></section>'
+        return '<section class="block"><p>Every tracked source is currently publishing.</p></section>'
     gov_rows = [r for r in rows if r["gov"]]
     ng_rows = [r for r in rows if not r["gov"]]
 
@@ -1645,22 +1641,10 @@ def frozen_page_content(today=None):
                 '<th>What happened</th><th>What the board uses instead</th></tr></thead>'
                 f'<tbody>{body}</tbody></table></div>')
 
-    verified_line = f" Government dates last verified {pretty_date(verified)}." if verified else ""
-    html = f"""
-      <section class="block">
-        <p>These are official series this board uses, or would use, that have stopped publishing. It's a plain record: each row is a source, its last release, and what happened. The point isn't that the board's own numbers are stale — where an official window closed, the board moved to a still-current official source, shown in the last column. That the windows closed at all is itself part of the record.</p>
-        <p class="fz-meta">The days-silent counts recompute every day, and a probable resumption is watched for automatically.{verified_line}</p>
-      </section>
-      <section class="block">
-        {table(gov_rows)}
-      </section>"""
+    html = f'<section class="block">{table(gov_rows)}</section>'
     if ng_rows:
-        html += f"""
-      <section class="block">
-        <p class="eyebrow">Non-government source</p>
-        <p>Listed for completeness. This one isn't a government series, so it isn't part of the pattern above — it's a poll aggregator whose public feed went quiet.</p>
-        {table(ng_rows)}
-      </section>"""
+        html += (f'<section class="block"><p class="eyebrow">Non-government source</p>'
+                 f'{table(ng_rows)}</section>')
     return html
 
 
@@ -2311,16 +2295,14 @@ def build():
   .footer-nav a {{ margin:0 5px; text-decoration:none; }}
   .footer-nav a:hover {{ color:var(--series-1); }}
   .built {{ opacity:.6; font-size:11px; margin-top:14px; }}
-  /* homepage callout → links to the full /transparency page (table lives there) */
-  .callout {{ margin-top:48px; background:var(--panel); border:1px solid var(--hair);
-             border-radius:14px; padding:22px 24px; display:flex; align-items:center;
-             justify-content:space-between; gap:20px 28px; flex-wrap:wrap; }}
-  .callout-body {{ flex:1 1 440px; min-width:0; }}
-  .callout h2 {{ font-size:15px; margin:0 0 7px; color:var(--primary); }}
-  .callout p {{ color:var(--secondary); font-size:13.5px; line-height:1.62; margin:0; max-width:66ch; }}
+  /* homepage callout → links to the full /transparency page (table lives there).
+     Stacked and narrower than the board so it reads as a distinct note. */
+  .callout {{ margin:48px auto 0; max-width:640px; background:var(--panel);
+             border:1px solid var(--hair); border-radius:14px; padding:24px 26px; }}
+  .callout h2 {{ font-size:15px; margin:0 0 8px; color:var(--primary); }}
+  .callout p {{ color:var(--secondary); font-size:13.5px; line-height:1.62; margin:0 0 14px; }}
   .callout p b {{ color:var(--primary); font-weight:650; }}
-  .callout-link {{ flex:none; font-size:13.5px; font-weight:600; color:var(--series-1);
-                  text-decoration:none; white-space:nowrap; }}
+  .callout-link {{ font-size:13.5px; font-weight:600; color:var(--series-1); text-decoration:none; }}
   .callout-link:hover {{ text-decoration:underline; }}
   @media (max-width:560px) {{ .callout {{ padding:20px; }} }}
 </style>
@@ -2388,8 +2370,8 @@ def build():
          _contact_content()),
         ("transparency.html", "/transparency",
          "Government data that stopped updating", "Data that went dark",
-         "Official data sources frozen, deleted, or narrowed since January 2025 — and what the board uses instead.",
-         "A factual record of official US data series that stopped publishing since January 2025 — each with its last release, what happened, and the still-current source the board switched to.",
+         "Official data sources that stopped publishing since January 2025. Where one went dark, the board switched to a still-current source, so the numbers here stay live. Updated daily.",
+         "Official US data series frozen, deleted, or narrowed since January 2025, each with its last release, what happened, and the still-current source the board uses instead.",
          frozen_page_content()),
     ]
     for fname, current, title, hero, lede, desc, content in meta_pages:
