@@ -2325,8 +2325,28 @@
   var tabs = Array.prototype.slice.call(document.querySelectorAll('.tab'));
   var sections = Array.prototype.slice.call(document.querySelectorAll('.category'));
   function barH() { var sb = document.getElementById('stickybar'); return sb ? sb.offsetHeight : 0; }
+  // Keep the active tab in view: scroll the tab bar so it's centred (clamped to the
+  // ends). Only fires when the active tab actually changes, so vertical scrolling
+  // doesn't fight the user's own horizontal scroll.
+  function centerTab(t) {
+    var bar = document.getElementById('tabs');
+    if (!bar || !t || bar.scrollWidth <= bar.clientWidth) return;
+    var br = bar.getBoundingClientRect(), tr = t.getBoundingClientRect();
+    var target = bar.scrollLeft + (tr.left - br.left) - (bar.clientWidth - t.offsetWidth) / 2;
+    target = Math.max(0, Math.min(target, bar.scrollWidth - bar.clientWidth));
+    bar.scrollTo({ left: target, behavior: 'smooth' });
+  }
+  var _activeTab = null;
   function setActiveTab(slug) {
-    tabs.forEach(function (t) { t.classList.toggle('active', t.dataset.tab === slug); });
+    if (slug === _activeTab) return;
+    _activeTab = slug;
+    var on = null;
+    tabs.forEach(function (t) {
+      var a = t.dataset.tab === slug;
+      t.classList.toggle('active', a);
+      if (a) on = t;
+    });
+    centerTab(on);
   }
   function scrollToCat(slug, smooth) {
     var sec = document.getElementById(slug);
