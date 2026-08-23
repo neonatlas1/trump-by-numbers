@@ -1468,6 +1468,12 @@
                                    : a >= 1e4 ? Math.round(v / 1e3) + 'k'
                                    : a >= 1e3 ? (v / 1e3).toFixed(1).replace(/\.0$/, '') + 'k' : fnum(v))
                                   : fnum(v);
+      case 'thou': {  /* value is STORED in thousands (e.g. federal employment): show k / M */
+        var n = a * 1000;
+        var body = n >= 1e6 ? (n / 1e6).toFixed(axis ? 1 : 2).replace(/\.?0+$/, '') + 'M'
+                 : n >= 1e3 ? Math.round(n / 1e3) + 'k' : fnum(n);
+        return s + body;
+      }
       case 'idx':     return (Math.round(v * 10) / 10) + '';
       default:        return '' + v;
     }
@@ -1528,9 +1534,15 @@
     for (var i = 1; i < xs.length; i++) steps.push(xs[i] - xs[i - 1]);
     steps.sort(function (a, b) { return a - b; });
     var med = steps.length ? steps[Math.floor(steps.length / 2)] : 0;
+    /* A break marks a genuinely missing period, never the normal cadence. Daily series
+       breathe on a 1,1,1,1,3(weekend),4(holiday)-day rhythm, so a few days' gap must NOT
+       fragment the line — only a real multi-day hole does. The 6-day floor applies to
+       date series (ms x); month-indexed views (small integer x) keep the plain 1.75×med. */
+    var isTime = xs.length && xs[xs.length - 1] > 1e11;
+    var brk = isTime ? Math.max(1.75 * med, med + 6 * 864e5) : 1.75 * med;
     var segs = [], cur = [pts[0]];
     for (var j = 1; j < pts.length; j++) {
-      if (med && (xs[j] - xs[j - 1]) > 1.75 * med) { segs.push(cur); cur = []; }
+      if (med && (xs[j] - xs[j - 1]) > brk) { segs.push(cur); cur = []; }
       cur.push(pts[j]);
     }
     segs.push(cur);
@@ -1582,10 +1594,17 @@
     var x0 = fx.xType === 'months' ? 0 : Math.min.apply(null, allX);
     var x1 = fx.xType === 'months' ? (fx.xMax || 48) : Math.max.apply(null, allX);
     var yMin = Math.min.apply(null, allY), yMax = Math.max.apply(null, allY);
-    if (fx.zeroBase !== false) { if (yMin > 0) yMin = 0; if (yMax < 0) yMax = 0; }
+    /* Fit levels, anchor rates: charts in absolute units ($ / counts / production /
+       index) fit tightly to their data; rate and %-change views (pct, pctsign) keep the
+       zero baseline so small moves aren't visually exaggerated. */
+    var levelFmt = { usd: 1, usd2: 1, usdB: 1, count: 1, thou: 1, idx: 1 }[fx.fmt];
+    var anchorZero = fx.zeroBase !== false && !levelFmt;
+    if (anchorZero) { if (yMin > 0) yMin = 0; if (yMax < 0) yMax = 0; }
     if (fx.baseline != null) { yMin = Math.min(yMin, fx.baseline); yMax = Math.max(yMax, fx.baseline); }
-    var pad = (yMax - yMin) * 0.07 || 1;
-    yMax += pad; if (yMin < 0) yMin -= pad;
+    var origMin = yMin, pad = (yMax - yMin) * 0.07 || 1;
+    yMax += pad;
+    if (anchorZero) { if (yMin < 0) yMin -= pad; }
+    else { yMin -= pad; if (origMin >= 0 && yMin < 0) yMin = 0; }   /* don't push a non-negative level below 0 */
 
     var yT = ticks(yMin, yMax, narrow ? 4 : 5);
     var maxYLab = yT.reduce(function (m, v) { return Math.max(m, fmt(v, fx.fmtAxis || fx.fmt, true).length); }, 0);
@@ -1984,14 +2003,23 @@
     var defView = views ? (views.filter(function (v) { return v.def; })[0] || views[views.length - 1]).key : 'full';
     var state = { mode: defView, view: 'chart', real: false };   // mode: term | moi | full, or a custom view key
 
+    /* A sub-view (full history / a named view) is its own chart with its own units and
+       scale. Object.assign carries the parent's axis hints along, so drop any fmtAxis /
+       baseline the sub-view doesn't set itself — otherwise a $-level axis inherits the
+       primary view's %-formatter (debt) or its 100 index-baseline (GDP). */
+    function unleak(out, override) {
+      if (!('fmtAxis' in override)) delete out.fmtAxis;
+      if (!('baseline' in override)) delete out.baseline;
+      return out;
+    }
     function ownFx() {
       var oh = fx.ownHist || {};
       var ser = (state.real && state.mode === 'full' && oh.seriesReal) ? oh.seriesReal : oh.series;
-      return Object.assign({}, fx, oh, { series: ser, template: 'line', aligned: null });
+      return unleak(Object.assign({}, fx, oh, { series: ser, template: 'line', aligned: null }), oh);
     }
     function viewFx() {
       var v = views.filter(function (x) { return x.key === state.mode; })[0] || views[0];
-      return Object.assign({}, fx, v, { views: null });
+      return unleak(Object.assign({}, fx, v, { views: null }), v);
     }
     function activeFx() {
       if (views) return viewFx();
