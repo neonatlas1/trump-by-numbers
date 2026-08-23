@@ -2478,7 +2478,9 @@
     if (openCard && openCard._sync) openCard._sync();     // live re-render of the open chart
   }
   if (toggleBtn) toggleBtn.addEventListener('click', function () {
-    ROOT.setAttribute('data-theme', effectiveTheme() === 'dark' ? 'light' : 'dark');
+    var next = effectiveTheme() === 'dark' ? 'light' : 'dark';
+    ROOT.setAttribute('data-theme', next);
+    try { localStorage.setItem('tbn-theme', next); } catch (e) {}   // one value, no cookie, stays in-browser
     applyTheme();
   });
   if (mq) {
