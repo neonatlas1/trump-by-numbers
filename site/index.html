@@ -245,16 +245,14 @@
   .footer-nav a { margin:0 5px; text-decoration:none; }
   .footer-nav a:hover { color:var(--series-1); }
   .built { opacity:.6; font-size:11px; margin-top:14px; }
-  /* homepage callout → links to the full /transparency page (table lives there) */
-  .callout { margin-top:48px; background:var(--panel); border:1px solid var(--hair);
-             border-radius:14px; padding:22px 24px; display:flex; align-items:center;
-             justify-content:space-between; gap:20px 28px; flex-wrap:wrap; }
-  .callout-body { flex:1 1 440px; min-width:0; }
-  .callout h2 { font-size:15px; margin:0 0 7px; color:var(--primary); }
-  .callout p { color:var(--secondary); font-size:13.5px; line-height:1.62; margin:0; max-width:66ch; }
+  /* homepage callout → links to the full /transparency page (table lives there).
+     Stacked and narrower than the board so it reads as a distinct note. */
+  .callout { margin:48px auto 0; max-width:640px; background:var(--panel);
+             border:1px solid var(--hair); border-radius:14px; padding:24px 26px; }
+  .callout h2 { font-size:15px; margin:0 0 8px; color:var(--primary); }
+  .callout p { color:var(--secondary); font-size:13.5px; line-height:1.62; margin:0 0 14px; }
   .callout p b { color:var(--primary); font-weight:650; }
-  .callout-link { flex:none; font-size:13.5px; font-weight:600; color:var(--series-1);
-                  text-decoration:none; white-space:nowrap; }
+  .callout-link { font-size:13.5px; font-weight:600; color:var(--series-1); text-decoration:none; }
   .callout-link:hover { text-decoration:underline; }
   @media (max-width:560px) { .callout { padding:20px; } }
 </style>
@@ -884,7 +882,7 @@
     <article class="tile" id="card-ice_composition" data-id="ice_composition" data-as-of="2026-07-11" data-stale-after="2026-09-24" data-cadence="biweekly">
       <h2 class="tile-name">ICE detainees with no criminal conviction</h2>
       <div class="hero">71.7%</div>
-      <span class="delta neutral">46,259 of 64,506 people detained &#8212; ICE&#8217;s own categories</span>
+      <span class="delta neutral">46,259 of 64,506 detained have no criminal conviction</span>
       <div class="freshness">
         <span class="asof">as of Jul 11, 2026</span>
         <span class="stale-flag" hidden>&#9888; data may be stale</span>
@@ -897,12 +895,7 @@
           <div class="bar-val">46,259</div>
         </div>
         <div class="bar-row">
-          <div class="bar-label">of which pending charges</div>
-          <div class="bar-track"><div class="bar-fill" style="width:42%;background:var(--muted)"></div></div>
-          <div class="bar-val">19,417</div>
-        </div>
-        <div class="bar-row">
-          <div class="bar-label">Convicted criminal</div>
+          <div class="bar-label">Convicted</div>
           <div class="bar-track"><div class="bar-fill" style="width:39%;background:var(--muted)"></div></div>
           <div class="bar-val">18,247</div>
         </div></div>
@@ -947,7 +940,7 @@
       <h2 class="tile-name">Refugee admissions</h2>
       <div class="tile-qual">fiscal-YTD</div>
       <div class="hero">10,258</div>
-      <span class="delta neutral">FY2026 presidential ceiling: 7,500 &#8212; court-ordered cases sit outside it</span>
+      <span class="delta neutral">Above the 7,500 FY2026 presidential ceiling; court-ordered cases sit outside it</span>
       <div class="freshness">
         <span class="asof">as of Jul 31, 2026</span>
         <span class="stale-flag" hidden>&#9888; data may be stale</span>
@@ -1390,10 +1383,8 @@
       </section>
       
     <section class="callout" id="frozen">
-      <div class="callout-body">
-        <h2>Government data that stopped updating</h2>
-        <p>Since January 2025, <b>7 official data sources</b> this board draws on have been frozen, deleted, or narrowed. Where a source went dark, the board switched to a still-current official one — so the numbers here stay live. That the windows closed at all is part of the record.</p>
-      </div>
+      <h2>Government data that stopped updating</h2>
+      <p>Since January 2025, <b>7 official data sources</b> this board draws on have been frozen, deleted, or narrowed. Where one went dark, the board switched to a still-current source, so the numbers here stay live.</p>
       <a class="callout-link" href="/transparency">See what went dark <span aria-hidden="true">&rarr;</span></a>
     </section>
     </main>
