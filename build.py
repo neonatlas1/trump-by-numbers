@@ -1667,6 +1667,15 @@ BEACON = ("""<!-- Cloudflare Web Analytics --><script type="module" """
           """data-cf-beacon='{"token": "d38cfd52e6ef4782a773d0e7b1f2e212"}'>"""
           """</script><!-- End Cloudflare Web Analytics -->""")
 
+# Applies a saved theme in <head> before first paint, so a chosen theme carries
+# across page navigation with no flash of the default. The ONLY thing the site
+# stores: one "tbn-theme" value in localStorage — no cookie, never sent anywhere.
+# Wrapped in try/catch (private mode can throw). System-follow still applies when
+# nothing is saved.
+_THEME_INIT = ("<script>try{var t=localStorage.getItem('tbn-theme');"
+               "if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t);}"
+               "catch(e){}</script>")
+
 _ICON_SUN = ('<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" '
     'stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"></circle>'
     '<path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"></path></svg>')
@@ -1678,9 +1687,9 @@ _ICON_INFO = ('<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke
     '<path d="M12 11v5"></path><path d="M12 7.6h.01"></path></svg>')
 
 # Standalone theme toggle for the meta pages (the board's copy lives inside
-# chart.js, which these pages don't load). Same behaviour: system-follow by
-# default via CSS, on-page toggle forces a theme for the visit via data-theme,
-# resets on reload (no storage).
+# chart.js, which these pages don't load). System-follow by default via CSS; the
+# on-page toggle forces a theme and saves it to localStorage, so the choice carries
+# across pages and visits (applied pre-paint by _THEME_INIT in the head).
 _META_TOGGLE_JS = ("""<script>
 (function () {
   var ROOT = document.documentElement;
@@ -1702,7 +1711,9 @@ _META_TOGGLE_JS = ("""<script>
     btn.setAttribute('aria-pressed', light ? 'true' : 'false');
   }
   if (btn) btn.addEventListener('click', function () {
-    ROOT.setAttribute('data-theme', eff() === 'dark' ? 'light' : 'dark');
+    var next = eff() === 'dark' ? 'light' : 'dark';
+    ROOT.setAttribute('data-theme', next);
+    try { localStorage.setItem('tbn-theme', next); } catch (e) {}
     upd();
   });
   if (mq) {
@@ -1822,6 +1833,7 @@ def render_meta_page(current, title, hero, lede, desc, content, dark_tokens, lig
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{title} · Trump by Numbers</title>
 <meta name="description" content="{desc}">
+{_THEME_INIT}
 <style>{css}</style>
 </head>
 <body>
@@ -2054,6 +2066,7 @@ def build():
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Trump Administration, Tracked in Data</title>
+{_THEME_INIT}
 <style>
   /* Dark is the default and the no-preference fallback. Light auto-applies via the
      media query for system-light visitors (works even with JS off); the on-page

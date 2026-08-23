@@ -340,12 +340,12 @@ _html = open(os.path.join(HERE, "site", "index.html")).read()
 ok(_html.count('data-id="') == _ndata and _ndata >= 23,
    f"index.html: one card per data file present ({_ndata})")
 ok(_html.count("expand-btn") >= _ndata, "index.html: every card gets the expand affordance")
-ok("Official sources that have stopped updating" in _html
-   and _html.count('fz-days">') == 8,
-   "transparency strip: renders with all 8 sourced entries (v3)")
-ok('data-tab="all">All</button>' in _html, "tabs: first tab is plain 'All', no count pill")
+ok('class="callout"' in _html and "See what went dark" in _html,
+   "transparency: homepage callout links to the /transparency page")
+ok('data-tab="all"' not in _html, "tabs: section nav (scroll-to), no 'All' filter tab")
 ok("tab-count" not in _html and '<span class="n">' not in _html, "tabs: no count indicators")
-ok("localStorage" not in _html and "sessionStorage" not in _html, "no browser storage anywhere")
+ok("sessionStorage" not in _html and "tbn-theme" in _html,
+   "storage limited to the theme-persistence key (no cookies, no session storage)")
 ok("Presentation layer" in _html or "chart.js" not in _html or "lineChart" in _html,
    "chart.js inlined into the page")
 _dfiles = sorted(os.listdir(os.path.join(HERE, "site", "d")))
