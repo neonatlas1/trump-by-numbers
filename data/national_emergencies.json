@@ -4,7 +4,7 @@
   "category": "Executive Power & Governance",
   "value": 8,
   "unit": "declarations",
-  "as_of": "2026-08-22",
+  "as_of": "2026-08-23",
   "since": "2025-01-20",
   "direction": "neutral",
   "declarations": [
@@ -84,6 +84,6 @@
       "value": 8
     }
   ],
-  "last_checked": "2026-08-22",
-  "stale_after": "2026-10-06"
+  "last_checked": "2026-08-23",
+  "stale_after": "2026-10-07"
 }

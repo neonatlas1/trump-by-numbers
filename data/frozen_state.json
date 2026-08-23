@@ -1,0 +1,44 @@
+{
+  "https://ohss.dhs.gov/topics/immigration/immigration-enforcement/monthly-tables": {
+    "checked": "2026-08-23",
+    "etag": null,
+    "last_modified": null,
+    "pending_lm": null
+  },
+  "https://travel.state.gov/content/travel/en/legal/visa-law0/visa-statistics.html": {
+    "checked": "2026-08-23",
+    "etag": null,
+    "last_modified": null,
+    "pending_lm": null
+  },
+  "https://www.ice.gov/detain/detainee-death-reporting": {
+    "checked": "2026-08-23",
+    "etag": "\"1787471037\"",
+    "last_modified": "2026-08-23",
+    "pending_lm": "2026-08-23"
+  },
+  "https://www.ice.gov/statistics": {
+    "checked": "2026-08-23",
+    "etag": "\"1787468378\"",
+    "last_modified": "2026-08-23",
+    "pending_lm": "2026-08-23"
+  },
+  "https://www.justice.gov/pardon/clemency-statistics": {
+    "checked": "2026-08-23",
+    "etag": "\"1787267377-gzip\"",
+    "last_modified": "2026-08-20",
+    "pending_lm": "2026-08-20"
+  },
+  "https://www.justice.gov/usao-dc/capitol-breach-cases": {
+    "checked": "2026-08-23",
+    "etag": null,
+    "last_modified": null,
+    "pending_lm": null
+  },
+  "https://www.war.gov/casualty.pdf": {
+    "checked": "2026-08-23",
+    "etag": null,
+    "last_modified": null,
+    "pending_lm": null
+  }
+}
