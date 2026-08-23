@@ -1637,7 +1637,7 @@ def frozen_page_content(today=None):
                      f'<td class="fz-note">{r["note"]}</td>'
                      f'<td class="fz-instead">{r["instead"]}</td></tr>')
         return ('<div class="fz-scroll"><table class="fz-table">'
-                '<thead><tr><th>Source</th><th>Last release</th><th>Silent for</th>'
+                '<thead><tr><th>Source</th><th>Last&nbsp;release</th><th>Silent&nbsp;for</th>'
                 '<th>What happened</th><th>What the board uses instead</th></tr></thead>'
                 f'<tbody>{body}</tbody></table></div>')
 
@@ -1831,7 +1831,7 @@ def render_meta_page(current, title, hero, lede, desc, content, dark_tokens, lig
         <button class="theme-toggle" id="infoScroll" type="button" aria-label="Jump to page links">{_ICON_INFO}</button>
         <button class="theme-toggle" id="themeToggle" type="button" aria-label="Switch to light theme" aria-pressed="false"></button>
       </div>
-      <a class="brand" href="/">Trump by Numbers</a>
+      <a class="brand" href="/"><span aria-hidden="true">&larr;</span> Trump by Numbers</a>
       <h1>{hero}</h1>
       <p class="lede">{lede}</p>
     </header>
