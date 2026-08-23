@@ -558,6 +558,56 @@
     table.appendChild(tbody); wrapT.appendChild(table);
   }
 
+  /* ---------- snapshot: an honest point-in-time visual for single-point metrics ----------
+     Shown until a metric accrues enough history to plot a line. Two shapes: a
+     composition bar (parts summing to 100%) and a value-vs-target bar. */
+  function snapTone(t) {
+    return t === 'muted' ? 'var(--bar-g1)' : t === 'mid' ? 'var(--series-2)' : 'var(--series-1)';
+  }
+  function renderSnapshot(box, sp) {
+    box.innerHTML = '';
+    var wrap = div('snap', box);
+    if (sp.highlight) txt(div('snap-hl', wrap), sp.highlight);
+    if (sp.kind === 'proportion') {
+      var bar = div('snap-bar', wrap);
+      (sp.parts || []).forEach(function (p) {
+        if (!p.pct) return;
+        var seg = div('snap-seg', bar);
+        seg.style.width = p.pct + '%'; seg.style.background = snapTone(p.tone);
+        seg.title = p.label + ' — ' + p.pct + '%';
+      });
+      var leg = div('snap-legend', wrap);
+      (sp.parts || []).forEach(function (p) {
+        var row = div('snap-row', leg);
+        div('snap-key', row).style.background = snapTone(p.tone);
+        txt(div('snap-lab', row), p.label);
+        txt(div('snap-val', row), p.pct + '%' + (p.value != null ? '  ·  ' + fnum(p.value) : ''));
+      });
+    } else if (sp.kind === 'vsTarget') {
+      // Neutral by design: the bar extending past the marker already shows "over";
+      // we don't colour it as good/bad (going over a low ceiling isn't a value cue).
+      var over = sp.target != null && sp.value > sp.target;
+      var max = (Math.max(sp.value, sp.target || 0) * 1.14) || 1;
+      var track = div('snap-track', wrap);
+      var fill = div('snap-fill', track);
+      fill.style.width = (sp.value / max * 100) + '%';
+      fill.style.background = 'var(--series-1)';
+      if (sp.target != null) {
+        div('snap-mark', track).style.left = (sp.target / max * 100) + '%';
+        var ml = div('snap-mark-lab', track);
+        ml.style.left = (sp.target / max * 100) + '%';
+        ml.textContent = (sp.targetLabel || 'Target') + ': ' + fnum(sp.target);
+      }
+      var leg2 = div('snap-legend', wrap);
+      var r1 = div('snap-row', leg2);
+      div('snap-key', r1).style.background = 'var(--series-1)';
+      txt(div('snap-lab', r1), sp.valueLabel || 'Current');
+      txt(div('snap-val', r1), fnum(sp.value));
+      if (over) txt(div('snap-over', wrap), 'Arrivals have passed the ceiling.');
+    }
+    if (sp.caption) txt(div('snap-cap', wrap), sp.caption);
+  }
+
   /* ---------- expanded-card assembly (shared by all three templates) ---------- */
   /* ---------- export helpers (CSV built from the active view; JSON = raw payload) ---------- */
   function csvCell(v) { v = '' + (v == null ? '' : v); return /[",\n]/.test(v) ? '"' + v.replace(/"/g, '""') + '"' : v; }
@@ -711,6 +761,7 @@
       if (!hasChart) {
         legendBox.innerHTML = '';
         box.innerHTML = '';
+        if (fx.snapshot) { renderSnapshot(box, fx.snapshot); return; }
         var ac = div('accrue', box);   /* sparse metric: the honest empty state */
         var b1 = document.createElement('b'); b1.textContent = fx.accrueTitle || 'History accrues from here';
         ac.appendChild(b1);
@@ -873,30 +924,43 @@
     clearTimeout(_rt); _rt = setTimeout(function () { placeDrawer(openCard); }, 150);
   });
 
-  /* ---------- category tabs, All default; state in the URL hash, no storage ---------- */
+  /* ---------- category tabs = section nav (scroll-to, not a filter) ----------
+     Every category is always in the page. A tab click scrolls to that section
+     (its heading is the anchor) and the active tab follows the scroll position. */
   var tabs = Array.prototype.slice.call(document.querySelectorAll('.tab'));
   var sections = Array.prototype.slice.call(document.querySelectorAll('.category'));
-  function activate(slug, scroll) {
+  function barH() { var sb = document.getElementById('stickybar'); return sb ? sb.offsetHeight : 0; }
+  function setActiveTab(slug) {
     tabs.forEach(function (t) { t.classList.toggle('active', t.dataset.tab === slug); });
-    sections.forEach(function (s) {
-      s.hidden = (slug !== 'all' && s.dataset.tab !== slug);
-      var head = s.querySelector('.cat-head');
-      if (head) head.style.display = (slug === 'all') ? '' : 'none';
-    });
-    if (scroll) {
-      var bar = document.getElementById('tabs');
-      if (bar) window.scrollTo({ top: bar.offsetTop - 12, behavior: 'smooth' });
-    }
+  }
+  function scrollToCat(slug, smooth) {
+    var sec = document.getElementById(slug);
+    if (!sec) return;
+    setActiveTab(slug);
+    var y = sec.getBoundingClientRect().top + window.pageYOffset - barH() - 10;
+    window.scrollTo({ top: Math.max(0, y), behavior: smooth ? 'smooth' : 'auto' });
   }
   tabs.forEach(function (t) {
     t.addEventListener('click', function () {
-      closeOpen(true);
       var slug = t.dataset.tab;
-      if (history.replaceState) history.replaceState(null, '', slug === 'all' ? '#' : '#t/' + slug);
-      var bar = document.getElementById('tabs');
-      activate(slug, bar && window.scrollY > bar.offsetTop);
+      if (history.replaceState) history.replaceState(null, '', '#t/' + slug);
+      scrollToCat(slug, true);
     });
   });
+  /* scroll-spy: the active tab is the last section whose top has passed under the bar */
+  var spyPend = false;
+  function spy() {
+    if (spyPend) return; spyPend = true;
+    requestAnimationFrame(function () {
+      spyPend = false;
+      if (!sections.length) return;
+      var line = barH() + 16, cur = sections[0].dataset.tab;
+      sections.forEach(function (s) { if (s.getBoundingClientRect().top <= line) cur = s.dataset.tab; });
+      setActiveTab(cur);
+    });
+  }
+  window.addEventListener('scroll', spy, { passive: true });
+  spy();
 
   /* ---------- "i" button: jump to the footer page-links ---------- */
   var infoBtn = document.getElementById('infoScroll');
@@ -963,18 +1027,11 @@
   })();
   function route() {
     var h = location.hash || '';
-    closeOpen(true);
     if (h.indexOf('#m/') === 0) {
       var id = h.slice(3), card = document.getElementById('card-' + id);
-      if (card && card.getAttribute('data-id')) {
-        var sec = card.closest('.category');
-        activate(sec ? sec.dataset.tab : 'all', false);
-        openCardDrawer(card, true);
-        return;
-      }
+      if (card && card.getAttribute('data-id')) { openCardDrawer(card, true); return; }
     }
-    if (h.indexOf('#t/') === 0) { activate(h.slice(3), false); return; }
-    activate('all', false);
+    if (h.indexOf('#t/') === 0) { scrollToCat(h.slice(3), false); return; }
   }
   /* ---------- colour theme: system-follow by default, on-page toggle, no storage ----------
      CSS drives the palette (dark default, light via prefers-color-scheme even with JS off).
