@@ -60,6 +60,8 @@ CONNECTORS = [
     "doj_clemency.py",
     "nyu_warpowers.py",
     "rpc_refugees.py",         # first PDF parser — workflow must install pypdf
+    # --- transparency watch: flags a frozen source that may have resumed (fail-safe) ---
+    "frozen_check.py",
 ]
 
 
