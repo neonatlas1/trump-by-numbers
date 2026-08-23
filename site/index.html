@@ -58,7 +58,7 @@
   .lede { color:var(--secondary); max-width:none; margin:0; font-size:15px; }
   .pilot { display:inline-block; margin-top:16px; font-size:12px; color:var(--muted);
            border:1px solid var(--hair); border-radius:100px; padding:5px 12px; }
-  .category { margin-top:40px; }
+  .category { margin-top:40px; scroll-margin-top:118px; }
   .cat-head { font-size:13px; font-weight:600; letter-spacing:.12em; text-transform:uppercase;
               color:var(--secondary); margin:0 0 16px; padding-bottom:10px;
               border-bottom:1px solid var(--hair); display:flex; align-items:center; gap:10px; }
@@ -91,7 +91,7 @@
                font-size:11.5px; color:var(--muted); flex-wrap:wrap; }
   .tile-foot a { color:var(--secondary); text-decoration:none; font-weight:550; }
   .tile-foot a:hover { color:var(--series-1); }
-  /* ---- category tabs (All default; JS-off shows the whole board) ---- */
+  /* ---- category tabs = section nav (scroll-to; JS-off shows the whole board) ---- */
   .tabs-wrap { position:relative; margin:28px 0 4px; }
   .tabs-wrap::before, .tabs-wrap::after { content:""; position:absolute; top:0; bottom:0; width:72px;
           pointer-events:none; opacity:0; transition:opacity .18s ease; z-index:1; border-radius:12px; }
@@ -178,6 +178,24 @@
   .legend { display:flex; gap:14px; flex-wrap:wrap; margin:0 0 8px; }
   .lg { display:flex; align-items:center; gap:7px; font-size:12px; color:var(--secondary); font-weight:550; }
   .lg .key { width:14px; height:0; border-top:2.5px solid; border-radius:2px; }
+  /* ---- snapshot (point-in-time metrics: composition / value-vs-target) ---- */
+  .snap { padding:6px 2px 2px; }
+  .snap-hl { font-size:15.5px; font-weight:600; color:var(--primary); margin-bottom:16px; }
+  .snap-bar { display:flex; height:16px; border-radius:6px; overflow:hidden; background:var(--grid); }
+  .snap-seg { height:100%; }
+  .snap-seg + .snap-seg { box-shadow:inset 1.5px 0 0 var(--surface); }
+  .snap-legend { margin-top:16px; display:flex; flex-direction:column; gap:10px; }
+  .snap-row { display:grid; grid-template-columns:12px 1fr auto; align-items:center; gap:11px; }
+  .snap-key { width:12px; height:12px; border-radius:3px; }
+  .snap-lab { color:var(--secondary); font-size:13px; }
+  .snap-val { color:var(--primary); font-size:13px; font-variant-numeric:tabular-nums; text-align:right; }
+  .snap-track { position:relative; height:16px; border-radius:6px; background:var(--grid); margin-top:34px; }
+  .snap-fill { height:100%; border-radius:6px; }
+  .snap-mark { position:absolute; top:-5px; bottom:-5px; width:2px; background:var(--chart-dash); }
+  .snap-mark-lab { position:absolute; top:-24px; transform:translateX(-50%); white-space:nowrap;
+                   font-size:11px; font-weight:600; color:var(--muted); }
+  .snap-over { margin-top:14px; font-size:12.5px; font-weight:600; color:var(--secondary); }
+  .snap-cap { margin-top:16px; font-size:12.5px; color:var(--muted); line-height:1.55; }
   .chart-box { position:relative; outline:none; border-radius:8px;
     -webkit-user-select:none; user-select:none; -webkit-touch-callout:none; touch-action:none; }
   .chart-box:focus-visible { box-shadow:0 0 0 2px var(--focus); }
@@ -227,34 +245,18 @@
   .footer-nav a { margin:0 5px; text-decoration:none; }
   .footer-nav a:hover { color:var(--series-1); }
   .built { opacity:.6; font-size:11px; margin-top:14px; }
-  .frozen { margin-top:44px; background:var(--panel); border:1px solid var(--hair);
-            border-radius:14px; padding:22px 24px 8px; }
-  .frozen h2 { font-size:15px; margin:0 0 6px; }
-  .fz-def { color:var(--muted); font-size:13px; max-width:none; margin:0 0 16px; }
-  .frozen a { color:var(--secondary); text-decoration:underline; text-underline-offset:2px; }
-  .frozen a:hover { color:var(--primary); }
-  .fz-table { width:100%; border-collapse:collapse; font-size:13px; }
-  .fz-table th { text-align:left; color:var(--muted); font-weight:600; padding:6px 12px 8px 0; border-bottom:1px solid var(--hair); }
-  .fz-table td { padding:9px 12px 9px 0; border-bottom:1px solid var(--hair); vertical-align:top; }
-  .fz-table tbody tr:last-child td { border-bottom:0; }
-  .fz-date, .fz-days { white-space:nowrap; }
-  .fz-days { font-variant-numeric:tabular-nums; }
-  .fz-note { color:var(--muted); max-width:52ch; }
-  /* mobile only: reflow each row → source/last/silent across the top, note full-width
-     beneath (headerless — obviously "what happened"). Desktop table is untouched. */
-  @media (max-width:665px) {
-    .fz-table thead { border-bottom:1px solid var(--hair); }
-    .fz-table thead th:nth-child(4) { display:none; }
-    .fz-table thead tr, .fz-table tbody tr { display:grid;
-      grid-template-columns:minmax(0,1fr) 96px 72px; column-gap:12px; }
-    /* separator between records: a top border on each row after the first, same
-       weight as the header line. Lives on <tr> (not <td>), so the td rules below
-       can zero their own borders without a specificity fight. */
-    .fz-table tbody tr + tr { border-top:1px solid var(--hair); }
-    .fz-table th { border-bottom:0; padding:0 0 8px; }
-    .fz-table td { border-bottom:0; padding:22px 0 0; }
-    .fz-table td.fz-note { grid-column:1 / -1; padding:6px 0 22px; margin:0; max-width:none; }
-  }
+  /* homepage callout → links to the full /transparency page (table lives there) */
+  .callout { margin-top:48px; background:var(--panel); border:1px solid var(--hair);
+             border-radius:14px; padding:22px 24px; display:flex; align-items:center;
+             justify-content:space-between; gap:20px 28px; flex-wrap:wrap; }
+  .callout-body { flex:1 1 440px; min-width:0; }
+  .callout h2 { font-size:15px; margin:0 0 7px; color:var(--primary); }
+  .callout p { color:var(--secondary); font-size:13.5px; line-height:1.62; margin:0; max-width:66ch; }
+  .callout p b { color:var(--primary); font-weight:650; }
+  .callout-link { flex:none; font-size:13.5px; font-weight:600; color:var(--series-1);
+                  text-decoration:none; white-space:nowrap; }
+  .callout-link:hover { text-decoration:underline; }
+  @media (max-width:560px) { .callout { padding:20px; } }
 </style>
 </head>
 <body>
@@ -274,14 +276,14 @@
           <button class="theme-toggle" id="themeToggle" type="button" aria-label="Switch to light theme" aria-pressed="false"></button>
         </div>
       </div>
-      <div class="tabs-wrap"><nav class="tabs" id="tabs" aria-label="Categories"><button class="tab active" type="button" data-tab="all">All</button><button class="tab" type="button" data-tab="cost-of-living">Prices</button><button class="tab" type="button" data-tab="economy-jobs">Economy</button><button class="tab" type="button" data-tab="trade-tariffs">Trade</button><button class="tab" type="button" data-tab="public-finances">Finances</button><button class="tab" type="button" data-tab="energy">Energy</button><button class="tab" type="button" data-tab="immigration">Immigration</button><button class="tab" type="button" data-tab="health-safety-net">Health</button><button class="tab" type="button" data-tab="executive-power-governance">Governance</button><button class="tab" type="button" data-tab="war-defense">Defense</button></nav></div>
+      <div class="tabs-wrap"><nav class="tabs" id="tabs" aria-label="Categories"><button class="tab" type="button" data-tab="cost-of-living">Prices</button><button class="tab" type="button" data-tab="economy-jobs">Economy</button><button class="tab" type="button" data-tab="trade-tariffs">Trade</button><button class="tab" type="button" data-tab="public-finances">Debt</button><button class="tab" type="button" data-tab="energy">Energy</button><button class="tab" type="button" data-tab="immigration">Immigration</button><button class="tab" type="button" data-tab="health-safety-net">Health</button><button class="tab" type="button" data-tab="executive-power-governance">Governance</button><button class="tab" type="button" data-tab="war-defense">Defense</button></nav></div>
     </div>
   </div>
   <div class="wrap wrap-main">
     <main>
       
       <section class="category" data-tab="cost-of-living" id="cost-of-living">
-        <h2 class="cat-head">Cost of Living</h2>
+        <h2 class="cat-head">Prices</h2>
         <div class="grid">
     <article class="tile" id="card-inflation" data-id="inflation" data-as-of="2026-07" data-stale-after="2026-10-09" data-cadence="monthly">
       <h2 class="tile-name">Inflation</h2>
@@ -376,7 +378,7 @@
     </article></div>
       </section>
       <section class="category" data-tab="economy-jobs" id="economy-jobs">
-        <h2 class="cat-head">Economy & Jobs</h2>
+        <h2 class="cat-head">Economy</h2>
         <div class="grid">
     <article class="tile" id="card-real_gdp" data-id="real_gdp" data-as-of="2026-06" data-stale-after="2026-11-07" data-cadence="quarterly">
       <h2 class="tile-name">Real GDP growth</h2>
@@ -511,7 +513,7 @@
     </article></div>
       </section>
       <section class="category" data-tab="trade-tariffs" id="trade-tariffs">
-        <h2 class="cat-head">Trade & Tariffs</h2>
+        <h2 class="cat-head">Trade</h2>
         <div class="grid">
     <article class="tile" id="card-tariff_revenue" data-id="tariff_revenue" data-as-of="2026-07" data-stale-after="2026-10-09" data-cadence="monthly">
       <h2 class="tile-name">Tariff revenue</h2>
@@ -615,7 +617,7 @@
     </article></div>
       </section>
       <section class="category" data-tab="public-finances" id="public-finances">
-        <h2 class="cat-head">Public Finances</h2>
+        <h2 class="cat-head">Debt</h2>
         <div class="grid">
     <article class="tile" id="card-national_debt" data-id="national_debt" data-as-of="2026-08-20" data-stale-after="2026-08-25" data-cadence="daily">
       <h2 class="tile-name">National debt</h2>
@@ -970,7 +972,7 @@
     </article></div>
       </section>
       <section class="category" data-tab="health-safety-net" id="health-safety-net">
-        <h2 class="cat-head">Health & Safety Net</h2>
+        <h2 class="cat-head">Health</h2>
         <div class="grid">
     <article class="tile" id="card-overdose_deaths" data-id="overdose_deaths" data-as-of="2026-03" data-stale-after="2026-11-26" data-cadence="monthly">
       <h2 class="tile-name">Drug overdose deaths</h2>
@@ -1095,7 +1097,7 @@
     </article></div>
       </section>
       <section class="category" data-tab="executive-power-governance" id="executive-power-governance">
-        <h2 class="cat-head">Executive Power & Governance</h2>
+        <h2 class="cat-head">Governance</h2>
         <div class="grid">
     <article class="tile" id="card-executive_orders" data-id="executive_orders" data-as-of="2026-08-22" data-stale-after="2026-09-03" data-cadence="as signed">
       <h2 class="tile-name">Executive orders signed</h2>
@@ -1266,7 +1268,7 @@
     </article></div>
       </section>
       <section class="category" data-tab="war-defense" id="war-defense">
-        <h2 class="cat-head">War & Defense</h2>
+        <h2 class="cat-head">Defense</h2>
         <div class="grid">
     <article class="tile" id="card-defense_outlays" data-id="defense_outlays" data-as-of="2026-07" data-stale-after="2026-10-09" data-cadence="monthly">
       <h2 class="tile-name">Defense outlays</h2>
@@ -1386,18 +1388,17 @@
       </div>
     </article></div>
       </section>
-    </main>
-    
-    <section class="frozen" id="frozen">
-      <h2>Official sources that stopped updating</h2>
-      <p class="fz-def">Recomputed daily. A source drops off the list once it starts publishing again.</p>
-      <table class="fz-table">
-        <thead><tr><th>Source</th><th>Last official release</th><th>Silent for</th><th>What happened</th></tr></thead>
-        <tbody><tr><td><a href="https://www.war.gov/casualty.pdf" target="_blank" rel="noopener">DoD public casualty report (casualty.pdf)</a></td><td class="fz-date">Jan 30, 2025</td><td class="fz-days">570 days</td><td class="fz-note">Weekly PDF frozen ten days into the term; never extended to 2025–26 operations. The DCAS database (which this board uses) remains current.</td></tr><tr><td><a href="https://www.ice.gov/statistics" target="_blank" rel="noopener">ICE public enforcement dashboard</a></td><td class="fz-date">Jan 2025</td><td class="fz-days">569 days</td><td class="fz-note">Dashboard frozen; the biweekly detention workbook (which this board uses) continues.</td></tr><tr><td><a href="https://ohss.dhs.gov/topics/immigration/immigration-enforcement/monthly-tables" target="_blank" rel="noopener">DHS OHSS monthly enforcement tables</a></td><td class="fz-date">Jan 16, 2025</td><td class="fz-days">584 days</td><td class="fz-note">Final release carried data through Nov 2024; no release since.</td></tr><tr><td><a href="https://www.justice.gov/pardon/clemency-statistics" target="_blank" rel="noopener">DOJ clemency statistics</a></td><td class="fz-date">Jan 23, 2025</td><td class="fz-days">577 days</td><td class="fz-note">Historical statistics tables frozen; the grants pages (which this board uses) continue.</td></tr><tr><td><a href="https://www.justice.gov/usao-dc/capitol-breach-cases" target="_blank" rel="noopener">DOJ Capitol Breach (Jan 6) cases database</a></td><td class="fz-date">Jan 24, 2025</td><td class="fz-days">576 days</td><td class="fz-note">Removed days after the inauguration; deleted with ~1,100 case press releases in May 2026. Archived copies preserved by third parties.</td></tr><tr><td><a href="https://travel.state.gov/content/travel/en/legal/visa-law0/visa-statistics.html" target="_blank" rel="noopener">State Dept monthly visa issuances</a></td><td class="fz-date">Sep 2025</td><td class="fz-days">327 days</td><td class="fz-note">Monthly issuance statistics stalled.</td></tr><tr><td><a href="https://www.ice.gov/detain/detainee-death-reporting" target="_blank" rel="noopener">ICE detainee death reporting (full scope)</a></td><td class="fz-date">Jun 4, 2026</td><td class="fz-days">80 days</td><td class="fz-note">Not frozen but narrowed: deaths within 30 days of release are no longer reported (Directive 11003.6). The in-custody series (which this board uses) continues under the narrower rule.</td></tr><tr><td><a href="https://votehub.com/polls/" target="_blank" rel="noopener">VoteHub approval poll feed</a></td><td class="fz-date">Jun 29, 2026</td><td class="fz-days">55 days</td><td class="fz-note">Non-government source (poll aggregator): no new national approval polls ingested since late June; disclosed on the approval card, checked daily.</td></tr></tbody>
-      </table>
+      
+    <section class="callout" id="frozen">
+      <div class="callout-body">
+        <h2>Government data that stopped updating</h2>
+        <p>Since January 2025, <b>8 official data sources</b> this board draws on have been frozen, deleted, or narrowed. Where a source went dark, the board switched to a still-current official one — so the numbers here stay live. That the windows closed at all is part of the record.</p>
+      </div>
+      <a class="callout-link" href="/transparency">See what went dark <span aria-hidden="true">&rarr;</span></a>
     </section>
+    </main>
     <footer>
-      <div class="footer-nav"><a href="/methodology">About</a> · <a href="/support">Support</a> · <a href="/contact">Contact</a></div>
+      <div class="footer-nav"><a href="/methodology">About</a> · <a href="/transparency">Transparency</a> · <a href="/support">Support</a> · <a href="/contact">Contact</a></div>
     </footer>
   </div>
   <script>
