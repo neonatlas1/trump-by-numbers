@@ -24,15 +24,16 @@ CATEGORY_ORDER = [
     "Energy", "Immigration", "Health & Safety Net",
     "Executive Power & Governance", "War & Defense",
 ]
-# Short display labels for the tab bar ONLY. The internal category names above
-# (and in CATEGORIES) and the slugs derived from them are UNCHANGED — so grouping,
-# deep links (#t/<slug>) and the connectors' category stamps are all unaffected.
-# This map only renames what the tab button shows.
+# Display name for each category — used for BOTH the tab button AND the section
+# heading, so the two always match. The internal category names above (and in
+# CATEGORIES) and the slugs derived from them are UNCHANGED — so grouping, deep
+# links (#t/<slug>) and the connectors' category stamps are all unaffected.
+# This map only renames what the reader sees.
 TAB_LABEL = {
     "Cost of Living": "Prices",
     "Economy & Jobs": "Economy",
     "Trade & Tariffs": "Trade",
-    "Public Finances": "Finances",
+    "Public Finances": "Debt",
     "Energy": "Energy",
     "Immigration": "Immigration",
     "Health & Safety Net": "Health",
@@ -956,6 +957,12 @@ def payload(m, loaded):
         fx.update(chartTitle=title, series=[], accrueTitle="History accrues from here",
                   accrueBody=body)
 
+    def snapshot(title, spec):
+        # A point-in-time metric with too little history to plot a line yet: show an
+        # honest current-snapshot visual (composition bar / value-vs-target) instead of
+        # empty space. Auto-upgrades to the real line chart once enough points accrue.
+        fx.update(chartTitle=title, series=[], snapshot=spec)
+
     def _own_hist():
         first = _pdate(S[0]["date"])
         own = {"series": [{"label": m["name"], "color": ACCENT, "pts": date_points(S)}],
@@ -1362,13 +1369,29 @@ def payload(m, loaded):
         if len(S) >= 4:
             own("Share of ICE detainees with no criminal conviction", "pct", rng=False,
                 unit="% no conviction")
+        elif d.get("total_detained"):
+            tot = d["total_detained"]
+            pend = d.get("pending_criminal_charges") or 0
+            other = d.get("other_immigration_violators") or 0
+            conv = d.get("convicted_criminal")
+            if conv is None:
+                conv = max(0, tot - pend - other)
+            pc = lambda n: round(n / tot * 100, 1)
+            snapshot("Detention composition, ICE's own categories", {
+                "kind": "proportion",
+                "highlight": f"{m['value']:.1f}% have no criminal conviction",
+                "parts": [
+                    {"label": "No criminal charges", "value": other, "pct": pc(other), "tone": "accent"},
+                    {"label": "Charges pending, not convicted", "value": pend, "pct": pc(pend), "tone": "mid"},
+                    {"label": "Convicted of a crime", "value": conv, "pct": pc(conv), "tone": "muted"},
+                ],
+                "caption": (f"Of {tot:,} people in ICE detention, as of {pretty_date(m['as_of'])}. "
+                            "Captured biweekly — the trend line draws itself as snapshots accrue."),
+            })
         else:
             accrue("Detention composition, ICE's own categories",
-                   (f"{m['value']:.1f}% of the {d.get('total_detained', 0):,} people in ICE detention "
-                    f"have no criminal conviction ({d.get('pending_criminal_charges', 0):,} with charges "
-                    f"pending, {d.get('other_immigration_violators', 0):,} with none), as of "
-                    f"{pretty_date(m['as_of'])}. ") if d else "Composition accrues from here. "
-                   + "Each biweekly ICE snapshot adds a point; the share draws itself as the record builds.")
+                   "Composition accrues from here. Each biweekly ICE snapshot adds a point; "
+                   "the share draws itself as the record builds.")
         fx.update(channels="direct, arrest priorities, detention decisions, quota pressure.",
                   limits="'no conviction' includes people with pending charges (broken out separately); composition shifts with the enforcement mix (interior arrests vs border book-ins).",
                   caveats=["ICE's own categories, 'Convicted Criminal', 'Pending Criminal Charges', 'Other Immigration Violators', reconciled against the workbook's Currently Detained total before publishing.",
@@ -1400,11 +1423,13 @@ def payload(m, loaded):
                 fx.update(benchmark=m["ceiling"]["value"], benchmarkLabel=m["ceiling"]["label"])
         else:
             c = m.get("ceiling") or {}
-            accrue("Refugee admissions, fiscal-YTD",
-                   f"{m['value']:,} arrivals this fiscal year"
-                   + (f" against the {c['value']:,} ceiling" if c.get("value") else "")
-                   + f", as of {pretty_date(m['as_of'])}. Monthly history accrues from here; "
-                     "the official annual series back to 1975 is a planned static import.")
+            snapshot("Refugee admissions, fiscal year to date", {
+                "kind": "vsTarget",
+                "value": m["value"], "valueLabel": "Arrivals this fiscal year",
+                "target": c.get("value"), "targetLabel": c.get("label", "Presidential ceiling"),
+                "caption": (f"As of {pretty_date(m['as_of'])}. Court-ordered and follow-to-join cases "
+                            "sit outside the cap; monthly history accrues from here."),
+            })
         fx.update(channels="direct, the president sets the annual ceiling and program priorities; suspension and resumption by executive order.",
                   limits="courts have ordered admissions the program suspended; processing pipelines lag policy decisions by months.",
                   caveats=["Arrivals can exceed the ceiling: court-ordered and follow-to-join cases sit outside it.",
@@ -1544,40 +1569,99 @@ def _slug(cat):
     return cat.lower().replace(" & ", "-").replace(" ", "-")
 
 
-def frozen_strip(today=None):
-    """The transparency strip (v3): official series that stopped updating,
-    each with the date of its last official release and days since, factual
-    and dated only, definition printed. Entries + citations live in
-    connectors/static/frozen_sources.json; a source leaves the list by
-    publishing again. Enhancement-only: a missing/broken file renders nothing
-    rather than blocking the build."""
+def _frozen_rows(today=None):
+    """Load the frozen-source list, compute days-silent, and drive the VoteHub
+    (non-government) row live from the approval connector's stall state. Returns
+    (rows, gov_count, verified_date) or ([], 0, None) if the file can't be read."""
     path = os.path.join(HERE, "connectors", "static", "frozen_sources.json")
     try:
-        entries = json.load(open(path))["sources"]
+        doc = json.load(open(path))
+        entries = doc["sources"]
     except Exception as e:  # noqa: BLE001
-        print(f"  ! frozen strip skipped ({e})")
-        return ""
+        print(f"  ! frozen data skipped ({e})")
+        return [], 0, None
     today = today or datetime.date.today()
-    rows = []
+    appr = {}
+    try:
+        appr = json.load(open(os.path.join(DATA, "approval_rating.json")))
+    except Exception:
+        pass
+    rows, gov = [], 0
     for e in entries:
-        days = (today - effective_date(e["last_update"])).days
-        # One 4-column row per record. Desktop shows it as a normal table; on mobile
-        # CSS reflows each row so source/last/silent sit across the top and the note
-        # ("what happened") drops to a full-width line beneath — no cramped column, no scroll.
-        rows.append(
-            f'<tr><td><a href="{e["url"]}" target="_blank" rel="noopener">{e["name"]}</a></td>'
-            f'<td class="fz-date">{pretty_date(e["last_update"])}</td>'
-            f'<td class="fz-days">{days:,} days</td>'
-            f'<td class="fz-note">{e["note"]}</td></tr>')
+        is_gov = e.get("gov", True)
+        last = e["last_update"]
+        if not is_gov and "votehub" in e["url"]:
+            stalled = appr.get("source_stalled_since")
+            if not stalled:
+                continue          # approval feed resumed → no longer a frozen source
+            last = stalled
+        rows.append({"name": e["name"], "last": last,
+                     "days": (today - effective_date(last)).days,
+                     "note": e["note"], "instead": e.get("instead", ""),
+                     "url": e["url"], "gov": is_gov})
+        if is_gov:
+            gov += 1
+    return rows, gov, doc.get("verified")
+
+
+def frozen_callout(today=None):
+    """Compact homepage callout: states the pattern factually and links to the full
+    page. The table itself lives on /transparency, so the board isn't cluttered and
+    readers don't mistake this for the board's own data being stale (it isn't —
+    each source that went dark was replaced by a live one)."""
+    _, gov, _ = _frozen_rows(today)
+    if not gov:
+        return ""
     return f"""
-    <section class="frozen" id="frozen">
-      <h2>Official sources that stopped updating</h2>
-      <p class="fz-def">Recomputed daily. A source drops off the list once it starts publishing again.</p>
-      <table class="fz-table">
-        <thead><tr><th>Source</th><th>Last official release</th><th>Silent for</th><th>What happened</th></tr></thead>
-        <tbody>{''.join(rows)}</tbody>
-      </table>
+    <section class="callout" id="frozen">
+      <div class="callout-body">
+        <h2>Government data that stopped updating</h2>
+        <p>Since January 2025, <b>{gov} official data sources</b> this board draws on have been frozen, deleted, or narrowed. Where a source went dark, the board switched to a still-current official one — so the numbers here stay live. That the windows closed at all is part of the record.</p>
+      </div>
+      <a class="callout-link" href="/transparency">See what went dark <span aria-hidden="true">&rarr;</span></a>
     </section>"""
+
+
+def frozen_page_content(today=None):
+    """Full detail for the dedicated /transparency page: the government table
+    (source · last release · silent for · what happened · what the board uses
+    instead), then any non-government source in a separate, labelled block."""
+    rows, gov, verified = _frozen_rows(today)
+    if not rows:
+        return '<section class="block"><p>Nothing to report — every tracked source is currently publishing.</p></section>'
+    gov_rows = [r for r in rows if r["gov"]]
+    ng_rows = [r for r in rows if not r["gov"]]
+
+    def table(rs):
+        body = ""
+        for r in rs:
+            body += (f'<tr><td><a href="{r["url"]}" target="_blank" rel="noopener">{r["name"]}</a></td>'
+                     f'<td class="fz-date">{pretty_date(r["last"])}</td>'
+                     f'<td class="fz-days">{r["days"]:,} days</td>'
+                     f'<td class="fz-note">{r["note"]}</td>'
+                     f'<td class="fz-instead">{r["instead"]}</td></tr>')
+        return ('<div class="fz-scroll"><table class="fz-table">'
+                '<thead><tr><th>Source</th><th>Last release</th><th>Silent for</th>'
+                '<th>What happened</th><th>What the board uses instead</th></tr></thead>'
+                f'<tbody>{body}</tbody></table></div>')
+
+    verified_line = f" Government dates last verified {pretty_date(verified)}." if verified else ""
+    html = f"""
+      <section class="block">
+        <p>These are official series this board uses, or would use, that have stopped publishing. It's a plain record: each row is a source, its last release, and what happened. The point isn't that the board's own numbers are stale — where an official window closed, the board moved to a still-current official source, shown in the last column. That the windows closed at all is itself part of the record.</p>
+        <p class="fz-meta">The days-silent counts recompute every day, and a probable resumption is watched for automatically.{verified_line}</p>
+      </section>
+      <section class="block">
+        {table(gov_rows)}
+      </section>"""
+    if ng_rows:
+        html += f"""
+      <section class="block">
+        <p class="eyebrow">Non-government source</p>
+        <p>Listed for completeness. This one isn't a government series, so it isn't part of the pattern above — it's a poll aggregator whose public feed went quiet.</p>
+        {table(ng_rows)}
+      </section>"""
+    return html
 
 
 # ---------------------------------------------------------------------------
@@ -1713,12 +1797,26 @@ _META_CSS = """
   .footer-nav a, .footer-nav span { margin:0 5px; }
   .footer-nav [aria-current] { color:var(--muted); }
   .built { opacity:.6; font-size:11px; }
+  .fz-meta { font-size:13px !important; color:var(--muted) !important; }
+  .fz-scroll { overflow-x:auto; -webkit-overflow-scrolling:touch; margin:0 -4px; }
+  .fz-table { border-collapse:collapse; font-size:13.5px; min-width:640px; width:100%; }
+  .fz-table th { text-align:left; color:var(--muted); font-weight:600; padding:0 16px 10px 0;
+                 border-bottom:1px solid var(--hair); vertical-align:bottom; }
+  .fz-table td { padding:13px 16px 13px 0; border-bottom:1px solid var(--hair-faint);
+                 vertical-align:top; color:var(--secondary); line-height:1.5; }
+  .fz-table tbody tr:last-child td { border-bottom:0; }
+  .fz-table a { color:var(--primary); font-weight:600; text-decoration:none; }
+  .fz-table a:hover { color:var(--series-1); }
+  .fz-date, .fz-days { white-space:nowrap; }
+  .fz-days { font-variant-numeric:tabular-nums; }
+  .fz-note { color:var(--muted); min-width:22ch; }
+  .fz-instead { min-width:22ch; }
 """
 
 
 def _footer_nav(current):
     """Footer meta-nav for the sub-pages: Home + the three pages, current one flat."""
-    items = [("/", "Home"), ("/methodology", "About"),
+    items = [("/", "Home"), ("/methodology", "About"), ("/transparency", "Transparency"),
              ("/support", "Support"), ("/contact", "Contact")]
     parts = []
     for href, label in items:
@@ -1885,13 +1983,16 @@ def build():
         '<polyline points="6 9 12 15 18 9"></polyline></svg></button>'
         '<div class="detail" hidden></div>')
 
-    # group by category, preserving ORDER within each; tabs with an All default
-    sections, tab_btns = [], ['<button class="tab active" type="button" data-tab="all">All</button>']
+    # Group by category, preserving ORDER within each. The tab bar is a SECTION NAV,
+    # not a filter: every category is always rendered, a tab click scrolls to it, and
+    # its heading is the scroll anchor (same display name as the tab). No "All" tab.
+    sections, tab_btns = [], []
     for cat in CATEGORY_ORDER:
         cat_metrics = [m for m in metrics if m["category"] == cat]
         if not cat_metrics:
             continue
         slug = _slug(cat)
+        name = TAB_LABEL.get(cat, cat)
         tiles = []
         for m in cat_metrics:
             h = tile(m)
@@ -1900,10 +2001,10 @@ def build():
             if m["id"] in expandable:
                 h = h.replace('<div class="tile-foot">', expand_btn + '\n      <div class="tile-foot">', 1)
             tiles.append(h)
-        tab_btns.append(f'<button class="tab" type="button" data-tab="{slug}">{TAB_LABEL.get(cat, cat)}</button>')
+        tab_btns.append(f'<button class="tab" type="button" data-tab="{slug}">{name}</button>')
         sections.append(f"""
       <section class="category" data-tab="{slug}" id="{slug}">
-        <h2 class="cat-head">{cat}</h2>
+        <h2 class="cat-head">{name}</h2>
         <div class="grid">{"".join(tiles)}</div>
       </section>""")
     body = "".join(sections)
@@ -2023,7 +2124,7 @@ def build():
   .lede {{ color:var(--secondary); max-width:none; margin:0; font-size:15px; }}
   .pilot {{ display:inline-block; margin-top:16px; font-size:12px; color:var(--muted);
            border:1px solid var(--hair); border-radius:100px; padding:5px 12px; }}
-  .category {{ margin-top:40px; }}
+  .category {{ margin-top:40px; scroll-margin-top:118px; }}
   .cat-head {{ font-size:13px; font-weight:600; letter-spacing:.12em; text-transform:uppercase;
               color:var(--secondary); margin:0 0 16px; padding-bottom:10px;
               border-bottom:1px solid var(--hair); display:flex; align-items:center; gap:10px; }}
@@ -2056,7 +2157,7 @@ def build():
                font-size:11.5px; color:var(--muted); flex-wrap:wrap; }}
   .tile-foot a {{ color:var(--secondary); text-decoration:none; font-weight:550; }}
   .tile-foot a:hover {{ color:var(--series-1); }}
-  /* ---- category tabs (All default; JS-off shows the whole board) ---- */
+  /* ---- category tabs = section nav (scroll-to; JS-off shows the whole board) ---- */
   .tabs-wrap {{ position:relative; margin:28px 0 4px; }}
   .tabs-wrap::before, .tabs-wrap::after {{ content:""; position:absolute; top:0; bottom:0; width:72px;
           pointer-events:none; opacity:0; transition:opacity .18s ease; z-index:1; border-radius:12px; }}
@@ -2143,6 +2244,24 @@ def build():
   .legend {{ display:flex; gap:14px; flex-wrap:wrap; margin:0 0 8px; }}
   .lg {{ display:flex; align-items:center; gap:7px; font-size:12px; color:var(--secondary); font-weight:550; }}
   .lg .key {{ width:14px; height:0; border-top:2.5px solid; border-radius:2px; }}
+  /* ---- snapshot (point-in-time metrics: composition / value-vs-target) ---- */
+  .snap {{ padding:6px 2px 2px; }}
+  .snap-hl {{ font-size:15.5px; font-weight:600; color:var(--primary); margin-bottom:16px; }}
+  .snap-bar {{ display:flex; height:16px; border-radius:6px; overflow:hidden; background:var(--grid); }}
+  .snap-seg {{ height:100%; }}
+  .snap-seg + .snap-seg {{ box-shadow:inset 1.5px 0 0 var(--surface); }}
+  .snap-legend {{ margin-top:16px; display:flex; flex-direction:column; gap:10px; }}
+  .snap-row {{ display:grid; grid-template-columns:12px 1fr auto; align-items:center; gap:11px; }}
+  .snap-key {{ width:12px; height:12px; border-radius:3px; }}
+  .snap-lab {{ color:var(--secondary); font-size:13px; }}
+  .snap-val {{ color:var(--primary); font-size:13px; font-variant-numeric:tabular-nums; text-align:right; }}
+  .snap-track {{ position:relative; height:16px; border-radius:6px; background:var(--grid); margin-top:34px; }}
+  .snap-fill {{ height:100%; border-radius:6px; }}
+  .snap-mark {{ position:absolute; top:-5px; bottom:-5px; width:2px; background:var(--chart-dash); }}
+  .snap-mark-lab {{ position:absolute; top:-24px; transform:translateX(-50%); white-space:nowrap;
+                   font-size:11px; font-weight:600; color:var(--muted); }}
+  .snap-over {{ margin-top:14px; font-size:12.5px; font-weight:600; color:var(--secondary); }}
+  .snap-cap {{ margin-top:16px; font-size:12.5px; color:var(--muted); line-height:1.55; }}
   .chart-box {{ position:relative; outline:none; border-radius:8px;
     -webkit-user-select:none; user-select:none; -webkit-touch-callout:none; touch-action:none; }}
   .chart-box:focus-visible {{ box-shadow:0 0 0 2px var(--focus); }}
@@ -2192,34 +2311,18 @@ def build():
   .footer-nav a {{ margin:0 5px; text-decoration:none; }}
   .footer-nav a:hover {{ color:var(--series-1); }}
   .built {{ opacity:.6; font-size:11px; margin-top:14px; }}
-  .frozen {{ margin-top:44px; background:var(--panel); border:1px solid var(--hair);
-            border-radius:14px; padding:22px 24px 8px; }}
-  .frozen h2 {{ font-size:15px; margin:0 0 6px; }}
-  .fz-def {{ color:var(--muted); font-size:13px; max-width:none; margin:0 0 16px; }}
-  .frozen a {{ color:var(--secondary); text-decoration:underline; text-underline-offset:2px; }}
-  .frozen a:hover {{ color:var(--primary); }}
-  .fz-table {{ width:100%; border-collapse:collapse; font-size:13px; }}
-  .fz-table th {{ text-align:left; color:var(--muted); font-weight:600; padding:6px 12px 8px 0; border-bottom:1px solid var(--hair); }}
-  .fz-table td {{ padding:9px 12px 9px 0; border-bottom:1px solid var(--hair); vertical-align:top; }}
-  .fz-table tbody tr:last-child td {{ border-bottom:0; }}
-  .fz-date, .fz-days {{ white-space:nowrap; }}
-  .fz-days {{ font-variant-numeric:tabular-nums; }}
-  .fz-note {{ color:var(--muted); max-width:52ch; }}
-  /* mobile only: reflow each row → source/last/silent across the top, note full-width
-     beneath (headerless — obviously "what happened"). Desktop table is untouched. */
-  @media (max-width:665px) {{
-    .fz-table thead {{ border-bottom:1px solid var(--hair); }}
-    .fz-table thead th:nth-child(4) {{ display:none; }}
-    .fz-table thead tr, .fz-table tbody tr {{ display:grid;
-      grid-template-columns:minmax(0,1fr) 96px 72px; column-gap:12px; }}
-    /* separator between records: a top border on each row after the first, same
-       weight as the header line. Lives on <tr> (not <td>), so the td rules below
-       can zero their own borders without a specificity fight. */
-    .fz-table tbody tr + tr {{ border-top:1px solid var(--hair); }}
-    .fz-table th {{ border-bottom:0; padding:0 0 8px; }}
-    .fz-table td {{ border-bottom:0; padding:22px 0 0; }}
-    .fz-table td.fz-note {{ grid-column:1 / -1; padding:6px 0 22px; margin:0; max-width:none; }}
-  }}
+  /* homepage callout → links to the full /transparency page (table lives there) */
+  .callout {{ margin-top:48px; background:var(--panel); border:1px solid var(--hair);
+             border-radius:14px; padding:22px 24px; display:flex; align-items:center;
+             justify-content:space-between; gap:20px 28px; flex-wrap:wrap; }}
+  .callout-body {{ flex:1 1 440px; min-width:0; }}
+  .callout h2 {{ font-size:15px; margin:0 0 7px; color:var(--primary); }}
+  .callout p {{ color:var(--secondary); font-size:13.5px; line-height:1.62; margin:0; max-width:66ch; }}
+  .callout p b {{ color:var(--primary); font-weight:650; }}
+  .callout-link {{ flex:none; font-size:13.5px; font-weight:600; color:var(--series-1);
+                  text-decoration:none; white-space:nowrap; }}
+  .callout-link:hover {{ text-decoration:underline; }}
+  @media (max-width:560px) {{ .callout {{ padding:20px; }} }}
 </style>
 </head>
 <body>
@@ -2245,10 +2348,10 @@ def build():
   <div class="wrap wrap-main">
     <main>
       {body}
+      {frozen_callout()}
     </main>
-    {frozen_strip()}
     <footer>
-      <div class="footer-nav"><a href="/methodology">About</a> · <a href="/support">Support</a> · <a href="/contact">Contact</a></div>
+      <div class="footer-nav"><a href="/methodology">About</a> · <a href="/transparency">Transparency</a> · <a href="/support">Support</a> · <a href="/contact">Contact</a></div>
     </footer>
   </div>
   <script>
@@ -2283,6 +2386,11 @@ def build():
          "Ask a question. Suggest a metric. Share feedback.",
          "Contact Trump by Numbers: suggest a metric, send feedback, or discuss the numbers in public on GitHub Discussions.",
          _contact_content()),
+        ("transparency.html", "/transparency",
+         "Government data that stopped updating", "Data that went dark",
+         "Official data sources frozen, deleted, or narrowed since January 2025 — and what the board uses instead.",
+         "A factual record of official US data series that stopped publishing since January 2025 — each with its last release, what happened, and the still-current source the board switched to.",
+         frozen_page_content()),
     ]
     for fname, current, title, hero, lede, desc, content in meta_pages:
         page = render_meta_page(current, title, hero, lede, desc, content,
