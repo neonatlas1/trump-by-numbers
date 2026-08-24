@@ -99,6 +99,66 @@
   function txt(node, s) { node.textContent = s; return node; }
   function dLab(x) { var d = new Date(x); return MONTH[d.getUTCMonth()] + ' ' + d.getUTCFullYear(); }
 
+  /* ---------- share (brief 09) ----------
+   * One message = typed hook text (per card, from data-share-text) + the link.
+   * On phones navigator.share opens the OS sheet (WhatsApp, iMessage, …). On
+   * desktop we fall back to a small popover with X + copy. No storage, no keys. */
+  var SHARE_ICON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" ' +
+    'stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="3"></circle>' +
+    '<circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle>' +
+    '<path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4"></path></svg>';
+  var _sharePanel = null;
+  function _closeShare() {
+    if (_sharePanel && _sharePanel.parentNode) _sharePanel.parentNode.removeChild(_sharePanel);
+    _sharePanel = null;
+    document.removeEventListener('mousedown', _shareOutside, true);
+  }
+  function _shareOutside(e) { if (_sharePanel && !_sharePanel.contains(e.target)) _closeShare(); }
+  function _copyFallback(s) {
+    var ta = document.createElement('textarea');
+    ta.value = s; ta.setAttribute('readonly', '');
+    ta.style.position = 'fixed'; ta.style.top = '-1000px'; ta.style.opacity = '0';
+    document.body.appendChild(ta); ta.select();
+    try { document.execCommand('copy'); } catch (e) {}
+    document.body.removeChild(ta);
+  }
+  function _copy(s, btn, okMsg) {
+    var restore = btn.textContent, done = function () {
+      btn.textContent = okMsg;
+      setTimeout(function () { btn.textContent = restore; }, 1400);
+    };
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(s).then(done, function () { _copyFallback(s); done(); });
+    } else { _copyFallback(s); done(); }
+  }
+  function _openSharePanel(text, url, anchor) {
+    _closeShare();
+    var p = document.createElement('div'); p.className = 'share-panel';
+    var x = document.createElement('a'); x.className = 'share-opt'; x.textContent = 'Post on X';
+    x.href = 'https://twitter.com/intent/tweet?text=' + encodeURIComponent(text) + '&url=' + encodeURIComponent(url);
+    x.target = '_blank'; x.rel = 'noopener';
+    x.addEventListener('click', function () { _closeShare(); });
+    p.appendChild(x);
+    var cl = document.createElement('button'); cl.type = 'button'; cl.className = 'share-opt'; cl.textContent = 'Copy link';
+    cl.addEventListener('click', function () { _copy(url, cl, 'Link copied'); });
+    p.appendChild(cl);
+    var cm = document.createElement('button'); cm.type = 'button'; cm.className = 'share-opt'; cm.textContent = 'Copy message';
+    cm.addEventListener('click', function () { _copy(text + '\n' + url, cm, 'Copied'); });
+    p.appendChild(cm);
+    document.body.appendChild(p);
+    var r = anchor.getBoundingClientRect();
+    p.style.top = (r.bottom + window.pageYOffset + 6) + 'px';
+    p.style.left = Math.max(8, r.right + window.pageXOffset - p.offsetWidth) + 'px';
+    _sharePanel = p;
+    setTimeout(function () { document.addEventListener('mousedown', _shareOutside, true); }, 0);
+  }
+  function shareWith(text, url, anchor) {
+    if (!text || !url) return;
+    if (navigator.share) { navigator.share({ text: text, url: url }).catch(function () {}); return; }
+    _openSharePanel(text, url, anchor);
+  }
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') _closeShare(); });
+
   function xTicks(fx, x0, x1) {
     if (fx.xLabels) return fx.xLabels.filter(function (t) { return t.x >= x0 - 0.001 && t.x <= x1 + 0.001; });
     var out = [];
@@ -822,6 +882,16 @@
       exp.appendChild(jsonL);
     }
 
+    // share button, pushed to the bottom-right of the drawer (brief 09)
+    var shareBtn = document.createElement('button');
+    shareBtn.type = 'button'; shareBtn.className = 'detail-share';
+    shareBtn.innerHTML = SHARE_ICON + '<span>Share</span>';
+    shareBtn.setAttribute('aria-label', 'Share this metric');
+    shareBtn.addEventListener('click', function () {
+      shareWith(card.dataset.shareText, card.dataset.shareUrl, shareBtn);
+    });
+    meta.appendChild(shareBtn);
+
     if (window.ResizeObserver) {
       var t; new ResizeObserver(function () {
         clearTimeout(t); t = setTimeout(function () {
@@ -915,8 +985,14 @@
     card._detail = card.querySelector('.detail');
     card.addEventListener('click', function (e) {
       if (e.target.closest('a')) return;                                  // let source links work
+      if (e.target.closest('.tile-share')) return;                        // share button handles itself
       if (window.getSelection && String(window.getSelection())) return;   // ignore click that ends a text selection
       toggleDrawer(card);
+    });
+    var sh = card.querySelector('.tile-share');
+    if (sh) sh.addEventListener('click', function (e) {
+      e.stopPropagation();
+      shareWith(card.dataset.shareText, card.dataset.shareUrl, sh);
     });
   });
   var _rt; window.addEventListener('resize', function () {
@@ -986,6 +1062,12 @@
   var infoBtn = document.getElementById('infoScroll');
   if (infoBtn) infoBtn.addEventListener('click', function () {
     window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+  });
+
+  /* ---------- board-level share (brief 09) ---------- */
+  var boardShareBtn = document.getElementById('boardShare');
+  if (boardShareBtn) boardShareBtn.addEventListener('click', function () {
+    shareWith(boardShareBtn.dataset.shareText, boardShareBtn.dataset.shareUrl, boardShareBtn);
   });
 
   /* ---------- sticky header: condense once the hero scrolls past ---------- */
@@ -1097,6 +1179,17 @@
 
   window.addEventListener('hashchange', route);
   route();
+
+  /* ---------- shared-link landing: /?c=<id> opens that card (brief 09) ----------
+     Query form (not a #fragment) so link previews and analytics see a real URL.
+     Runs once on load; deep-link #m/<id> still works via route(). */
+  (function () {
+    var mm = /[?&]c=([^&]+)/.exec(location.search || '');
+    if (!mm) return;
+    var id = decodeURIComponent(mm[1]).replace(/[^a-z0-9_]/gi, '');
+    var card = document.getElementById('card-' + id);
+    if (card && card.getAttribute('data-id')) setTimeout(function () { openCardDrawer(card, true); }, 0);
+  })();
 
   /* ---------- client-side freshness (unchanged behavior from v1 board) ---------- */
   var now = new Date();
