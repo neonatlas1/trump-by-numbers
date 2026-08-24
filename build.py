@@ -2136,7 +2136,7 @@ def build():
 
     # Board-level share (brief 09): whole-board hook, side-neutral wit.
     _board_share_text = _htmllib.escape(
-        "For your next dinner-table argument about Trump\nSettle it with numbers",
+        "For your next dinner-table argument about Trump:\nSettle it with numbers",
         quote=True).replace("\n", "&#10;")
     board_share_btn = (
         f'<button class="theme-toggle" id="boardShare" type="button" '
@@ -2467,6 +2467,7 @@ def build():
     cursor:pointer; text-decoration:none; }}
   .share-opt:hover {{ background:var(--panel); }}
   .share-opt:focus-visible {{ outline:none; box-shadow:0 0 0 2px var(--focus); }}
+  .share-opt-primary {{ font-weight:650; color:var(--series-1); }}
 
   footer {{ margin-top:52px; border-top:1px solid var(--hair); padding-top:24px;
            color:var(--muted); font-size:12px; text-align:center; line-height:1.6; }}
