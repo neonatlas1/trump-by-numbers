@@ -346,6 +346,21 @@ ok('data-tab="all"' not in _html, "tabs: section nav (scroll-to), no 'All' filte
 ok("tab-count" not in _html and '<span class="n">' not in _html, "tabs: no count indicators")
 ok("sessionStorage" not in _html and "tbn-theme" in _html,
    "storage limited to the theme-persistence key (no cookies, no session storage)")
+# --- sharing (brief 09, MVP) ---
+ok('property="og:image"' in _html and "og.png" in _html
+   and 'name="twitter:card" content="summary_large_image"' in _html,
+   "share: site-wide OpenGraph + Twitter card meta present")
+ok('property="og:title" content="Trump Administration, Tracked in Data"' in _html,
+   "share: preview title is the locked slogan")
+ok(_html.count('class="tile-share"') == _ndata, "share: a share icon on every card")
+ok('id="boardShare"' in _html and "dinner-table argument" in _html,
+   "share: board-level share control with its own hook")
+ok(_html.count("data-share-text=") >= _ndata + 1,
+   "share: per-card hook text + board hook emitted")
+ok("?c=" in _html and "under Trump?" in _html,
+   "share: hooks carry the question and the ?c= link")
+ok(os.path.exists(os.path.join(HERE, "site", "og.png")),
+   "share: brand link-preview image emitted to site/")
 ok("Presentation layer" in _html or "chart.js" not in _html or "lineChart" in _html,
    "chart.js inlined into the page")
 _dfiles = sorted(os.listdir(os.path.join(HERE, "site", "d")))

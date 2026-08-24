@@ -190,6 +190,89 @@ DESC = {
 }
 
 
+# ---- share hook text (brief 09, MVP) ----------------------------------------
+# Part 1 of a shared message: the typed text, different per card. Four lines,
+# no em dashes: a question (same template, metric noun slotted in), the current
+# value, the board's comparison line, then the link. Value + comparison come
+# straight from the collapsed card, so nothing travels that isn't on the board.
+import html as _htmllib
+
+SHARE_NOUN = {
+    "inflation": "inflation", "grocery_prices": "grocery prices",
+    "gas_price": "gas prices", "real_gdp": "GDP growth",
+    "unemployment": "unemployment", "real_wages": "real wages",
+    "federal_workforce": "the federal workforce", "tariff_revenue": "tariff revenue",
+    "effective_tariff_rate": "tariffs", "trade_deficit": "the trade deficit",
+    "national_debt": "the national debt", "budget_deficit": "the budget deficit",
+    "interest_on_debt": "interest on the debt", "electricity_price": "electricity prices",
+    "crude_oil": "US oil production", "renewable_share": "renewable electricity",
+    "border_encounters": "border encounters", "ice_removals": "ICE removals",
+    "ice_detention": "the ICE detention population",
+    "ice_composition": "ICE detention", "ice_custody_deaths": "deaths in ICE custody",
+    "refugee_admissions": "refugee admissions", "overdose_deaths": "drug overdose deaths",
+    "measles_cases": "measles", "medicaid_enrollment": "Medicaid enrollment",
+    "va_claims_backlog": "the VA claims backlog", "executive_orders": "executive orders",
+    "judges_confirmed": "federal judge confirmations", "approval_rating": "presidential approval",
+    "clemency": "clemency", "national_emergencies": "national emergencies",
+    "defense_outlays": "defense spending", "foreign_aid": "foreign aid",
+    "war_powers": "war-powers reports to Congress", "military_deaths": "US military deaths",
+}
+# A few metrics don't fit the template cleanly, so they carry a full question.
+SHARE_Q = {
+    "ice_composition": "How many people in ICE detention have no criminal conviction?",
+}
+# Cumulative counts read better as "So far" than "Now".
+SHARE_COUNT = {
+    "executive_orders", "judges_confirmed", "national_emergencies",
+    "war_powers", "clemency", "military_deaths", "ice_removals",
+    "national_emergencies",
+}
+
+
+def _plain(s):
+    """HTML/entity string -> clean one-line plain text for a share message:
+    drop tags, decode entities, strip direction arrows, remove dashes."""
+    if not s:
+        return ""
+    s = re.sub(r"<[^>]+>", "", s)
+    s = _htmllib.unescape(s)
+    # keep the direction the board's arrow carried, as a word
+    for ch in ("▲", "△", "↑"):
+        s = s.replace(ch, " up ")
+    for ch in ("▼", "▽", "↓"):
+        s = s.replace(ch, " down ")
+    for ch in ("→", "←", "➔"):
+        s = s.replace(ch, "")
+    s = s.replace("—", ", ").replace("–", "-")   # em / en dash
+    s = re.sub(r"\s+", " ", s).strip()
+    return s.replace(" ,", ",").replace(" .", ".")
+
+
+def share_text(m, hero, delta):
+    """Assemble the per-card typed hook (Part 1). Returns plain text with real
+    newlines; caller escapes it into a data attribute."""
+    mid = m["id"]
+    q = SHARE_Q.get(mid)
+    if not q:
+        noun = SHARE_NOUN.get(mid, m["name"].split("(")[0].strip().lower())
+        q = f"What's actually happened to {noun} under Trump?"
+    lines = [q]
+    val = _plain(hero)
+    if val:
+        lines.append(("So far " if mid in SHARE_COUNT else "Now ") + val)
+    cmp = _plain(delta)
+    if cmp:
+        lines.append(cmp)
+    return "\n".join(lines)
+
+
+def _share_attrs(m, hero, delta):
+    """data-* attributes that carry Part 1 text + the ?c= link to chart.js."""
+    text = _htmllib.escape(share_text(m, hero, delta), quote=True).replace("\n", "&#10;")
+    url = f"{SITE_URL}/?c={m['id']}"
+    return f'data-share-text="{text}" data-share-url="{url}"'
+
+
 def tile(m):
     cat, name, src = m["category"], m["name"], m["source"]
     accent = "var(--series-1)"
@@ -627,7 +710,8 @@ def tile(m):
     name_main, name_qual = (_qm.group(1), _qm.group(2)) if _qm else (name, "")
     qual_html = f'\n      <div class="tile-qual">{name_qual}</div>' if name_qual else ""
     return f"""
-    <article class="tile" data-as-of="{m['as_of']}" data-stale-after="{sa}" data-cadence="{m['cadence'].lower()}">
+    <article class="tile" data-as-of="{m['as_of']}" data-stale-after="{sa}" data-cadence="{m['cadence'].lower()}" {_share_attrs(m, hero, delta)}>
+      <button class="tile-share" type="button" aria-label="Share this metric">{_ICON_SHARE}</button>
       <h2 class="tile-name">{name_main}</h2>{qual_html}
       <div class="hero">{hero}</div>
       {delta}
@@ -1655,6 +1739,40 @@ def frozen_page_content(today=None):
 # ---------------------------------------------------------------------------
 REPO_URL        = "https://github.com/neonatlas1/trump-by-numbers"
 DISCUSSIONS_URL = "https://github.com/neonatlas1/trump-by-numbers/discussions"
+
+# Canonical public address (Cloudflare Pages). Single source of truth for the
+# absolute URLs that link previews (OpenGraph) and share links need. When a
+# custom domain lands, change this one line.
+SITE_URL = "https://trumpbynumbers.pages.dev"
+
+# One link-preview card for the whole site (brief 09, MVP). The per-metric
+# difference lives in the typed share text; this card is identical on every
+# share. Image is a single file in site/ (swap assets/og.png to change it).
+SOCIAL_TITLE = "Trump Administration, Tracked in Data"
+SOCIAL_DESC  = "See what's actually happening under Trump, according to the numbers"
+SOCIAL_IMAGE = SITE_URL + "/og.png"
+
+
+def _social_meta(path="/"):
+    """OpenGraph + Twitter tags so a pasted link shows the brand card (image +
+    title + description) in WhatsApp, iMessage, X, etc. Same card site-wide;
+    only og:url changes per page. Absolute URLs required for previews."""
+    url = SITE_URL + path
+    t = SOCIAL_TITLE
+    d = SOCIAL_DESC
+    return (
+        f'<meta property="og:type" content="website">\n'
+        f'<meta property="og:site_name" content="Trump by Numbers">\n'
+        f'<meta property="og:title" content="{t}">\n'
+        f'<meta property="og:description" content="{d}">\n'
+        f'<meta property="og:image" content="{SOCIAL_IMAGE}">\n'
+        f'<meta property="og:url" content="{url}">\n'
+        f'<link rel="canonical" href="{url}">\n'
+        f'<meta name="twitter:card" content="summary_large_image">\n'
+        f'<meta name="twitter:title" content="{t}">\n'
+        f'<meta name="twitter:description" content="{d}">\n'
+        f'<meta name="twitter:image" content="{SOCIAL_IMAGE}">'
+    )
 KOFI_URL        = "https://ko-fi.com/trumpbynumbers"
 SPONSORS_URL    = "https://github.com/sponsors/neonatlas1"
 TALLY_EMBED     = "https://tally.so/embed/J9EW5Y?alignLeft=1&hideTitle=1"
@@ -1685,6 +1803,12 @@ _ICON_MOON = ('<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke
 _ICON_INFO = ('<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" '
     'stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9.5"></circle>'
     '<path d="M12 11v5"></path><path d="M12 7.6h.01"></path></svg>')
+# Share glyph (connected nodes), used on the card icon, the drawer button, and
+# the board-level control.
+_ICON_SHARE = ('<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" '
+    'stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="3"></circle>'
+    '<circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle>'
+    '<path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4"></path></svg>')
 
 # Standalone theme toggle for the meta pages (the board's copy lives inside
 # chart.js, which these pages don't load). System-follow by default via CSS; the
@@ -1833,6 +1957,7 @@ def render_meta_page(current, title, hero, lede, desc, content, dark_tokens, lig
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{title} · Trump by Numbers</title>
 <meta name="description" content="{desc}">
+{_social_meta(current)}
 {_THEME_INIT}
 <style>{css}</style>
 </head>
@@ -2006,6 +2131,17 @@ def build():
     body = "".join(sections)
     tabs_html = "".join(tab_btns)
 
+    # Board-level share (brief 09): whole-board hook, side-neutral wit.
+    _board_share_text = _htmllib.escape(
+        "For your next dinner-table argument about Trump\nSettle it with numbers",
+        quote=True).replace("\n", "&#10;")
+    board_share_btn = (
+        f'<button class="theme-toggle" id="boardShare" type="button" '
+        f'aria-label="Share the board" '
+        f'data-share-text="{_board_share_text}" data-share-url="{SITE_URL}/">'
+        f'{_ICON_SHARE}</button>'
+    )
+
     chart_js = ""
     js_path = os.path.join(ASSETS, "chart.js")
     if os.path.exists(js_path):
@@ -2066,6 +2202,8 @@ def build():
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Trump Administration, Tracked in Data</title>
+<meta name="description" content="{SOCIAL_DESC}">
+{_social_meta("/")}
 {_THEME_INIT}
 <style>
   /* Dark is the default and the no-preference fallback. Light auto-applies via the
@@ -2128,10 +2266,19 @@ def build():
   .cat-count {{ color:var(--muted); font-weight:500; font-size:12px;
                border:1px solid var(--hair); border-radius:100px; padding:1px 8px; }}
   .grid {{ display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:18px; }}
-  .tile {{ background:var(--surface); border:1px solid var(--hair); border-radius:16px; padding:24px 24px 18px; }}
+  .tile {{ position:relative; background:var(--surface); border:1px solid var(--hair); border-radius:16px; padding:24px 24px 18px; }}
+  /* share icon, top-right of the collapsed card (brief 09) */
+  .tile-share {{ position:absolute; top:15px; right:15px; width:30px; height:30px; padding:0;
+    display:inline-flex; align-items:center; justify-content:center; background:none;
+    border:1px solid transparent; border-radius:8px; color:var(--muted); cursor:pointer;
+    transition:color .15s ease, border-color .15s ease, background .15s ease; }}
+  .tile-share:hover {{ color:var(--primary); border-color:var(--hair); background:var(--panel); }}
+  .tile-share:focus-visible {{ outline:none; box-shadow:0 0 0 2px var(--focus); }}
+  .tile-share svg {{ width:16px; height:16px; display:block; }}
+  .no-js .tile-share {{ display:none; }}
   .tile.is-stale {{ border-color:var(--warn-tile); }}
   .tile-cat {{ color:var(--muted); font-size:11px; letter-spacing:.12em; text-transform:uppercase; font-weight:600; }}
-  .tile-name {{ font-size:15px; font-weight:550; color:var(--secondary); margin:6px 0 2px; }}
+  .tile-name {{ font-size:15px; font-weight:550; color:var(--secondary); margin:6px 0 2px; padding-right:34px; }}
   .tile-qual {{ color:var(--muted); font-size:12px; font-weight:500; margin:0 0 14px; }}
   .hero {{ font-size:52px; font-weight:660; letter-spacing:-0.02em; line-height:1; }}
   .delta {{ display:block; font-size:13px; font-weight:550; margin-top:12px; }}
@@ -2300,6 +2447,23 @@ def build():
   .detail-meta .exp-link {{ color:var(--secondary); cursor:pointer; }}
   .detail-meta .exp-link:hover {{ color:var(--series-1); }}
   .detail-meta a:hover {{ color:var(--series-1); }}
+  /* share button, bottom-right of the open drawer (brief 09) */
+  .detail-share {{ margin-left:auto; display:inline-flex; align-items:center; gap:6px;
+    background:none; font-family:inherit; font-size:11.5px; font-weight:600; color:var(--secondary);
+    border:1px solid var(--hair); border-radius:6px; padding:3px 11px; cursor:pointer;
+    transition:color .15s ease, border-color .15s ease; }}
+  .detail-share:hover {{ color:var(--primary); border-color:var(--hair-strong); }}
+  .detail-share:focus-visible {{ outline:none; box-shadow:0 0 0 2px var(--focus); }}
+  .detail-share svg {{ width:14px; height:14px; }}
+  /* desktop fallback popover (mobile uses the native share sheet instead) */
+  .share-panel {{ position:absolute; z-index:60; min-width:168px; background:var(--surface);
+    border:1px solid var(--hair-strong); border-radius:12px; padding:6px;
+    box-shadow:0 10px 30px var(--shadow); display:flex; flex-direction:column; gap:2px; }}
+  .share-opt {{ display:block; width:100%; text-align:left; background:none; border:0;
+    font-family:inherit; font-size:13px; color:var(--primary); padding:8px 11px; border-radius:8px;
+    cursor:pointer; text-decoration:none; }}
+  .share-opt:hover {{ background:var(--panel); }}
+  .share-opt:focus-visible {{ outline:none; box-shadow:0 0 0 2px var(--focus); }}
 
   footer {{ margin-top:52px; border-top:1px solid var(--hair); padding-top:24px;
            color:var(--muted); font-size:12px; text-align:center; line-height:1.6; }}
@@ -2334,6 +2498,7 @@ def build():
         <button class="mini-title" id="miniTitle" type="button" aria-label="Back to top"><span class="h1-accent">Trump</span> by Numbers</button>
         <div class="head-ctrls" id="headCtrls">
           <button class="theme-toggle" id="infoScroll" type="button" aria-label="Jump to page links">{_ICON_INFO}</button>
+          {board_share_btn}
           <button class="theme-toggle" id="themeToggle" type="button" aria-label="Switch to light theme" aria-pressed="false"></button>
         </div>
       </div>
@@ -2397,6 +2562,17 @@ def build():
     with open(os.path.join(site_dir, "_headers"), "w") as f:
         f.write(_headers_text())
     print("wrote", os.path.join(site_dir, "_headers"))
+
+    # Brand link-preview image (one card for the whole site, brief 09). Copied
+    # from assets/ each build so the daily run reproduces it; swap assets/og.png
+    # to change every share preview at once.
+    import shutil
+    og_src = os.path.join(ASSETS, "og.png")
+    if os.path.exists(og_src):
+        shutil.copyfile(og_src, os.path.join(site_dir, "og.png"))
+        print("wrote", os.path.join(site_dir, "og.png"))
+    else:
+        print("  ! assets/og.png missing, link-preview image not emitted")
 
 
 if __name__ == "__main__":
