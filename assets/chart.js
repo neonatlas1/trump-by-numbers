@@ -134,17 +134,20 @@
   function _openSharePanel(text, url, anchor) {
     _closeShare();
     var p = document.createElement('div'); p.className = 'share-panel';
+    // Primary: the whole message (hook text + link) — this is what you paste into
+    // WhatsApp/iMessage on desktop. "Copy link" alone omits the text on purpose.
+    var cm = document.createElement('button'); cm.type = 'button';
+    cm.className = 'share-opt share-opt-primary'; cm.textContent = 'Copy text + link';
+    cm.addEventListener('click', function () { _copy(text + '\n' + url, cm, 'Copied'); });
+    p.appendChild(cm);
     var x = document.createElement('a'); x.className = 'share-opt'; x.textContent = 'Post on X';
     x.href = 'https://twitter.com/intent/tweet?text=' + encodeURIComponent(text) + '&url=' + encodeURIComponent(url);
     x.target = '_blank'; x.rel = 'noopener';
     x.addEventListener('click', function () { _closeShare(); });
     p.appendChild(x);
-    var cl = document.createElement('button'); cl.type = 'button'; cl.className = 'share-opt'; cl.textContent = 'Copy link';
+    var cl = document.createElement('button'); cl.type = 'button'; cl.className = 'share-opt'; cl.textContent = 'Copy link only';
     cl.addEventListener('click', function () { _copy(url, cl, 'Link copied'); });
     p.appendChild(cl);
-    var cm = document.createElement('button'); cm.type = 'button'; cm.className = 'share-opt'; cm.textContent = 'Copy message';
-    cm.addEventListener('click', function () { _copy(text + '\n' + url, cm, 'Copied'); });
-    p.appendChild(cm);
     document.body.appendChild(p);
     var r = anchor.getBoundingClientRect();
     p.style.top = (r.bottom + window.pageYOffset + 6) + 'px';
