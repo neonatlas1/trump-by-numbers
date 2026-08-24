@@ -1605,12 +1605,19 @@
   function _openSharePanel(text, url, anchor) {
     _closeShare();
     var p = document.createElement('div'); p.className = 'share-panel';
-    // One copy action only: the whole message (hook text + link). This is what you
-    // paste into WhatsApp/iMessage on desktop. No separate "link only" button — that
-    // split was the confusing bit; the link is always included here.
+    var full = text + '\n' + url;
+    // Direct WhatsApp (desktop): wa.me carries the FULL message in its text param,
+    // unlike the Windows share sheet which drops it. Opens WhatsApp web/app.
+    var wa = document.createElement('a'); wa.className = 'share-opt share-opt-primary';
+    wa.textContent = 'Share on WhatsApp';
+    wa.href = 'https://wa.me/?text=' + encodeURIComponent(full);
+    wa.target = '_blank'; wa.rel = 'noopener';
+    wa.addEventListener('click', function () { _closeShare(); });
+    p.appendChild(wa);
+    // Copy the whole message (hook text + link) to paste anywhere else.
     var cm = document.createElement('button'); cm.type = 'button';
-    cm.className = 'share-opt share-opt-primary'; cm.textContent = 'Copy message';
-    cm.addEventListener('click', function () { _copy(text + '\n' + url, cm, 'Copied — paste it in'); });
+    cm.className = 'share-opt'; cm.textContent = 'Copy message';
+    cm.addEventListener('click', function () { _copy(full, cm, 'Copied — paste it in'); });
     p.appendChild(cm);
     var x = document.createElement('a'); x.className = 'share-opt'; x.textContent = 'Post on X';
     x.href = 'https://twitter.com/intent/tweet?text=' + encodeURIComponent(text) + '&url=' + encodeURIComponent(url);
@@ -1624,21 +1631,12 @@
     _sharePanel = p;
     setTimeout(function () { document.addEventListener('mousedown', _shareOutside, true); }, 0);
   }
-  // Only phones/tablets get the OS share sheet — there it reliably carries the
-  // typed text. Desktop share sheets (notably Windows) drop the text and share
-  // only the link, so on desktop we always use our own panel instead. Edge/Chrome
-  // on Windows DO expose navigator.share, so presence of the API is not enough.
-  function _isMobileShare() {
-    if (!navigator.share) return false;
-    var uad = navigator.userAgentData;
-    if (uad && typeof uad.mobile === 'boolean') return uad.mobile;
-    var touch = (navigator.maxTouchPoints || 0) > 0 &&
-                window.matchMedia && window.matchMedia('(pointer:coarse)').matches;
-    return /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent || '') || touch;
-  }
+  // Use the OS share sheet whenever the browser offers it (mobile and desktop
+  // alike) — its app targets carry the typed text; our panel is the fallback for
+  // browsers without the Web Share API.
   function shareWith(text, url, anchor) {
     if (!text || !url) return;
-    if (_isMobileShare()) { navigator.share({ text: text, url: url }).catch(function () {}); return; }
+    if (navigator.share) { navigator.share({ text: text, url: url }).catch(function () {}); return; }
     _openSharePanel(text, url, anchor);
   }
   document.addEventListener('keydown', function (e) { if (e.key === 'Escape') _closeShare(); });
