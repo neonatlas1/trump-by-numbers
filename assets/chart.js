@@ -153,9 +153,21 @@
     _sharePanel = p;
     setTimeout(function () { document.addEventListener('mousedown', _shareOutside, true); }, 0);
   }
+  // Only phones/tablets get the OS share sheet — there it reliably carries the
+  // typed text. Desktop share sheets (notably Windows) drop the text and share
+  // only the link, so on desktop we always use our own panel instead. Edge/Chrome
+  // on Windows DO expose navigator.share, so presence of the API is not enough.
+  function _isMobileShare() {
+    if (!navigator.share) return false;
+    var uad = navigator.userAgentData;
+    if (uad && typeof uad.mobile === 'boolean') return uad.mobile;
+    var touch = (navigator.maxTouchPoints || 0) > 0 &&
+                window.matchMedia && window.matchMedia('(pointer:coarse)').matches;
+    return /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent || '') || touch;
+  }
   function shareWith(text, url, anchor) {
     if (!text || !url) return;
-    if (navigator.share) { navigator.share({ text: text, url: url }).catch(function () {}); return; }
+    if (_isMobileShare()) { navigator.share({ text: text, url: url }).catch(function () {}); return; }
     _openSharePanel(text, url, anchor);
   }
   document.addEventListener('keydown', function (e) { if (e.key === 'Escape') _closeShare(); });
