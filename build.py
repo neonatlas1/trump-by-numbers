@@ -256,14 +256,17 @@ def share_text(m, hero, delta):
     if not q:
         noun = SHARE_NOUN.get(mid, m["name"].split("(")[0].strip().lower())
         q = f"What's actually happened to {noun} under Trump?"
-    lines = [q]
+    stat = []
     val = _plain(hero)
     if val:
-        lines.append(("So far " if mid in SHARE_COUNT else "Now ") + val)
+        stat.append(("So far " if mid in SHARE_COUNT else "Now ") + val)
     cmp = _plain(delta)
     if cmp:
-        lines.append(cmp)
-    return "\n".join(lines)
+        stat.append(cmp)
+    # blank line between the hook question and the numbers, so the message
+    # reads as two breathing blocks rather than one dense stack. The link is
+    # appended by the messaging app below this.
+    return q + ("\n\n" + "\n".join(stat) if stat else "")
 
 
 def _share_attrs(m, hero, delta):
