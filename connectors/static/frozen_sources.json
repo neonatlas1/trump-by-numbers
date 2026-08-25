@@ -1,6 +1,6 @@
 {
   "_what": "Official data series that stopped updating, with each source's last release date. Factual and dated only; the definition is printed on the page. The key point: where an official window went dark, the board switched to a still-current official source (the 'instead' field) — so the board's own numbers are not stale. 'gov:false' marks a non-government source (kept for completeness, labelled as such).",
-  "_rules": "An entry needs: an official series this board uses or would use; a verifiable last-release date; a citation. A source leaves the list by publishing again. VoteHub's status is driven live by the approval connector (source_stalled_since); the rest are watched daily by connectors/frozen_check.py, which flags a probable resumption via a red run. Government dates verified 12 Aug 2026 (research trail in project docs 02/04).",
+  "_rules": "An entry needs: an official series this board uses or would use; a verifiable last-release date; a citation. A source leaves the list by publishing again. VoteHub's status is driven live by the approval connector (source_stalled_since); the rest are watched daily by connectors/frozen_check.py, which flags a probable resumption via a red run. An entry with 'watch: false' is exempt from that header watch (its server bumps Last-Modified cosmetically); it still appears on the page. Government dates verified 12 Aug 2026 (research trail in project docs 02/04).",
   "verified": "2026-08-12",
   "sources": [
     {"name": "DoD public casualty report (casualty.pdf)",
@@ -22,7 +22,9 @@
      "last_update": "2025-01-23",
      "note": "Historical statistics tables frozen.",
      "instead": "DOJ clemency grants pages (live), the board's clemency source.",
-     "url": "https://www.justice.gov/pardon/clemency-statistics"},
+     "url": "https://www.justice.gov/pardon/clemency-statistics",
+     "watch": false,
+     "_watch_off": "25 Aug 2026: header watch disabled. The server bumped Last-Modified to 2026-08-22, but the page content is confirmed still frozen at 2025-01-23 (no Trump 2025/26 rows) — a cosmetic republish. Re-verify by content, not header, if resumption ever matters."},
     {"name": "DOJ Capitol Breach (Jan 6) cases database",
      "last_update": "2025-01-24",
      "note": "Removed days after the inauguration; deleted with ~1,100 case press releases in May 2026. Third parties preserved archived copies.",
