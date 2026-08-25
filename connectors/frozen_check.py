@@ -75,6 +75,12 @@ def main():
     for e in doc.get("sources", []):
         if not e.get("gov", True):
             continue
+        # A source can opt out of the Last-Modified watch ("watch": false) when its
+        # server bumps that header on cosmetic republishes (unreliable for hand-kept
+        # HTML pages). It still shows on /transparency; a real resumption there is
+        # caught by manual/content review, not the header.
+        if e.get("watch") is False:
+            continue
         url = e["url"]
         recorded = _date(e["last_update"])
         lm, etag = _last_modified(url)
