@@ -13,15 +13,15 @@
   },
   "https://www.ice.gov/detain/detainee-death-reporting": {
     "checked": "2026-08-25",
-    "etag": "\"1787655239\"",
-    "flagged_lm": "2026-08-23",
+    "etag": "\"1787654494\"",
+    "flagged_lm": "2026-08-25",
     "last_modified": "2026-08-25",
     "pending_lm": "2026-08-25"
   },
   "https://www.ice.gov/statistics": {
     "checked": "2026-08-25",
-    "etag": "\"1787653803\"",
-    "flagged_lm": "2026-08-23",
+    "etag": "\"1787656404\"",
+    "flagged_lm": "2026-08-25",
     "last_modified": "2026-08-25",
     "pending_lm": "2026-08-25"
   },
