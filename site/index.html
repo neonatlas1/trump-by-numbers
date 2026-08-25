@@ -111,9 +111,11 @@
   /* footer + See more are pinned to the card bottom (margin-top:auto) so the gap
      below the comparison bars makes plain how many rows a card has (2 vs 4), and
      the See more buttons line up across a row. */
-  .tile-foot { display:flex; justify-content:space-between; align-items:center; gap:10px;
+  /* source + cadence always stack (source line, then "updates X" beneath) so every
+     card's footer has the same shape regardless of how long the source name is. */
+  .tile-foot { display:flex; flex-direction:column; align-items:flex-start; gap:4px;
                margin-top:auto; padding-top:14px; border-top:1px solid var(--hair);
-               font-size:11.5px; color:var(--muted); flex-wrap:wrap; }
+               font-size:11.5px; color:var(--muted); }
   .tile-foot a { color:var(--secondary); text-decoration:none; font-weight:550; }
   .tile-foot a:hover { color:var(--series-1); }
   /* ---- category tabs = section nav (scroll-to; JS-off shows the whole board) ---- */
@@ -290,7 +292,7 @@
   .share-opt:focus-visible { outline:none; box-shadow:0 0 0 2px var(--focus); }
   .share-opt-primary { font-weight:650; color:var(--series-1); }
 
-  footer { margin-top:52px; border-top:1px solid var(--hair); padding-top:24px;
+  footer { margin-top:24px; border-top:1px solid var(--hair); padding-top:24px;
            color:var(--muted); font-size:12px; text-align:center; line-height:1.6; }
   footer a { color:var(--secondary); }
   .footer-nav { margin-top:12px; }
@@ -300,8 +302,10 @@
   /* homepage callout → links to the full /transparency page (table lives there).
      A full-width hairline band (no fill, no radius) so it aligns with the board grid
      yet reads as an editorial note, not another data card. */
+  /* single top rule only; the footer's own top rule closes the band below it
+     (avoids a doubled hairline between the banner and the footer). */
   .callout { margin:44px 0 0; display:flex; align-items:center; gap:24px 64px; flex-wrap:wrap;
-             border-top:1px solid var(--hair); border-bottom:1px solid var(--hair); padding:22px 2px; }
+             border-top:1px solid var(--hair); padding:24px 2px 0; }
   .callout-txt { flex:1 1 460px; }
   .callout h2 { font-size:12px; margin:0 0 5px; color:var(--muted);
                 letter-spacing:.1em; text-transform:uppercase; font-weight:650; }
@@ -339,7 +343,7 @@
       <section class="category" data-tab="cost-of-living" id="cost-of-living">
         <h2 class="cat-head">Prices</h2>
         <div class="grid">
-    <article class="tile" id="card-inflation" data-id="inflation" data-as-of="2026-07" data-stale-after="2026-10-09" data-cadence="monthly" data-share-text="What&#x27;s actually happened to inflation under Trump?&#10;&#10;Now 3.4%&#10;+ 1.4 pts above the Fed&#x27;s 2.0% target" data-share-url="https://trumpbynumbers.pages.dev/?c=inflation">
+    <article class="tile" id="card-inflation" data-id="inflation" data-as-of="2026-07" data-stale-after="2026-10-09" data-cadence="monthly" data-share-text="What&#x27;s actually happened to inflation under Trump?&#10;&#10;Currently: 3.4%&#10;+ 1.4 pts above the Fed&#x27;s 2.0% target" data-share-url="https://trumpbynumbers.pages.dev/?c=inflation">
       <button class="tile-share" type="button" aria-label="Share this metric"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4"></path></svg></button>
       <h2 class="tile-name">Inflation</h2>
       <div class="tile-qual">CPI-U, year over year</div>
@@ -367,7 +371,7 @@
       </div>
           <button class="expand-btn" type="button" aria-expanded="false"><span>See more</span><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"></polyline></svg></button><div class="detail" hidden></div>
     </article>
-    <article class="tile" id="card-grocery_prices" data-id="grocery_prices" data-as-of="2026-07" data-stale-after="2026-10-09" data-cadence="monthly" data-share-text="What&#x27;s actually happened to grocery prices under Trump?&#10;&#10;Now 2.6%&#10;+ 0.8 pts vs 1.8% at inauguration" data-share-url="https://trumpbynumbers.pages.dev/?c=grocery_prices">
+    <article class="tile" id="card-grocery_prices" data-id="grocery_prices" data-as-of="2026-07" data-stale-after="2026-10-09" data-cadence="monthly" data-share-text="What&#x27;s actually happened to grocery prices under Trump?&#10;&#10;Currently: 2.6%&#10;+ 0.8 pts vs 1.8% at inauguration" data-share-url="https://trumpbynumbers.pages.dev/?c=grocery_prices">
       <button class="tile-share" type="button" aria-label="Share this metric"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4"></path></svg></button>
       <h2 class="tile-name">Grocery prices</h2>
       <div class="tile-qual">food at home, YoY</div>
@@ -395,7 +399,7 @@
       </div>
           <button class="expand-btn" type="button" aria-expanded="false"><span>See more</span><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"></polyline></svg></button><div class="detail" hidden></div>
     </article>
-    <article class="tile" id="card-gas_price" data-id="gas_price" data-as-of="2026-08-17" data-stale-after="2026-08-31" data-cadence="weekly" data-share-text="What&#x27;s actually happened to gas prices under Trump?&#10;&#10;Now $4.05&#10;+ $1.01 (+33%) since inauguration" data-share-url="https://trumpbynumbers.pages.dev/?c=gas_price">
+    <article class="tile" id="card-gas_price" data-id="gas_price" data-as-of="2026-08-17" data-stale-after="2026-08-31" data-cadence="weekly" data-share-text="What&#x27;s actually happened to gas prices under Trump?&#10;&#10;Currently: $4.05&#10;+ $1.01 (+33%) since inauguration" data-share-url="https://trumpbynumbers.pages.dev/?c=gas_price">
       <button class="tile-share" type="button" aria-label="Share this metric"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4"></path></svg></button>
       <h2 class="tile-name">Gas price</h2>
       <div class="tile-qual">regular</div>
@@ -437,7 +441,7 @@
       <section class="category" data-tab="economy-jobs" id="economy-jobs">
         <h2 class="cat-head">Economy</h2>
         <div class="grid">
-    <article class="tile" id="card-real_gdp" data-id="real_gdp" data-as-of="2026-06" data-stale-after="2026-11-07" data-cadence="quarterly" data-share-text="What&#x27;s actually happened to GDP growth under Trump?&#10;&#10;Now +1.5%&#10;Term average +1.9% · Biden, first 6 quarters (avg): +3.8%" data-share-url="https://trumpbynumbers.pages.dev/?c=real_gdp">
+    <article class="tile" id="card-real_gdp" data-id="real_gdp" data-as-of="2026-06" data-stale-after="2026-11-07" data-cadence="quarterly" data-share-text="What&#x27;s actually happened to GDP growth under Trump?&#10;&#10;Currently: +1.5%&#10;Term average +1.9% · Biden, first 6 quarters (avg): +3.8%" data-share-url="https://trumpbynumbers.pages.dev/?c=real_gdp">
       <button class="tile-share" type="button" aria-label="Share this metric"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4"></path></svg></button>
       <h2 class="tile-name">Real GDP growth</h2>
       <div class="hero">+1.5%</div>
@@ -464,7 +468,7 @@
       </div>
           <button class="expand-btn" type="button" aria-expanded="false"><span>See more</span><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"></polyline></svg></button><div class="detail" hidden></div>
     </article>
-    <article class="tile" id="card-unemployment" data-id="unemployment" data-as-of="2026-07" data-stale-after="2026-10-09" data-cadence="monthly" data-share-text="What&#x27;s actually happened to unemployment under Trump?&#10;&#10;Now 4.1%&#10;+ 0.1 pts since inauguration (4.0%)" data-share-url="https://trumpbynumbers.pages.dev/?c=unemployment">
+    <article class="tile" id="card-unemployment" data-id="unemployment" data-as-of="2026-07" data-stale-after="2026-10-09" data-cadence="monthly" data-share-text="What&#x27;s actually happened to unemployment under Trump?&#10;&#10;Currently: 4.1%&#10;+ 0.1 pts since inauguration (4.0%)" data-share-url="https://trumpbynumbers.pages.dev/?c=unemployment">
       <button class="tile-share" type="button" aria-label="Share this metric"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4"></path></svg></button>
       <h2 class="tile-name">Unemployment rate</h2>
       <div class="hero">4.1%</div>
@@ -496,7 +500,7 @@
       </div>
           <button class="expand-btn" type="button" aria-expanded="false"><span>See more</span><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"></polyline></svg></button><div class="detail" hidden></div>
     </article>
-    <article class="tile" id="card-real_wages" data-id="real_wages" data-as-of="2026-06" data-stale-after="2026-11-07" data-cadence="quarterly" data-share-text="What&#x27;s actually happened to real wages under Trump?&#10;&#10;Now $378&#10;+1.3% since the inauguration quarter ($373)" data-share-url="https://trumpbynumbers.pages.dev/?c=real_wages">
+    <article class="tile" id="card-real_wages" data-id="real_wages" data-as-of="2026-06" data-stale-after="2026-11-07" data-cadence="quarterly" data-share-text="What&#x27;s actually happened to real wages under Trump?&#10;&#10;Currently: $378&#10;+1.3% since the inauguration quarter ($373)" data-share-url="https://trumpbynumbers.pages.dev/?c=real_wages">
       <button class="tile-share" type="button" aria-label="Share this metric"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4"></path></svg></button>
       <h2 class="tile-name">Real wages</h2>
       <div class="tile-qual">median weekly earnings</div>
@@ -534,7 +538,7 @@
       </div>
           <button class="expand-btn" type="button" aria-expanded="false"><span>See more</span><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"></polyline></svg></button><div class="detail" hidden></div>
     </article>
-    <article class="tile" id="card-federal_workforce" data-id="federal_workforce" data-as-of="2026-07" data-stale-after="2026-10-09" data-cadence="monthly" data-share-text="What&#x27;s actually happened to the federal workforce under Trump?&#10;&#10;Now 2,683k&#10;− 327k (-10.9%) since inauguration (3,010k)" data-share-url="https://trumpbynumbers.pages.dev/?c=federal_workforce">
+    <article class="tile" id="card-federal_workforce" data-id="federal_workforce" data-as-of="2026-07" data-stale-after="2026-10-09" data-cadence="monthly" data-share-text="What&#x27;s actually happened to the federal workforce under Trump?&#10;&#10;Currently: 2,683k&#10;− 327k (-10.9%) since inauguration (3,010k)" data-share-url="https://trumpbynumbers.pages.dev/?c=federal_workforce">
       <button class="tile-share" type="button" aria-label="Share this metric"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4"></path></svg></button>
       <h2 class="tile-name">Federal workforce</h2>
       <div class="tile-qual">civilian employment</div>
@@ -576,7 +580,7 @@
       <section class="category" data-tab="trade-tariffs" id="trade-tariffs">
         <h2 class="cat-head">Trade</h2>
         <div class="grid">
-    <article class="tile" id="card-tariff_revenue" data-id="tariff_revenue" data-as-of="2026-07" data-stale-after="2026-10-09" data-cadence="monthly" data-share-text="What&#x27;s actually happened to tariff revenue under Trump?&#10;&#10;Now $269B&#10;Gross fiscal-YTD · net after refunds $154B · prior FY gross $142B" data-share-url="https://trumpbynumbers.pages.dev/?c=tariff_revenue">
+    <article class="tile" id="card-tariff_revenue" data-id="tariff_revenue" data-as-of="2026-07" data-stale-after="2026-10-09" data-cadence="monthly" data-share-text="What&#x27;s actually happened to tariff revenue under Trump?&#10;&#10;Currently: $269B&#10;Gross fiscal-YTD · net after refunds $154B · prior FY gross $142B" data-share-url="https://trumpbynumbers.pages.dev/?c=tariff_revenue">
       <button class="tile-share" type="button" aria-label="Share this metric"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4"></path></svg></button>
       <h2 class="tile-name">Tariff revenue</h2>
       <div class="tile-qual">customs duties, fiscal-YTD</div>
@@ -609,7 +613,7 @@
       </div>
           <button class="expand-btn" type="button" aria-expanded="false"><span>See more</span><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"></polyline></svg></button><div class="detail" hidden></div>
     </article>
-    <article class="tile" id="card-effective_tariff_rate" data-id="effective_tariff_rate" data-as-of="2026-06" data-stale-after="2026-09-08" data-cadence="monthly" data-share-text="What&#x27;s actually happened to tariffs under Trump?&#10;&#10;Now 7.7%&#10;vs 2.4% at inauguration" data-share-url="https://trumpbynumbers.pages.dev/?c=effective_tariff_rate">
+    <article class="tile" id="card-effective_tariff_rate" data-id="effective_tariff_rate" data-as-of="2026-06" data-stale-after="2026-09-08" data-cadence="monthly" data-share-text="What&#x27;s actually happened to tariffs under Trump?&#10;&#10;Currently: 7.7%&#10;vs 2.4% at inauguration" data-share-url="https://trumpbynumbers.pages.dev/?c=effective_tariff_rate">
       <button class="tile-share" type="button" aria-label="Share this metric"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4"></path></svg></button>
       <h2 class="tile-name">Effective tariff rate</h2>
       <div class="hero">7.7%</div>
@@ -641,7 +645,7 @@
       </div>
           <button class="expand-btn" type="button" aria-expanded="false"><span>See more</span><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"></polyline></svg></button><div class="detail" hidden></div>
     </article>
-    <article class="tile" id="card-trade_deficit" data-id="trade_deficit" data-as-of="2026-06" data-stale-after="2026-09-08" data-cadence="monthly" data-share-text="What&#x27;s actually happened to the trade deficit under Trump?&#10;&#10;Now $73.3B&#10;− $51.4B (-41%) vs at inauguration (jan 2025)" data-share-url="https://trumpbynumbers.pages.dev/?c=trade_deficit">
+    <article class="tile" id="card-trade_deficit" data-id="trade_deficit" data-as-of="2026-06" data-stale-after="2026-09-08" data-cadence="monthly" data-share-text="What&#x27;s actually happened to the trade deficit under Trump?&#10;&#10;Currently: $73.3B&#10;− $51.4B (-41%) vs at inauguration (jan 2025)" data-share-url="https://trumpbynumbers.pages.dev/?c=trade_deficit">
       <button class="tile-share" type="button" aria-label="Share this metric"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4"></path></svg></button>
       <h2 class="tile-name">Trade deficit</h2>
       <div class="tile-qual">goods & services</div>
@@ -683,7 +687,7 @@
       <section class="category" data-tab="public-finances" id="public-finances">
         <h2 class="cat-head">Debt</h2>
         <div class="grid">
-    <article class="tile" id="card-national_debt" data-id="national_debt" data-as-of="2026-08-20" data-stale-after="2026-08-25" data-cadence="daily" data-share-text="What&#x27;s actually happened to the national debt under Trump?&#10;&#10;Now $40.03T&#10;+ $3.83T (+10.6%) since inauguration" data-share-url="https://trumpbynumbers.pages.dev/?c=national_debt">
+    <article class="tile" id="card-national_debt" data-id="national_debt" data-as-of="2026-08-20" data-stale-after="2026-08-25" data-cadence="daily" data-share-text="What&#x27;s actually happened to the national debt under Trump?&#10;&#10;Currently: $40.03T&#10;+ $3.83T (+10.6%) since inauguration" data-share-url="https://trumpbynumbers.pages.dev/?c=national_debt">
       <button class="tile-share" type="button" aria-label="Share this metric"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4"></path></svg></button>
       <h2 class="tile-name">National debt</h2>
       <div class="hero">$40.03T</div>
@@ -710,7 +714,7 @@
       </div>
           <button class="expand-btn" type="button" aria-expanded="false"><span>See more</span><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"></polyline></svg></button><div class="detail" hidden></div>
     </article>
-    <article class="tile" id="card-budget_deficit" data-id="budget_deficit" data-as-of="2026-07" data-stale-after="2026-10-09" data-cadence="monthly" data-share-text="What&#x27;s actually happened to the budget deficit under Trump?&#10;&#10;Now $1,799B&#10;+ $170B vs the same point last fiscal year ($1,628B)" data-share-url="https://trumpbynumbers.pages.dev/?c=budget_deficit">
+    <article class="tile" id="card-budget_deficit" data-id="budget_deficit" data-as-of="2026-07" data-stale-after="2026-10-09" data-cadence="monthly" data-share-text="What&#x27;s actually happened to the budget deficit under Trump?&#10;&#10;Currently: $1,799B&#10;+ $170B vs the same point last fiscal year ($1,628B)" data-share-url="https://trumpbynumbers.pages.dev/?c=budget_deficit">
       <button class="tile-share" type="button" aria-label="Share this metric"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4"></path></svg></button>
       <h2 class="tile-name">Federal budget deficit</h2>
       <div class="tile-qual">fiscal-YTD</div>
@@ -738,7 +742,7 @@
       </div>
           <button class="expand-btn" type="button" aria-expanded="false"><span>See more</span><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"></polyline></svg></button><div class="detail" hidden></div>
     </article>
-    <article class="tile" id="card-interest_on_debt" data-id="interest_on_debt" data-as-of="2026-07" data-stale-after="2026-10-09" data-cadence="monthly" data-share-text="What&#x27;s actually happened to interest on the debt under Trump?&#10;&#10;Now $1,170B&#10;+ $153B vs the same point last fiscal year ($1,017B)" data-share-url="https://trumpbynumbers.pages.dev/?c=interest_on_debt">
+    <article class="tile" id="card-interest_on_debt" data-id="interest_on_debt" data-as-of="2026-07" data-stale-after="2026-10-09" data-cadence="monthly" data-share-text="What&#x27;s actually happened to interest on the debt under Trump?&#10;&#10;Currently: $1,170B&#10;+ $153B vs the same point last fiscal year ($1,017B)" data-share-url="https://trumpbynumbers.pages.dev/?c=interest_on_debt">
       <button class="tile-share" type="button" aria-label="Share this metric"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4"></path></svg></button>
       <h2 class="tile-name">Interest on the public debt</h2>
       <div class="tile-qual">fiscal-YTD</div>
@@ -770,7 +774,7 @@
       <section class="category" data-tab="energy" id="energy">
         <h2 class="cat-head">Energy</h2>
         <div class="grid">
-    <article class="tile" id="card-electricity_price" data-id="electricity_price" data-as-of="2026-07" data-stale-after="2026-10-09" data-cadence="monthly" data-share-text="What&#x27;s actually happened to electricity prices under Trump?&#10;&#10;Now 19.7¢/kWh&#10;+ 1.8¢ (+10%) since inauguration" data-share-url="https://trumpbynumbers.pages.dev/?c=electricity_price">
+    <article class="tile" id="card-electricity_price" data-id="electricity_price" data-as-of="2026-07" data-stale-after="2026-10-09" data-cadence="monthly" data-share-text="What&#x27;s actually happened to electricity prices under Trump?&#10;&#10;Currently: 19.7¢/kWh&#10;+ 1.8¢ (+10%) since inauguration" data-share-url="https://trumpbynumbers.pages.dev/?c=electricity_price">
       <button class="tile-share" type="button" aria-label="Share this metric"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4"></path></svg></button>
       <h2 class="tile-name">Electricity price</h2>
       <div class="tile-qual">residential</div>
@@ -808,7 +812,7 @@
       </div>
           <button class="expand-btn" type="button" aria-expanded="false"><span>See more</span><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"></polyline></svg></button><div class="detail" hidden></div>
     </article>
-    <article class="tile" id="card-crude_oil" data-id="crude_oil" data-as-of="2026-05" data-stale-after="2026-08-09" data-cadence="monthly" data-share-text="What&#x27;s actually happened to US oil production under Trump?&#10;&#10;Now 13.7M b/d&#10;+4.4% since inauguration · record 14.0 (Apr 2026)" data-share-url="https://trumpbynumbers.pages.dev/?c=crude_oil">
+    <article class="tile" id="card-crude_oil" data-id="crude_oil" data-as-of="2026-05" data-stale-after="2026-08-09" data-cadence="monthly" data-share-text="What&#x27;s actually happened to US oil production under Trump?&#10;&#10;Currently: 13.7M b/d&#10;+4.4% since inauguration · record 14.0 (Apr 2026)" data-share-url="https://trumpbynumbers.pages.dev/?c=crude_oil">
       <button class="tile-share" type="button" aria-label="Share this metric"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4"></path></svg></button>
       <h2 class="tile-name">US crude oil production</h2>
       <div class="hero">13.7M b/d</div>
@@ -845,7 +849,7 @@
       </div>
           <button class="expand-btn" type="button" aria-expanded="false"><span>See more</span><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"></polyline></svg></button><div class="detail" hidden></div>
     </article>
-    <article class="tile" id="card-renewable_share" data-id="renewable_share" data-as-of="2026-05" data-stale-after="2026-08-29" data-cadence="monthly" data-share-text="What&#x27;s actually happened to renewable electricity under Trump?&#10;&#10;Now 29.7%&#10;+ 8.4 pts vs Jan 2025 (21.3%), the mix is seasonal; compare same months" data-share-url="https://trumpbynumbers.pages.dev/?c=renewable_share">
+    <article class="tile" id="card-renewable_share" data-id="renewable_share" data-as-of="2026-05" data-stale-after="2026-08-29" data-cadence="monthly" data-share-text="What&#x27;s actually happened to renewable electricity under Trump?&#10;&#10;Currently: 29.7%&#10;+ 8.4 pts vs Jan 2025 (21.3%), the mix is seasonal; compare same months" data-share-url="https://trumpbynumbers.pages.dev/?c=renewable_share">
       <button class="tile-share" type="button" aria-label="Share this metric"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4"></path></svg></button>
       <h2 class="tile-name">Renewable share of electricity generation</h2>
       <div class="hero">29.7%</div>
@@ -876,7 +880,7 @@
       <section class="category" data-tab="immigration" id="immigration">
         <h2 class="cat-head">Immigration</h2>
         <div class="grid">
-    <article class="tile" id="card-border_encounters" data-id="border_encounters" data-as-of="2026-07" data-stale-after="2026-10-09" data-cadence="monthly" data-share-text="What&#x27;s actually happened to border encounters under Trump?&#10;&#10;Now 12,730&#10;-88% vs the same month under Biden (2024: 104,100)" data-share-url="https://trumpbynumbers.pages.dev/?c=border_encounters">
+    <article class="tile" id="card-border_encounters" data-id="border_encounters" data-as-of="2026-07" data-stale-after="2026-10-09" data-cadence="monthly" data-share-text="What&#x27;s actually happened to border encounters under Trump?&#10;&#10;Currently: 12,730&#10;-88% vs the same month under Biden (2024: 104,100)" data-share-url="https://trumpbynumbers.pages.dev/?c=border_encounters">
       <button class="tile-share" type="button" aria-label="Share this metric"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4"></path></svg></button>
       <h2 class="tile-name">Southwest border encounters</h2>
       <div class="hero">12,730</div>
@@ -908,7 +912,7 @@
       </div>
           <button class="expand-btn" type="button" aria-expanded="false"><span>See more</span><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"></polyline></svg></button><div class="detail" hidden></div>
     </article>
-    <article class="tile" id="card-ice_removals" data-id="ice_removals" data-as-of="2026-07-11" data-stale-after="2026-09-24" data-cadence="biweekly" data-share-text="What&#x27;s actually happened to ICE removals under Trump?&#10;&#10;So far 356,389&#10;FY2024 full year (prior administration): 271,484" data-share-url="https://trumpbynumbers.pages.dev/?c=ice_removals">
+    <article class="tile" id="card-ice_removals" data-id="ice_removals" data-as-of="2026-07-11" data-stale-after="2026-09-24" data-cadence="biweekly" data-share-text="What&#x27;s actually happened to ICE removals under Trump?&#10;&#10;So far: 356,389&#10;FY2024 full year (prior administration): 271,484" data-share-url="https://trumpbynumbers.pages.dev/?c=ice_removals">
       <button class="tile-share" type="button" aria-label="Share this metric"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4"></path></svg></button>
       <h2 class="tile-name">ICE removals</h2>
       <div class="tile-qual">fiscal-YTD</div>
@@ -936,7 +940,7 @@
       </div>
           <button class="expand-btn" type="button" aria-expanded="false"><span>See more</span><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"></polyline></svg></button><div class="detail" hidden></div>
     </article>
-    <article class="tile" id="card-ice_detention" data-id="ice_detention" data-as-of="2026-07-11" data-stale-after="2026-09-24" data-cadence="biweekly" data-share-text="What&#x27;s actually happened to the ICE detention population under Trump?&#10;&#10;Now 62,517&#10;Currently detained (point-in-time): 65,765" data-share-url="https://trumpbynumbers.pages.dev/?c=ice_detention">
+    <article class="tile" id="card-ice_detention" data-id="ice_detention" data-as-of="2026-07-11" data-stale-after="2026-09-24" data-cadence="biweekly" data-share-text="What&#x27;s actually happened to the ICE detention population under Trump?&#10;&#10;Currently: 62,517&#10;Currently detained (point-in-time): 65,765" data-share-url="https://trumpbynumbers.pages.dev/?c=ice_detention">
       <button class="tile-share" type="button" aria-label="Share this metric"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4"></path></svg></button>
       <h2 class="tile-name">ICE detention population</h2>
       <div class="tile-qual">ADP</div>
@@ -954,7 +958,7 @@
       </div>
           <button class="expand-btn" type="button" aria-expanded="false"><span>See more</span><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"></polyline></svg></button><div class="detail" hidden></div>
     </article>
-    <article class="tile" id="card-ice_composition" data-id="ice_composition" data-as-of="2026-07-11" data-stale-after="2026-09-24" data-cadence="biweekly" data-share-text="How many people in ICE detention have no criminal conviction?&#10;&#10;Now 71.7%&#10;46,259 of 64,506 detained have no criminal conviction" data-share-url="https://trumpbynumbers.pages.dev/?c=ice_composition">
+    <article class="tile" id="card-ice_composition" data-id="ice_composition" data-as-of="2026-07-11" data-stale-after="2026-09-24" data-cadence="biweekly" data-share-text="How many people in ICE detention have no criminal conviction?&#10;&#10;Currently: 71.7%&#10;46,259 of 64,506 detained have no criminal conviction" data-share-url="https://trumpbynumbers.pages.dev/?c=ice_composition">
       <button class="tile-share" type="button" aria-label="Share this metric"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4"></path></svg></button>
       <h2 class="tile-name">ICE detainees with no criminal conviction</h2>
       <div class="hero">71.7%</div>
@@ -981,7 +985,7 @@
       </div>
           <button class="expand-btn" type="button" aria-expanded="false"><span>See more</span><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"></polyline></svg></button><div class="detail" hidden></div>
     </article>
-    <article class="tile" id="card-ice_custody_deaths" data-id="ice_custody_deaths" data-as-of="2026-08-24" data-stale-after="2026-11-22" data-cadence="as posted" data-share-text="What&#x27;s actually happened to deaths in ICE custody under Trump?&#10;&#10;Now 34&#10;FY2025 full year: 24" data-share-url="https://trumpbynumbers.pages.dev/?c=ice_custody_deaths">
+    <article class="tile" id="card-ice_custody_deaths" data-id="ice_custody_deaths" data-as-of="2026-08-24" data-stale-after="2026-11-22" data-cadence="as posted" data-share-text="What&#x27;s actually happened to deaths in ICE custody under Trump?&#10;&#10;Currently: 34&#10;FY2025 full year: 24" data-share-url="https://trumpbynumbers.pages.dev/?c=ice_custody_deaths">
       <button class="tile-share" type="button" aria-label="Share this metric"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4"></path></svg></button>
       <h2 class="tile-name">Deaths in ICE custody</h2>
       <div class="hero">34</div>
@@ -1013,7 +1017,7 @@
       </div>
           <button class="expand-btn" type="button" aria-expanded="false"><span>See more</span><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"></polyline></svg></button><div class="detail" hidden></div>
     </article>
-    <article class="tile" id="card-refugee_admissions" data-id="refugee_admissions" data-as-of="2026-07-31" data-stale-after="2026-11-08" data-cadence="monthly" data-share-text="What&#x27;s actually happened to refugee admissions under Trump?&#10;&#10;Now 10,258&#10;Above the 7,500 FY2026 presidential ceiling; court-ordered cases sit outside it" data-share-url="https://trumpbynumbers.pages.dev/?c=refugee_admissions">
+    <article class="tile" id="card-refugee_admissions" data-id="refugee_admissions" data-as-of="2026-07-31" data-stale-after="2026-11-08" data-cadence="monthly" data-share-text="What&#x27;s actually happened to refugee admissions under Trump?&#10;&#10;Currently: 10,258&#10;Above the 7,500 FY2026 presidential ceiling; court-ordered cases sit outside it" data-share-url="https://trumpbynumbers.pages.dev/?c=refugee_admissions">
       <button class="tile-share" type="button" aria-label="Share this metric"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4"></path></svg></button>
       <h2 class="tile-name">Refugee admissions</h2>
       <div class="tile-qual">fiscal-YTD</div>
@@ -1045,7 +1049,7 @@
       <section class="category" data-tab="health-safety-net" id="health-safety-net">
         <h2 class="cat-head">Health</h2>
         <div class="grid">
-    <article class="tile" id="card-overdose_deaths" data-id="overdose_deaths" data-as-of="2026-03" data-stale-after="2026-11-26" data-cadence="monthly" data-share-text="What&#x27;s actually happened to drug overdose deaths under Trump?&#10;&#10;Now 67,798&#10;− 11,828 (-15%) vs the 12 months ending at inauguration" data-share-url="https://trumpbynumbers.pages.dev/?c=overdose_deaths">
+    <article class="tile" id="card-overdose_deaths" data-id="overdose_deaths" data-as-of="2026-03" data-stale-after="2026-11-26" data-cadence="monthly" data-share-text="What&#x27;s actually happened to drug overdose deaths under Trump?&#10;&#10;Currently: 67,798&#10;− 11,828 (-15%) vs the 12 months ending at inauguration" data-share-url="https://trumpbynumbers.pages.dev/?c=overdose_deaths">
       <button class="tile-share" type="button" aria-label="Share this metric"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4"></path></svg></button>
       <h2 class="tile-name">Drug overdose deaths</h2>
       <div class="tile-qual">trailing 12 months</div>
@@ -1078,7 +1082,7 @@
       </div>
           <button class="expand-btn" type="button" aria-expanded="false"><span>See more</span><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"></polyline></svg></button><div class="detail" hidden></div>
     </article>
-    <article class="tile" id="card-measles_cases" data-id="measles_cases" data-as-of="2026-08-20" data-stale-after="2026-10-04" data-cadence="weekly" data-share-text="What&#x27;s actually happened to measles under Trump?&#10;&#10;Now 2,777&#10;+ 10× the worst Biden-term year (2024: 285)" data-share-url="https://trumpbynumbers.pages.dev/?c=measles_cases">
+    <article class="tile" id="card-measles_cases" data-id="measles_cases" data-as-of="2026-08-20" data-stale-after="2026-10-04" data-cadence="weekly" data-share-text="What&#x27;s actually happened to measles under Trump?&#10;&#10;Currently: 2,777&#10;+ 10× the worst Biden-term year (2024: 285)" data-share-url="https://trumpbynumbers.pages.dev/?c=measles_cases">
       <button class="tile-share" type="button" aria-label="Share this metric"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4"></path></svg></button>
       <h2 class="tile-name">Measles cases</h2>
       <div class="tile-qual">2026 to date</div>
@@ -1111,7 +1115,7 @@
       </div>
           <button class="expand-btn" type="button" aria-expanded="false"><span>See more</span><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"></polyline></svg></button><div class="detail" hidden></div>
     </article>
-    <article class="tile" id="card-medicaid_enrollment" data-id="medicaid_enrollment" data-as-of="2026-04" data-stale-after="2026-10-27" data-cadence="monthly" data-share-text="What&#x27;s actually happened to Medicaid enrollment under Trump?&#10;&#10;Now 73.9M&#10;− 5.3M since Dec 2024 (79.2M)" data-share-url="https://trumpbynumbers.pages.dev/?c=medicaid_enrollment">
+    <article class="tile" id="card-medicaid_enrollment" data-id="medicaid_enrollment" data-as-of="2026-04" data-stale-after="2026-10-27" data-cadence="monthly" data-share-text="What&#x27;s actually happened to Medicaid enrollment under Trump?&#10;&#10;Currently: 73.9M&#10;− 5.3M since Dec 2024 (79.2M)" data-share-url="https://trumpbynumbers.pages.dev/?c=medicaid_enrollment">
       <button class="tile-share" type="button" aria-label="Share this metric"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4"></path></svg></button>
       <h2 class="tile-name">Medicaid & CHIP enrollment</h2>
       <div class="hero">73.9M</div>
@@ -1143,7 +1147,7 @@
       </div>
           <button class="expand-btn" type="button" aria-expanded="false"><span>See more</span><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"></polyline></svg></button><div class="detail" hidden></div>
     </article>
-    <article class="tile" id="card-va_claims_backlog" data-id="va_claims_backlog" data-as-of="2026-08-15" data-stale-after="2026-08-29" data-cadence="weekly" data-share-text="What&#x27;s actually happened to the VA claims backlog under Trump?&#10;&#10;Now 71,391&#10;− 185,862 (-72%) since inauguration" data-share-url="https://trumpbynumbers.pages.dev/?c=va_claims_backlog">
+    <article class="tile" id="card-va_claims_backlog" data-id="va_claims_backlog" data-as-of="2026-08-15" data-stale-after="2026-08-29" data-cadence="weekly" data-share-text="What&#x27;s actually happened to the VA claims backlog under Trump?&#10;&#10;Currently: 71,391&#10;− 185,862 (-72%) since inauguration" data-share-url="https://trumpbynumbers.pages.dev/?c=va_claims_backlog">
       <button class="tile-share" type="button" aria-label="Share this metric"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4"></path></svg></button>
       <h2 class="tile-name">VA claims backlog</h2>
       <div class="hero">71,391</div>
@@ -1174,7 +1178,7 @@
       <section class="category" data-tab="executive-power-governance" id="executive-power-governance">
         <h2 class="cat-head">Governance</h2>
         <div class="grid">
-    <article class="tile" id="card-executive_orders" data-id="executive_orders" data-as-of="2026-08-24" data-stale-after="2026-09-05" data-cadence="as signed" data-share-text="What&#x27;s actually happened to executive orders under Trump?&#10;&#10;So far 275&#10;180 more than Biden (95) at the same point" data-share-url="https://trumpbynumbers.pages.dev/?c=executive_orders">
+    <article class="tile" id="card-executive_orders" data-id="executive_orders" data-as-of="2026-08-24" data-stale-after="2026-09-05" data-cadence="as signed" data-share-text="What&#x27;s actually happened to executive orders under Trump?&#10;&#10;So far: 275&#10;180 more than Biden (95) at the same point" data-share-url="https://trumpbynumbers.pages.dev/?c=executive_orders">
       <button class="tile-share" type="button" aria-label="Share this metric"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4"></path></svg></button>
       <h2 class="tile-name">Executive orders signed</h2>
       <div class="hero">275</div>
@@ -1201,7 +1205,7 @@
       </div>
           <button class="expand-btn" type="button" aria-expanded="false"><span>See more</span><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"></polyline></svg></button><div class="detail" hidden></div>
     </article>
-    <article class="tile" id="card-judges_confirmed" data-id="judges_confirmed" data-as-of="2026-08-24" data-stale-after="2026-09-07" data-cadence="as confirmed" data-share-text="What&#x27;s actually happened to federal judge confirmations under Trump?&#10;&#10;So far 54&#10;+0 vs his first term at the same point (54)" data-share-url="https://trumpbynumbers.pages.dev/?c=judges_confirmed">
+    <article class="tile" id="card-judges_confirmed" data-id="judges_confirmed" data-as-of="2026-08-24" data-stale-after="2026-09-07" data-cadence="as confirmed" data-share-text="What&#x27;s actually happened to federal judge confirmations under Trump?&#10;&#10;So far: 54&#10;+0 vs his first term at the same point (54)" data-share-url="https://trumpbynumbers.pages.dev/?c=judges_confirmed">
       <button class="tile-share" type="button" aria-label="Share this metric"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4"></path></svg></button>
       <h2 class="tile-name">Federal judges confirmed</h2>
       <div class="tile-qual">Article III</div>
@@ -1234,7 +1238,7 @@
       </div>
           <button class="expand-btn" type="button" aria-expanded="false"><span>See more</span><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"></polyline></svg></button><div class="detail" hidden></div>
     </article>
-    <article class="tile" id="card-approval_rating" data-id="approval_rating" data-as-of="2026-06-29" data-stale-after="2026-07-13" data-cadence="weekly" data-share-text="What&#x27;s actually happened to presidential approval under Trump?&#10;&#10;Now 42%&#10;Disapprove 56% · net -13 · vs Biden at the same point: 42%" data-share-url="https://trumpbynumbers.pages.dev/?c=approval_rating">
+    <article class="tile" id="card-approval_rating" data-id="approval_rating" data-as-of="2026-06-29" data-stale-after="2026-07-13" data-cadence="weekly" data-share-text="What&#x27;s actually happened to presidential approval under Trump?&#10;&#10;Currently: 42%&#10;Disapprove 56% · net -13 · vs Biden at the same point: 42%" data-share-url="https://trumpbynumbers.pages.dev/?c=approval_rating">
       <button class="tile-share" type="button" aria-label="Share this metric"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4"></path></svg></button>
       <h2 class="tile-name">Presidential approval</h2>
       <div class="hero">42%</div>
@@ -1271,7 +1275,7 @@
       </div>
           <button class="expand-btn" type="button" aria-expanded="false"><span>See more</span><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"></polyline></svg></button><div class="detail" hidden></div>
     </article>
-    <article class="tile" id="card-clemency" data-id="clemency" data-as-of="2026-07-03" data-stale-after="2026-10-31" data-cadence="as granted" data-share-text="What&#x27;s actually happened to clemency under Trump?&#10;&#10;So far 135&#10;~1,635 individuals covered incl. the Jan 6 proclamation (one action, ~1,500 people)" data-share-url="https://trumpbynumbers.pages.dev/?c=clemency">
+    <article class="tile" id="card-clemency" data-id="clemency" data-as-of="2026-07-03" data-stale-after="2026-10-31" data-cadence="as granted" data-share-text="What&#x27;s actually happened to clemency under Trump?&#10;&#10;So far: 135&#10;~1,635 individuals covered incl. the Jan 6 proclamation (one action, ~1,500 people)" data-share-url="https://trumpbynumbers.pages.dev/?c=clemency">
       <button class="tile-share" type="button" aria-label="Share this metric"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4"></path></svg></button>
       <h2 class="tile-name">Clemency</h2>
       <div class="tile-qual">pardons & commutations</div>
@@ -1309,7 +1313,7 @@
       </div>
           <button class="expand-btn" type="button" aria-expanded="false"><span>See more</span><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"></polyline></svg></button><div class="detail" hidden></div>
     </article>
-    <article class="tile" id="card-national_emergencies" data-id="national_emergencies" data-as-of="2026-08-24" data-stale-after="2026-10-08" data-cadence="as signed" data-share-text="What&#x27;s actually happened to national emergencies under Trump?&#10;&#10;So far 8&#10;New declarations at the same point in term" data-share-url="https://trumpbynumbers.pages.dev/?c=national_emergencies">
+    <article class="tile" id="card-national_emergencies" data-id="national_emergencies" data-as-of="2026-08-24" data-stale-after="2026-10-08" data-cadence="as signed" data-share-text="What&#x27;s actually happened to national emergencies under Trump?&#10;&#10;So far: 8&#10;New declarations at the same point in term" data-share-url="https://trumpbynumbers.pages.dev/?c=national_emergencies">
       <button class="tile-share" type="button" aria-label="Share this metric"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4"></path></svg></button>
       <h2 class="tile-name">National emergencies declared</h2>
       <div class="hero">8</div>
@@ -1350,7 +1354,7 @@
       <section class="category" data-tab="war-defense" id="war-defense">
         <h2 class="cat-head">Defense</h2>
         <div class="grid">
-    <article class="tile" id="card-defense_outlays" data-id="defense_outlays" data-as-of="2026-07" data-stale-after="2026-10-09" data-cadence="monthly" data-share-text="What&#x27;s actually happened to defense spending under Trump?&#10;&#10;Now $765B&#10;+ $46B vs same point last fiscal year ($719B)" data-share-url="https://trumpbynumbers.pages.dev/?c=defense_outlays">
+    <article class="tile" id="card-defense_outlays" data-id="defense_outlays" data-as-of="2026-07" data-stale-after="2026-10-09" data-cadence="monthly" data-share-text="What&#x27;s actually happened to defense spending under Trump?&#10;&#10;Currently: $765B&#10;+ $46B vs same point last fiscal year ($719B)" data-share-url="https://trumpbynumbers.pages.dev/?c=defense_outlays">
       <button class="tile-share" type="button" aria-label="Share this metric"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4"></path></svg></button>
       <h2 class="tile-name">Defense outlays</h2>
       <div class="tile-qual">fiscal-YTD</div>
@@ -1378,7 +1382,7 @@
       </div>
           <button class="expand-btn" type="button" aria-expanded="false"><span>See more</span><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"></polyline></svg></button><div class="detail" hidden></div>
     </article>
-    <article class="tile" id="card-foreign_aid" data-id="foreign_aid" data-as-of="2026-06" data-stale-after="2026-12-07" data-cadence="quarterly" data-share-text="What&#x27;s actually happened to foreign aid under Trump?&#10;&#10;Now $36B&#10;− $4B vs same point fy2025 ($39B)" data-share-url="https://trumpbynumbers.pages.dev/?c=foreign_aid">
+    <article class="tile" id="card-foreign_aid" data-id="foreign_aid" data-as-of="2026-06" data-stale-after="2026-12-07" data-cadence="quarterly" data-share-text="What&#x27;s actually happened to foreign aid under Trump?&#10;&#10;Currently: $36B&#10;− $4B vs same point fy2025 ($39B)" data-share-url="https://trumpbynumbers.pages.dev/?c=foreign_aid">
       <button class="tile-share" type="button" aria-label="Share this metric"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4"></path></svg></button>
       <h2 class="tile-name">Foreign aid & international affairs</h2>
       <div class="tile-qual">obligations</div>
@@ -1406,7 +1410,7 @@
       </div>
           <button class="expand-btn" type="button" aria-expanded="false"><span>See more</span><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"></polyline></svg></button><div class="detail" hidden></div>
     </article>
-    <article class="tile" id="card-war_powers" data-id="war_powers" data-as-of="2026-07-10" data-stale-after="2026-11-07" data-cadence="as filed" data-share-text="What&#x27;s actually happened to war-powers reports to Congress under Trump?&#10;&#10;So far 11&#10;Reports at the same point in term" data-share-url="https://trumpbynumbers.pages.dev/?c=war_powers">
+    <article class="tile" id="card-war_powers" data-id="war_powers" data-as-of="2026-07-10" data-stale-after="2026-11-07" data-cadence="as filed" data-share-text="What&#x27;s actually happened to war-powers reports to Congress under Trump?&#10;&#10;So far: 11&#10;Reports at the same point in term" data-share-url="https://trumpbynumbers.pages.dev/?c=war_powers">
       <button class="tile-share" type="button" aria-label="Share this metric"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4"></path></svg></button>
       <h2 class="tile-name">War-powers reports to Congress</h2>
       <div class="hero">11</div>
@@ -1443,7 +1447,7 @@
       </div>
           <button class="expand-btn" type="button" aria-expanded="false"><span>See more</span><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"></polyline></svg></button><div class="detail" hidden></div>
     </article>
-    <article class="tile" id="card-military_deaths" data-id="military_deaths" data-as-of="2026-08-21" data-stale-after="2026-09-20" data-cadence="weekly" data-share-text="What&#x27;s actually happened to US military deaths under Trump?&#10;&#10;So far 18&#10;Wounded in action: 758" data-share-url="https://trumpbynumbers.pages.dev/?c=military_deaths">
+    <article class="tile" id="card-military_deaths" data-id="military_deaths" data-as-of="2026-08-21" data-stale-after="2026-09-20" data-cadence="weekly" data-share-text="What&#x27;s actually happened to US military deaths under Trump?&#10;&#10;So far: 18&#10;Wounded in action: 758" data-share-url="https://trumpbynumbers.pages.dev/?c=military_deaths">
       <button class="tile-share" type="button" aria-label="Share this metric"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4"></path></svg></button>
       <h2 class="tile-name">US military deaths</h2>
       <div class="tile-qual">current operations</div>
