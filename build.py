@@ -259,7 +259,7 @@ def share_text(m, hero, delta):
     stat = []
     val = _plain(hero)
     if val:
-        stat.append(("So far " if mid in SHARE_COUNT else "Now ") + val)
+        stat.append(("So far: " if mid in SHARE_COUNT else "Currently: ") + val)
     cmp = _plain(delta)
     if cmp:
         stat.append(cmp)
@@ -2301,9 +2301,11 @@ def build():
   /* footer + See more are pinned to the card bottom (margin-top:auto) so the gap
      below the comparison bars makes plain how many rows a card has (2 vs 4), and
      the See more buttons line up across a row. */
-  .tile-foot {{ display:flex; justify-content:space-between; align-items:center; gap:10px;
+  /* source + cadence always stack (source line, then "updates X" beneath) so every
+     card's footer has the same shape regardless of how long the source name is. */
+  .tile-foot {{ display:flex; flex-direction:column; align-items:flex-start; gap:4px;
                margin-top:auto; padding-top:14px; border-top:1px solid var(--hair);
-               font-size:11.5px; color:var(--muted); flex-wrap:wrap; }}
+               font-size:11.5px; color:var(--muted); }}
   .tile-foot a {{ color:var(--secondary); text-decoration:none; font-weight:550; }}
   .tile-foot a:hover {{ color:var(--series-1); }}
   /* ---- category tabs = section nav (scroll-to; JS-off shows the whole board) ---- */
@@ -2480,7 +2482,7 @@ def build():
   .share-opt:focus-visible {{ outline:none; box-shadow:0 0 0 2px var(--focus); }}
   .share-opt-primary {{ font-weight:650; color:var(--series-1); }}
 
-  footer {{ margin-top:52px; border-top:1px solid var(--hair); padding-top:24px;
+  footer {{ margin-top:24px; border-top:1px solid var(--hair); padding-top:24px;
            color:var(--muted); font-size:12px; text-align:center; line-height:1.6; }}
   footer a {{ color:var(--secondary); }}
   .footer-nav {{ margin-top:12px; }}
@@ -2490,8 +2492,10 @@ def build():
   /* homepage callout → links to the full /transparency page (table lives there).
      A full-width hairline band (no fill, no radius) so it aligns with the board grid
      yet reads as an editorial note, not another data card. */
+  /* single top rule only; the footer's own top rule closes the band below it
+     (avoids a doubled hairline between the banner and the footer). */
   .callout {{ margin:44px 0 0; display:flex; align-items:center; gap:24px 64px; flex-wrap:wrap;
-             border-top:1px solid var(--hair); border-bottom:1px solid var(--hair); padding:22px 2px; }}
+             border-top:1px solid var(--hair); padding:24px 2px 0; }}
   .callout-txt {{ flex:1 1 460px; }}
   .callout h2 {{ font-size:12px; margin:0 0 5px; color:var(--muted);
                 letter-spacing:.1em; text-transform:uppercase; font-weight:650; }}
