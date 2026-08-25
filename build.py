@@ -1795,6 +1795,16 @@ _THEME_INIT = ("<script>try{var t=localStorage.getItem('tbn-theme');"
                "if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t);}"
                "catch(e){}</script>")
 
+# Favicon set (files copied from assets/ into site/ at build). SVG is primary
+# (crisp at every size); PNG/ICO are older-browser fallbacks; apple-touch is the
+# iOS home-screen tile. Same tags injected into the board and every meta page.
+_FAVICON = (
+    '<link rel="icon" href="/favicon.svg" type="image/svg+xml">'
+    '<link rel="icon" type="image/png" sizes="32x32" href="/favicon.png">'
+    '<link rel="icon" href="/favicon.ico" sizes="any">'
+    '<link rel="apple-touch-icon" href="/apple-touch-icon.png">'
+)
+
 _ICON_SUN = ('<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" '
     'stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"></circle>'
     '<path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"></path></svg>')
@@ -1959,6 +1969,7 @@ def render_meta_page(current, title, hero, lede, desc, content, dark_tokens, lig
 <title>{title} · Trump by Numbers</title>
 <meta name="description" content="{desc}">
 {_social_meta(current)}
+{_FAVICON}
 {_THEME_INIT}
 <style>{css}</style>
 </head>
@@ -2206,6 +2217,7 @@ def build():
 <title>Trump Administration, Tracked in Data</title>
 <meta name="description" content="{SOCIAL_DESC}">
 {_social_meta("/")}
+{_FAVICON}
 {_THEME_INIT}
 <style>
   /* Dark is the default and the no-preference fallback. Light auto-applies via the
@@ -2585,16 +2597,18 @@ def build():
         f.write(_headers_text())
     print("wrote", os.path.join(site_dir, "_headers"))
 
-    # Brand link-preview image (one card for the whole site, brief 09). Copied
-    # from assets/ each build so the daily run reproduces it; swap assets/og.png
-    # to change every share preview at once.
+    # Static brand assets copied from assets/ each build so the daily run reproduces
+    # them: the link-preview image (brief 09) and the favicon set. Swap the file in
+    # assets/ to change any of them everywhere at once.
     import shutil
-    og_src = os.path.join(ASSETS, "og.png")
-    if os.path.exists(og_src):
-        shutil.copyfile(og_src, os.path.join(site_dir, "og.png"))
-        print("wrote", os.path.join(site_dir, "og.png"))
-    else:
-        print("  ! assets/og.png missing, link-preview image not emitted")
+    for _asset in ("og.png", "favicon.svg", "favicon.png",
+                   "favicon.ico", "apple-touch-icon.png"):
+        _src = os.path.join(ASSETS, _asset)
+        if os.path.exists(_src):
+            shutil.copyfile(_src, os.path.join(site_dir, _asset))
+            print("wrote", os.path.join(site_dir, _asset))
+        elif _asset == "og.png":
+            print("  ! assets/og.png missing, link-preview image not emitted")
 
 
 if __name__ == "__main__":
