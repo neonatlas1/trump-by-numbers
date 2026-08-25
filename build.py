@@ -291,7 +291,7 @@ def tile(m):
     elif m["id"] == "national_debt":
         hero = money_compact(m["value"]); base = m["baseline"]
         inc = m["value"] - base["value"]; pct = inc / base["value"] * 100
-        delta = f'<span class="delta bad">&#9650; {money_compact(inc)} (+{pct:.1f}%) since inauguration</span>'
+        delta = f'<span class="delta bad">+ {money_compact(inc)} (+{pct:.1f}%) since inauguration</span>'
         bars = render_bars([("Now", m["value"], money_compact(m["value"]), "critical"),
                             ("Inauguration", base["value"], money_compact(base["value"]), "muted")], accent)
         sub = "Total public debt outstanding"
@@ -301,14 +301,14 @@ def tile(m):
         sub = m["note"]
         if m.get("comparison"):
             comp = m["comparison"]; diff = m["value"] - comp["value"]
-            tone = "bad" if diff > 0 else "good"; arrow = "&#9650;" if diff > 0 else "&#9660;"
+            tone = "bad" if diff > 0 else "good"; arrow = "+" if diff > 0 else "&#8722;"
             delta = f'<span class="delta {tone}">{arrow} ${abs(diff):,.0f}B vs the same point last fiscal year (${comp["value"]:,.0f}B)</span>'
             bars = render_bars([("This FY", m["value"], f'${m["value"]:,.0f}B', "critical"),
                                 ("Prior FY", comp["value"], f'${comp["value"]:,.0f}B', "muted")], accent)
 
     elif m["id"] == "inflation":
         hero = f'{m["value"]}%'; tgt = m["target"]; gap = m["value"] - tgt["value"]
-        tone = "bad" if gap > 0 else "good"; arrow = "&#9650;" if gap > 0 else "&#9660;"
+        tone = "bad" if gap > 0 else "good"; arrow = "+" if gap > 0 else "&#8722;"
         delta = f'<span class="delta {tone}">{arrow} {abs(gap):.1f} pts {"above" if gap>0 else "below"} the Fed&#39;s {tgt["value"]}% target</span>'
         bars = render_bars([("CPI (YoY)", m["value"], f'{m["value"]}%', "critical" if gap > 0 else "good"),
                             ("Fed target", tgt["value"], f'{tgt["value"]}%', "muted")], accent)
@@ -316,7 +316,7 @@ def tile(m):
 
     elif m["id"] == "unemployment":
         hero = f'{m["value"]}%'; base = m["baseline"]; diff = m["value"] - (base["value"] or m["value"])
-        tone = "bad" if diff > 0 else "good"; arrow = "&#9650;" if diff > 0 else "&#9660;"
+        tone = "bad" if diff > 0 else "good"; arrow = "+" if diff > 0 else "&#8722;"
         delta = f'<span class="delta {tone}">{arrow} {abs(diff):.1f} pts since inauguration ({base["value"]}%)</span>'
         bars = render_bars([("Now", m["value"], f'{m["value"]}%', "critical" if diff > 0 else "good"),
                             ("Inauguration", base["value"] or 0, f'{base["value"]}%', "muted")], accent)
@@ -324,7 +324,7 @@ def tile(m):
 
     elif m["id"] == "gas_price":
         hero = f'${m["value"]:.2f}'; base = m["baseline"]; diff = m["value"] - base["value"]; pct = diff / base["value"] * 100
-        tone = "bad" if diff > 0 else "good"; arrow = "&#9650;" if diff > 0 else "&#9660;"
+        tone = "bad" if diff > 0 else "good"; arrow = "+" if diff > 0 else "&#8722;"
         delta = f'<span class="delta {tone}">{arrow} ${abs(diff):.2f} ({pct:+.0f}%) since inauguration</span>'
         bars = render_bars([("Now", m["value"], f'${m["value"]:.2f}', "critical" if diff > 0 else "good"),
                             ("Inauguration", base["value"], f'${base["value"]:.2f}', "muted")], accent)
@@ -332,7 +332,7 @@ def tile(m):
 
     elif m["id"] == "trade_deficit":
         hero = f'${m["value"]:.1f}B'; base = m["baseline"]; diff = m["value"] - base["value"]
-        tone = "bad" if diff > 0 else "good"; arrow = "&#9650;" if diff > 0 else "&#9660;"
+        tone = "bad" if diff > 0 else "good"; arrow = "+" if diff > 0 else "&#8722;"
         pct = (diff / base["value"] * 100) if base["value"] else 0
         delta = f'<span class="delta {tone}">{arrow} ${abs(diff):.1f}B ({pct:+.0f}%) vs {base["label"].lower()}</span>'
         bars = render_bars([("Latest", m["value"], f'${m["value"]:.1f}B', "critical" if diff > 0 else "good"),
@@ -354,8 +354,7 @@ def tile(m):
         if biden_val:
             diff = m["value"] - biden_val
             pct = diff / biden_val * 100
-            arrow = "&#9650;" if diff > 0 else "&#9660;"
-            delta = (f'<span class="delta neutral">{arrow} {pct:+.0f}% vs the same month '
+            delta = (f'<span class="delta neutral">{pct:+.0f}% vs the same month '
                      f'under Biden (2024: {num(biden_val)})</span>')
             rows = [("This year", m["value"], num(m["value"]), "accent"),
                     ("Same month 2024 (Biden)", biden_val, num(biden_val), "muted")]
@@ -366,8 +365,7 @@ def tile(m):
         elif m.get("comparison"):
             comp = m["comparison"]; diff = m["value"] - comp["value"]
             pct = (diff / comp["value"] * 100) if comp["value"] else 0
-            arrow = "&#9650;" if diff > 0 else "&#9660;"
-            delta = f'<span class="delta neutral">{arrow} {pct:+.0f}% vs the same month last year ({num(comp["value"])})</span>'
+            delta = f'<span class="delta neutral">{pct:+.0f}% vs the same month last year ({num(comp["value"])})</span>'
             bars = render_bars([("Latest", m["value"], num(m["value"]), "accent"),
                                 ("Yr earlier", comp["value"], num(comp["value"]), "muted")], accent)
 
@@ -385,7 +383,7 @@ def tile(m):
         sub = m["note"]
         if m.get("baseline"):
             base = m["baseline"]; gap = m["value"] - base["value"]
-            tone = "bad" if gap > 0 else "good"; arrow = "&#9650;" if gap > 0 else "&#9660;"
+            tone = "bad" if gap > 0 else "good"; arrow = "+" if gap > 0 else "&#8722;"
             delta = f'<span class="delta {tone}">{arrow} {abs(gap):.1f} pts vs {base["value"]}% at inauguration</span>'
             bars = render_bars([("Now (YoY)", m["value"], f'{m["value"]}%', "critical" if gap > 0 else "good"),
                                 ("Inauguration", base["value"], f'{base["value"]}%', "muted")], accent)
@@ -407,8 +405,7 @@ def tile(m):
             base = m["baseline"]; diff = m["value"] - base["value"]
             pct = diff / base["value"] * 100 if base["value"] else 0
             tone = "good" if diff > 0 else ("bad" if diff < 0 else "neutral")
-            arrow = "&#9650;" if diff > 0 else ("&#9660;" if diff < 0 else "")
-            delta = f'<span class="delta {tone}">{arrow} {pct:+.1f}% since the inauguration quarter (${base["value"]:,.0f})</span>'
+            delta = f'<span class="delta {tone}">{pct:+.1f}% since the inauguration quarter (${base["value"]:,.0f})</span>'
             bars = render_bars([("Now", m["value"], f'${m["value"]:,.0f}', "accent"),
                                 ("Q1 2025", base["value"], f'${base["value"]:,.0f}', "muted")], accent)
 
@@ -418,7 +415,7 @@ def tile(m):
         if m.get("baseline"):
             base = m["baseline"]; diff = m["value"] - base["value"]
             pct = diff / base["value"] * 100 if base["value"] else 0
-            arrow = "&#9650;" if diff > 0 else "&#9660;"
+            arrow = "+" if diff > 0 else "&#8722;"
             delta = f'<span class="delta neutral">{arrow} {abs(diff):,.0f}k ({pct:+.1f}%) since inauguration ({base["value"]:,.0f}k)</span>'
             bars = render_bars([("Now", m["value"], f'{m["value"]:,.0f}k', "accent"),
                                 ("Inauguration", base["value"], f'{base["value"]:,.0f}k', "muted")], accent)
@@ -452,7 +449,7 @@ def tile(m):
         sub = m["note"]
         if m.get("comparison"):
             comp = m["comparison"]; diff = m["value"] - comp["value"]
-            tone = "bad" if diff > 0 else "good"; arrow = "&#9650;" if diff > 0 else "&#9660;"
+            tone = "bad" if diff > 0 else "good"; arrow = "+" if diff > 0 else "&#8722;"
             delta = f'<span class="delta {tone}">{arrow} ${abs(diff):,.0f}B vs the same point last fiscal year (${comp["value"]:,.0f}B)</span>'
             bars = render_bars([("This FY", m["value"], f'${m["value"]:,.0f}B', "critical"),
                                 ("Prior FY", comp["value"], f'${comp["value"]:,.0f}B', "muted")], accent)
@@ -472,7 +469,7 @@ def tile(m):
         if m.get("baseline"):
             base = m["baseline"]; diff = m["value"] - base["value"]
             pct = diff / base["value"] * 100 if base["value"] else 0
-            tone = "bad" if diff > 0 else "good"; arrow = "&#9650;" if diff > 0 else "&#9660;"
+            tone = "bad" if diff > 0 else "good"; arrow = "+" if diff > 0 else "&#8722;"
             delta = f'<span class="delta {tone}">{arrow} {num(abs(diff))} ({pct:+.0f}%) vs the 12 months ending at inauguration</span>'
             bars = render_bars([("Latest 12 mo", m["value"], num(m["value"]), "critical" if diff > 0 else "good"),
                                 ("To Jan 2025", base["value"], num(base["value"]), "muted")], accent)
@@ -494,12 +491,12 @@ def tile(m):
                 rows.insert(1, ("2025 full year", by_year[2025], num(by_year[2025]), "muted"))
             bars = render_bars(rows, accent)
             mult = m["value"] / biden_years[worst_y] if biden_years[worst_y] else 0
-            delta = (f'<span class="delta bad">&#9650; {mult:.0f}&#215; the worst Biden-term year '
+            delta = (f'<span class="delta bad">+ {mult:.0f}&#215; the worst Biden-term year '
                      f'({worst_y}: {num(biden_years[worst_y])})</span>')
         elif m.get("comparison"):
             comp = m["comparison"]; diff = m["value"] - comp["value"]
             if diff > 0:
-                delta = f'<span class="delta bad">&#9650; already above {comp["label"].lower()} ({num(comp["value"])})</span>'
+                delta = f'<span class="delta bad">+ already above {comp["label"].lower()} ({num(comp["value"])})</span>'
             else:
                 delta = f'<span class="delta neutral">{comp["label"]}: {num(comp["value"])}</span>'
             bars = render_bars([("This year so far", m["value"], num(m["value"]), "critical" if diff > 0 else "accent"),
@@ -510,7 +507,7 @@ def tile(m):
         sub = m["note"]
         if m.get("baseline"):
             base = m["baseline"]; diff = m["value"] - base["value"]
-            arrow = "&#9650;" if diff > 0 else "&#9660;"
+            arrow = "+" if diff > 0 else "&#8722;"
             delta = f'<span class="delta neutral">{arrow} {abs(diff) / 1e6:.1f}M since Dec 2024 ({base["value"] / 1e6:.1f}M)</span>'
             bars = render_bars([("Now", m["value"], f'{m["value"] / 1e6:.1f}M', "accent"),
                                 ("Dec 2024", base["value"], f'{base["value"] / 1e6:.1f}M', "muted")], accent)
@@ -523,7 +520,7 @@ def tile(m):
         if m.get("baseline"):
             base = m["baseline"]; diff = m["value"] - base["value"]
             pct = diff / base["value"] * 100 if base["value"] else 0
-            tone = "bad" if diff > 0 else "good"; arrow = "&#9650;" if diff > 0 else "&#9660;"
+            tone = "bad" if diff > 0 else "good"; arrow = "+" if diff > 0 else "&#8722;"
             delta = f'<span class="delta {tone}">{arrow} {num(abs(diff))} ({pct:+.0f}%) since inauguration</span>'
             bars = render_bars([("Now", m["value"], num(m["value"]), "critical" if diff > 0 else "good"),
                                 ("Inauguration", base["value"], num(base["value"]), "muted")], accent)
@@ -575,7 +572,7 @@ def tile(m):
         if m.get("baseline"):
             base = m["baseline"]["value"] * 100
             diff = cents - base; pct = diff / base * 100
-            tone = "bad" if diff > 0 else "good"; arrow = "&#9650;" if diff > 0 else "&#9660;"
+            tone = "bad" if diff > 0 else "good"; arrow = "+" if diff > 0 else "&#8722;"
             delta = f'<span class="delta {tone}">{arrow} {abs(diff):.1f}&#162; ({pct:+.0f}%) since inauguration</span>'
             bars = render_bars([("Now", cents, f'{cents:.1f}&#162;', "critical" if diff > 0 else "good"),
                                 ("Inauguration", base, f'{base:.1f}&#162;', "muted")], accent)
@@ -585,10 +582,9 @@ def tile(m):
         sub = m["note"].split(".")[0] + "."
         if m.get("baseline"):
             base = m["baseline"]["value"]; diff = m["value"] - base; pct = diff / base * 100
-            arrow = "&#9650;" if diff > 0 else "&#9660;"
             rec = m.get("record") or {}
             rec_txt = f' &#183; record {rec["value"]:.1f} ({pretty_date(rec["date"])})' if rec.get("value") else ""
-            delta = f'<span class="delta neutral">{arrow} {pct:+.1f}% since inauguration{rec_txt}</span>'
+            delta = f'<span class="delta neutral">{pct:+.1f}% since inauguration{rec_txt}</span>'
             bars = render_bars([("Now", m["value"], f'{m["value"]:.1f}', "accent"),
                                 ("Inauguration", base, f'{base:.1f}', "muted")], accent)
 
@@ -597,7 +593,7 @@ def tile(m):
         sub = m["note"].split(".")[0] + "."
         if m.get("baseline"):
             base = m["baseline"]["value"]; diff = m["value"] - base
-            arrow = "&#9650;" if diff > 0 else "&#9660;"
+            arrow = "+" if diff > 0 else "&#8722;"
             delta = (f'<span class="delta neutral">{arrow} {abs(diff):.1f} pts vs Jan 2025 ({base}%) '
                      "&#8212; the mix is seasonal; compare same months</span>")
             bars = render_bars([("Now", m["value"], f'{m["value"]:.1f}%', "accent"),
@@ -672,7 +668,7 @@ def tile(m):
         sub = m["note"].split(". ")[0] + "."
         if m.get("comparison"):
             comp = m["comparison"]; diff = m["value"] - comp["value"]
-            arrow = "&#9650;" if diff > 0 else "&#9660;"
+            arrow = "+" if diff > 0 else "&#8722;"
             delta = (f'<span class="delta neutral">{arrow} ${abs(diff):,.0f}B vs {comp["label"].lower()} '
                      f'(${comp["value"]:,.0f}B)</span>')
             bars = render_bars([("This FY", m["value"], f'${m["value"]:,.0f}B', "accent"),
@@ -719,7 +715,7 @@ def tile(m):
       <div class="hero">{hero}</div>
       {delta}
       <div class="freshness">
-        <span class="asof">as of {pretty_date(m['as_of'])}</span>
+        <span class="asof">Latest data: {pretty_date(m['as_of'])}</span>
         <span class="stale-flag" hidden>&#9888; data may be stale</span>
       </div>
       <div class="tile-sub">{sub}</div>
@@ -1699,8 +1695,10 @@ def frozen_callout(today=None):
         return ""
     return f"""
     <section class="callout" id="frozen">
-      <h2>Government data that stopped updating</h2>
-      <p>Since January 2025, <b>{gov} official data sources</b> this board draws on have been frozen, deleted, or narrowed. Where one went dark, the board switched to a still-current source, so the numbers here stay live.</p>
+      <div class="callout-txt">
+        <h2>Government data that stopped updating</h2>
+        <p>Since January 2025, <b>{gov} official data sources</b> this board draws on have been frozen, deleted, or narrowed. Where one went dark, the board switched to a still-current source, so the numbers here stay live.</p>
+      </div>
       <a class="callout-link" href="/transparency">See what went dark <span aria-hidden="true">&rarr;</span></a>
     </section>"""
 
@@ -2123,7 +2121,8 @@ def build():
             h = h.replace('<article class="tile" ',
                           f'<article class="tile" id="card-{m["id"]}" data-id="{m["id"]}" ', 1)
             if m["id"] in expandable:
-                h = h.replace('<div class="tile-foot">', expand_btn + '\n      <div class="tile-foot">', 1)
+                # See more sits at the very bottom, AFTER the source/updates footer
+                h = h.replace('</article>', '      ' + expand_btn + '\n    </article>', 1)
             tiles.append(h)
         tab_btns.append(f'<button class="tab" type="button" data-tab="{slug}">{name}</button>')
         sections.append(f"""
@@ -2136,7 +2135,7 @@ def build():
 
     # Board-level share (brief 09): whole-board hook, side-neutral wit.
     _board_share_text = _htmllib.escape(
-        "For your next dinner-table argument about Trump:\nSettle it with numbers",
+        "Settle your next dinner-table argument about Trump with numbers",
         quote=True).replace("\n", "&#10;")
     board_share_btn = (
         f'<button class="theme-toggle" id="boardShare" type="button" '
@@ -2269,7 +2268,7 @@ def build():
   .cat-count {{ color:var(--muted); font-weight:500; font-size:12px;
                border:1px solid var(--hair); border-radius:100px; padding:1px 8px; }}
   .grid {{ display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:18px; }}
-  .tile {{ position:relative; background:var(--surface); border:1px solid var(--hair); border-radius:16px; padding:24px 24px 18px; }}
+  .tile {{ position:relative; display:flex; flex-direction:column; background:var(--surface); border:1px solid var(--hair); border-radius:16px; padding:24px 24px 18px; }}
   /* share icon, top-right of the collapsed card (brief 09) */
   .tile-share {{ position:absolute; top:15px; right:15px; width:30px; height:30px; padding:0;
     display:inline-flex; align-items:center; justify-content:center; background:none;
@@ -2299,17 +2298,26 @@ def build():
   .bar-track {{ background:var(--grid); border-radius:4px; height:10px; overflow:hidden; }}
   .bar-fill {{ height:100%; border-radius:4px; }}
   .bar-val {{ color:var(--primary); font-size:12px; font-variant-numeric:tabular-nums; }}
+  /* footer + See more are pinned to the card bottom (margin-top:auto) so the gap
+     below the comparison bars makes plain how many rows a card has (2 vs 4), and
+     the See more buttons line up across a row. */
   .tile-foot {{ display:flex; justify-content:space-between; align-items:center; gap:10px;
-               margin-top:14px; padding-top:14px; border-top:1px solid var(--hair);
+               margin-top:auto; padding-top:14px; border-top:1px solid var(--hair);
                font-size:11.5px; color:var(--muted); flex-wrap:wrap; }}
   .tile-foot a {{ color:var(--secondary); text-decoration:none; font-weight:550; }}
   .tile-foot a:hover {{ color:var(--series-1); }}
   /* ---- category tabs = section nav (scroll-to; JS-off shows the whole board) ---- */
   .tabs-wrap {{ position:relative; margin:28px 0 4px; }}
-  .tabs-wrap::before, .tabs-wrap::after {{ content:""; position:absolute; top:0; bottom:0; width:72px;
-          pointer-events:none; opacity:0; transition:opacity .18s ease; z-index:1; border-radius:12px; }}
-  .tabs-wrap::after {{ right:0; background:linear-gradient(to right, transparent, var(--plane)); }}
-  .tabs-wrap::before {{ left:0; background:linear-gradient(to left, transparent, var(--plane)); }}
+  /* overflow cue: a fading edge PLUS a chevron, shown only on the side(s) that have
+     more tabs to scroll (driven by the more-left/more-right classes). Mostly a mobile
+     thing — on desktop all tabs fit, so neither side shows. */
+  .tabs-wrap::before, .tabs-wrap::after {{ position:absolute; top:0; bottom:0; width:56px;
+          pointer-events:none; opacity:0; transition:opacity .18s ease; z-index:1; border-radius:12px;
+          display:flex; align-items:center; color:var(--muted); font-size:17px; font-weight:700; }}
+  .tabs-wrap::after {{ right:0; content:"\\203A"; justify-content:flex-end; padding-right:9px;
+          background:linear-gradient(to right, transparent, var(--plane)); }}
+  .tabs-wrap::before {{ left:0; content:"\\2039"; justify-content:flex-start; padding-left:9px;
+          background:linear-gradient(to left, transparent, var(--plane)); }}
   .stickybar.stuck .tabs-wrap::after {{ background:linear-gradient(to right, transparent, var(--surface)); }}
   .stickybar.stuck .tabs-wrap::before {{ background:linear-gradient(to left, transparent, var(--surface)); }}
   .tabs-wrap.more-right::after {{ opacity:1; }}
@@ -2334,7 +2342,10 @@ def build():
   .expand-btn svg {{ transition:transform .25s ease; }}
   .tile.open .expand-btn svg {{ transform:rotate(180deg); }}
   .no-js .expand-btn {{ display:none; }}
-  .tile.open {{ border-color:var(--tile-open); }}
+  /* the open card is lifted (lighter surface + stronger border) so it clearly reads
+     as the active one; a soft raise is added on desktop where cards sit side by side */
+  .tile.open {{ border-color:var(--tile-open); background:var(--tile-hover); }}
+  @media (min-width:666px) {{ .tile.open {{ box-shadow:0 6px 22px var(--shadow); }} }}
   .detail {{ margin-top:18px; border-top:1px solid var(--hair); padding-top:18px; animation:reveal .28s ease; }}
   /* expanded detail opens in a full-width drawer beneath the card's row; drawer surface is a
      step lighter than the cards so the expanded panel reads as distinct (esp. stacked on mobile) */
@@ -2477,15 +2488,18 @@ def build():
   .footer-nav a:hover {{ color:var(--series-1); }}
   .built {{ opacity:.6; font-size:11px; margin-top:14px; }}
   /* homepage callout → links to the full /transparency page (table lives there).
-     Stacked and narrower than the board so it reads as a distinct note. */
-  .callout {{ margin:48px auto 0; max-width:640px; background:var(--panel);
-             border:1px solid var(--hair); border-radius:14px; padding:24px 26px; }}
-  .callout h2 {{ font-size:15px; margin:0 0 8px; color:var(--primary); }}
-  .callout p {{ color:var(--secondary); font-size:13.5px; line-height:1.62; margin:0 0 14px; }}
+     A full-width hairline band (no fill, no radius) so it aligns with the board grid
+     yet reads as an editorial note, not another data card. */
+  .callout {{ margin:44px 0 0; display:flex; align-items:center; gap:24px 64px; flex-wrap:wrap;
+             border-top:1px solid var(--hair); border-bottom:1px solid var(--hair); padding:22px 2px; }}
+  .callout-txt {{ flex:1 1 460px; }}
+  .callout h2 {{ font-size:12px; margin:0 0 5px; color:var(--muted);
+                letter-spacing:.1em; text-transform:uppercase; font-weight:650; }}
+  .callout p {{ color:var(--secondary); font-size:13.5px; line-height:1.6; margin:0; }}
   .callout p b {{ color:var(--primary); font-weight:650; }}
-  .callout-link {{ font-size:13.5px; font-weight:600; color:var(--series-1); text-decoration:none; }}
+  .callout-link {{ flex:0 0 auto; font-size:13.5px; font-weight:600; color:var(--series-1);
+                  text-decoration:none; white-space:nowrap; }}
   .callout-link:hover {{ text-decoration:underline; }}
-  @media (max-width:560px) {{ .callout {{ padding:20px; }} }}
 </style>
 </head>
 <body>
