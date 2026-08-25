@@ -168,7 +168,12 @@
     if (navigator.share) { navigator.share({ text: text, url: url }).catch(function () {}); return; }
     _openSharePanel(text, url, anchor);
   }
-  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') _closeShare(); });
+  // Escape: close the share panel if open, otherwise collapse the open card drawer
+  document.addEventListener('keydown', function (e) {
+    if (e.key !== 'Escape') return;
+    if (_sharePanel) { _closeShare(); return; }
+    if (typeof openCard !== 'undefined' && openCard) closeOpen(false);
+  });
 
   function xTicks(fx, x0, x1) {
     if (fx.xLabels) return fx.xLabels.filter(function (t) { return t.x >= x0 - 0.001 && t.x <= x1 + 0.001; });
@@ -1009,6 +1014,16 @@
   var _rt; window.addEventListener('resize', function () {
     if (!openCard) return;
     clearTimeout(_rt); _rt = setTimeout(function () { placeDrawer(openCard); }, 150);
+  });
+
+  /* click anywhere outside the open card + its drawer closes it (tiles handle their
+     own clicks; links and text-selection are left alone) */
+  document.addEventListener('click', function (e) {
+    if (!openCard) return;
+    if (e.target.closest('.tile') || e.target.closest('.detail-drawer')) return;
+    if (e.target.closest('.share-panel')) return;
+    if (window.getSelection && String(window.getSelection())) return;
+    closeOpen(false);
   });
 
   /* ---------- category tabs = section nav (scroll-to, not a filter) ----------
