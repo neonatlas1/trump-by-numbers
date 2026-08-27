@@ -2,9 +2,9 @@
   "id": "renewable_share",
   "name": "Renewable share of electricity generation",
   "category": "Energy",
-  "value": 29.7,
+  "value": 27.4,
   "unit": "%",
-  "as_of": "2026-05",
+  "as_of": "2026-06",
   "direction": "neutral",
   "source": {
     "name": "EIA Electric Power Monthly, Table 1.1",
@@ -133,8 +133,12 @@
     {
       "date": "2026-05",
       "value": 29.7
+    },
+    {
+      "date": "2026-06",
+      "value": 27.4
     }
   ],
-  "last_checked": "2026-08-26",
-  "stale_after": "2026-08-29"
+  "last_checked": "2026-08-27",
+  "stale_after": "2026-09-28"
 }
