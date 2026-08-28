@@ -2,9 +2,9 @@
   "id": "medicaid_enrollment",
   "name": "Medicaid & CHIP enrollment",
   "category": "Health & Safety Net",
-  "value": 73871024,
+  "value": 73526272,
   "unit": "people",
-  "as_of": "2026-04",
+  "as_of": "2026-05",
   "direction": "neutral",
   "source": {
     "name": "Centers for Medicare & Medicaid Services",
@@ -444,13 +444,17 @@
     },
     {
       "date": "2026-03",
-      "value": 74742186
+      "value": 74764988
     },
     {
       "date": "2026-04",
-      "value": 73871024
+      "value": 74367383
+    },
+    {
+      "date": "2026-05",
+      "value": 73526272
     }
   ],
-  "last_checked": "2026-08-27",
-  "stale_after": "2026-10-27"
+  "last_checked": "2026-08-28",
+  "stale_after": "2026-11-27"
 }
