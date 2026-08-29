@@ -2,9 +2,9 @@
   "id": "national_emergencies",
   "name": "National emergencies declared",
   "category": "Executive Power & Governance",
-  "value": 8,
+  "value": 9,
   "unit": "declarations",
-  "as_of": "2026-08-28",
+  "as_of": "2026-08-29",
   "since": "2025-01-20",
   "direction": "neutral",
   "declarations": [
@@ -39,6 +39,10 @@
     {
       "date": "2026-01-29",
       "title": "Addressing Threats to the United States by the Government of Cuba"
+    },
+    {
+      "date": "2026-08-26",
+      "title": "Declaring a National Emergency To Secure the United States Bulk-Power System"
     }
   ],
   "source": {
@@ -82,8 +86,12 @@
     {
       "date": "2026-01",
       "value": 8
+    },
+    {
+      "date": "2026-08",
+      "value": 9
     }
   ],
-  "last_checked": "2026-08-28",
-  "stale_after": "2026-10-12"
+  "last_checked": "2026-08-29",
+  "stale_after": "2026-10-13"
 }
