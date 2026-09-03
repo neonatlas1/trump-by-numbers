@@ -2,9 +2,9 @@
   "id": "trade_deficit",
   "name": "Trade deficit (goods & services)",
   "category": "Trade & Tariffs",
-  "value": 73.3,
+  "value": 88.6,
   "unit": "$B/mo",
-  "as_of": "2026-06",
+  "as_of": "2026-07",
   "direction": "up_is_bad",
   "baseline": {
     "label": "At inauguration (Jan 2025)",
@@ -1651,29 +1651,33 @@
     },
     {
       "date": "2026-01",
-      "value": 54.2
+      "value": 52.7
     },
     {
       "date": "2026-02",
-      "value": 55.0
+      "value": 52.5
     },
     {
       "date": "2026-03",
-      "value": 56.6
+      "value": 53.7
     },
     {
       "date": "2026-04",
-      "value": 54.6
+      "value": 52.9
     },
     {
       "date": "2026-05",
-      "value": 77.6
+      "value": 75.8
     },
     {
       "date": "2026-06",
-      "value": 73.3
+      "value": 71.2
+    },
+    {
+      "date": "2026-07",
+      "value": 88.6
     }
   ],
-  "last_checked": "2026-09-02",
-  "stale_after": "2026-09-08"
+  "last_checked": "2026-09-03",
+  "stale_after": "2026-10-09"
 }

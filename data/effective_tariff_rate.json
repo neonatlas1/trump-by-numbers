@@ -2,9 +2,9 @@
   "id": "effective_tariff_rate",
   "name": "Effective tariff rate",
   "category": "Trade & Tariffs",
-  "value": 7.65,
+  "value": 7.75,
   "unit": "%",
-  "as_of": "2026-06",
+  "as_of": "2026-07",
   "direction": "neutral",
   "source": {
     "name": "Computed: Treasury MTS \u00f7 Census/BEA imports (via FRED)",
@@ -555,13 +555,17 @@
     },
     {
       "date": "2026-05",
-      "value": 6.92
+      "value": 6.91
     },
     {
       "date": "2026-06",
-      "value": 7.65
+      "value": 7.64
+    },
+    {
+      "date": "2026-07",
+      "value": 7.75
     }
   ],
-  "last_checked": "2026-09-02",
-  "stale_after": "2026-09-08"
+  "last_checked": "2026-09-03",
+  "stale_after": "2026-10-09"
 }

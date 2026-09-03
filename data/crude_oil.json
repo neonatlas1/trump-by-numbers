@@ -2,13 +2,13 @@
   "id": "crude_oil",
   "name": "US crude oil production",
   "category": "Energy",
-  "value": 13.714,
+  "value": 13.792,
   "unit": "M b/d",
-  "as_of": "2026-05",
+  "as_of": "2026-06",
   "direction": "neutral",
   "record": {
-    "value": 13.967,
-    "date": "2026-04"
+    "value": 13.995,
+    "date": "2025-10"
   },
   "source": {
     "name": "U.S. Energy Information Administration",
@@ -18,7 +18,7 @@
   "note": "US field production of crude oil, million barrels per day (EIA monthly, history to 1920). Production responds to prices and shale economics with multi-year lags; records were also being set under the prior administration.",
   "baseline": {
     "label": "At inauguration (Jan 2025)",
-    "value": 13.14
+    "value": 13.167
   },
   "series": [
     {
@@ -4631,483 +4631,483 @@
     },
     {
       "date": "2016-01",
-      "value": 9.209
+      "value": 9.213
     },
     {
       "date": "2016-02",
-      "value": 9.067
+      "value": 9.073
     },
     {
       "date": "2016-03",
-      "value": 9.109
+      "value": 9.116
     },
     {
       "date": "2016-04",
-      "value": 8.88
+      "value": 8.886
     },
     {
       "date": "2016-05",
-      "value": 8.839
+      "value": 8.846
     },
     {
       "date": "2016-06",
-      "value": 8.679
+      "value": 8.686
     },
     {
       "date": "2016-07",
-      "value": 8.669
+      "value": 8.675
     },
     {
       "date": "2016-08",
-      "value": 8.695
+      "value": 8.7
     },
     {
       "date": "2016-09",
-      "value": 8.547
+      "value": 8.553
     },
     {
       "date": "2016-10",
-      "value": 8.809
+      "value": 8.816
     },
     {
       "date": "2016-11",
-      "value": 8.908
+      "value": 8.916
     },
     {
       "date": "2016-12",
-      "value": 8.82
+      "value": 8.826
     },
     {
       "date": "2017-01",
-      "value": 8.875
+      "value": 8.882
     },
     {
       "date": "2017-02",
-      "value": 9.097
+      "value": 9.12
     },
     {
       "date": "2017-03",
-      "value": 9.168
+      "value": 9.179
     },
     {
       "date": "2017-04",
-      "value": 9.105
+      "value": 9.116
     },
     {
       "date": "2017-05",
-      "value": 9.189
+      "value": 9.202
     },
     {
       "date": "2017-06",
-      "value": 9.113
+      "value": 9.123
     },
     {
       "date": "2017-07",
-      "value": 9.26
+      "value": 9.268
     },
     {
       "date": "2017-08",
-      "value": 9.262
+      "value": 9.273
     },
     {
       "date": "2017-09",
-      "value": 9.513
+      "value": 9.527
     },
     {
       "date": "2017-10",
-      "value": 9.667
+      "value": 9.68
     },
     {
       "date": "2017-11",
-      "value": 10.086
+      "value": 10.101
     },
     {
       "date": "2017-12",
-      "value": 9.987
+      "value": 10.007
     },
     {
       "date": "2018-01",
-      "value": 10.0
+      "value": 10.015
     },
     {
       "date": "2018-02",
-      "value": 10.263
+      "value": 10.297
     },
     {
       "date": "2018-03",
-      "value": 10.467
+      "value": 10.482
     },
     {
       "date": "2018-04",
-      "value": 10.493
+      "value": 10.511
     },
     {
       "date": "2018-05",
-      "value": 10.432
+      "value": 10.449
     },
     {
       "date": "2018-06",
-      "value": 10.641
+      "value": 10.657
     },
     {
       "date": "2018-07",
-      "value": 10.903
+      "value": 10.922
     },
     {
       "date": "2018-08",
-      "value": 11.396
+      "value": 11.416
     },
     {
       "date": "2018-09",
-      "value": 11.444
+      "value": 11.466
     },
     {
       "date": "2018-10",
-      "value": 11.508
+      "value": 11.528
     },
     {
       "date": "2018-11",
-      "value": 11.892
+      "value": 11.91
     },
     {
       "date": "2018-12",
-      "value": 11.951
+      "value": 11.97
     },
     {
       "date": "2019-01",
-      "value": 11.873
+      "value": 11.894
     },
     {
       "date": "2019-02",
-      "value": 11.653
+      "value": 11.692
     },
     {
       "date": "2019-03",
-      "value": 11.912
+      "value": 11.931
     },
     {
       "date": "2019-04",
-      "value": 12.144
+      "value": 12.165
     },
     {
       "date": "2019-05",
-      "value": 12.151
+      "value": 12.168
     },
     {
       "date": "2019-06",
-      "value": 12.222
+      "value": 12.237
     },
     {
       "date": "2019-07",
-      "value": 11.907
+      "value": 11.925
     },
     {
       "date": "2019-08",
-      "value": 12.488
+      "value": 12.504
     },
     {
       "date": "2019-09",
-      "value": 12.596
+      "value": 12.614
     },
     {
       "date": "2019-10",
-      "value": 12.809
+      "value": 12.832
     },
     {
       "date": "2019-11",
-      "value": 12.998
+      "value": 13.019
     },
     {
       "date": "2019-12",
-      "value": 12.983
+      "value": 13.003
     },
     {
       "date": "2020-01",
-      "value": 12.865
+      "value": 12.884
     },
     {
       "date": "2020-02",
-      "value": 12.864
+      "value": 12.88
     },
     {
       "date": "2020-03",
-      "value": 12.805
+      "value": 12.818
     },
     {
       "date": "2020-04",
-      "value": 11.918
+      "value": 11.933
     },
     {
       "date": "2020-05",
-      "value": 9.723
+      "value": 9.734
     },
     {
       "date": "2020-06",
-      "value": 10.45
+      "value": 10.462
     },
     {
       "date": "2020-07",
-      "value": 11.014
+      "value": 11.024
     },
     {
       "date": "2020-08",
-      "value": 10.6
+      "value": 10.611
     },
     {
       "date": "2020-09",
-      "value": 10.963
+      "value": 10.976
     },
     {
       "date": "2020-10",
-      "value": 10.492
+      "value": 10.503
     },
     {
       "date": "2020-11",
-      "value": 11.225
+      "value": 11.236
     },
     {
       "date": "2020-12",
-      "value": 11.188
+      "value": 11.199
     },
     {
       "date": "2021-01",
-      "value": 11.156
+      "value": 11.167
     },
     {
       "date": "2021-02",
-      "value": 9.931
+      "value": 9.953
     },
     {
       "date": "2021-03",
-      "value": 11.376
+      "value": 11.387
     },
     {
       "date": "2021-04",
-      "value": 11.355
+      "value": 11.366
     },
     {
       "date": "2021-05",
-      "value": 11.425
+      "value": 11.438
     },
     {
       "date": "2021-06",
-      "value": 11.401
+      "value": 11.411
     },
     {
       "date": "2021-07",
-      "value": 11.42
+      "value": 11.429
     },
     {
       "date": "2021-08",
-      "value": 11.318
+      "value": 11.327
     },
     {
       "date": "2021-09",
-      "value": 10.961
+      "value": 10.971
     },
     {
       "date": "2021-10",
-      "value": 11.64
+      "value": 11.649
     },
     {
       "date": "2021-11",
-      "value": 11.871
+      "value": 11.883
     },
     {
       "date": "2021-12",
-      "value": 11.76
+      "value": 11.782
     },
     {
       "date": "2022-01",
-      "value": 11.451
+      "value": 11.471
     },
     {
       "date": "2022-02",
-      "value": 11.465
+      "value": 11.518
     },
     {
       "date": "2022-03",
-      "value": 11.888
+      "value": 11.901
     },
     {
       "date": "2022-04",
-      "value": 11.83
+      "value": 11.845
     },
     {
       "date": "2022-05",
-      "value": 11.758
+      "value": 11.782
     },
     {
       "date": "2022-06",
-      "value": 11.919
+      "value": 11.943
     },
     {
       "date": "2022-07",
-      "value": 12.009
+      "value": 12.034
     },
     {
       "date": "2022-08",
-      "value": 12.134
+      "value": 12.159
     },
     {
       "date": "2022-09",
-      "value": 12.429
+      "value": 12.454
     },
     {
       "date": "2022-10",
-      "value": 12.442
+      "value": 12.459
     },
     {
       "date": "2022-11",
-      "value": 12.493
+      "value": 12.508
     },
     {
       "date": "2022-12",
-      "value": 12.202
+      "value": 12.216
     },
     {
       "date": "2023-01",
-      "value": 12.64
+      "value": 12.659
     },
     {
       "date": "2023-02",
-      "value": 12.621
+      "value": 12.645
     },
     {
       "date": "2023-03",
-      "value": 12.867
+      "value": 12.893
     },
     {
       "date": "2023-04",
-      "value": 12.734
+      "value": 12.76
     },
     {
       "date": "2023-05",
-      "value": 12.732
+      "value": 12.759
     },
     {
       "date": "2023-06",
-      "value": 12.787
+      "value": 12.826
     },
     {
       "date": "2023-07",
-      "value": 12.912
+      "value": 12.946
     },
     {
       "date": "2023-08",
-      "value": 12.999
+      "value": 13.033
     },
     {
       "date": "2023-09",
-      "value": 13.178
+      "value": 13.199
     },
     {
       "date": "2023-10",
-      "value": 13.213
+      "value": 13.248
     },
     {
       "date": "2023-11",
-      "value": 13.316
+      "value": 13.344
     },
     {
       "date": "2023-12",
-      "value": 13.297
+      "value": 13.325
     },
     {
       "date": "2024-01",
-      "value": 12.517
+      "value": 12.551
     },
     {
       "date": "2024-02",
-      "value": 13.129
+      "value": 13.166
     },
     {
       "date": "2024-03",
-      "value": 13.19
+      "value": 13.196
     },
     {
       "date": "2024-04",
-      "value": 13.314
+      "value": 13.317
     },
     {
       "date": "2024-05",
-      "value": 13.256
+      "value": 13.253
     },
     {
       "date": "2024-06",
-      "value": 13.252
+      "value": 13.243
     },
     {
       "date": "2024-07",
-      "value": 13.212
+      "value": 13.229
     },
     {
       "date": "2024-08",
-      "value": 13.411
+      "value": 13.416
     },
     {
       "date": "2024-09",
-      "value": 13.171
+      "value": 13.228
     },
     {
       "date": "2024-10",
-      "value": 13.53
+      "value": 13.583
     },
     {
       "date": "2024-11",
-      "value": 13.396
+      "value": 13.491
     },
     {
       "date": "2024-12",
-      "value": 13.437
+      "value": 13.53
     },
     {
       "date": "2025-01",
-      "value": 13.14
+      "value": 13.167
     },
     {
       "date": "2025-02",
-      "value": 13.24
+      "value": 13.269
     },
     {
       "date": "2025-03",
-      "value": 13.453
+      "value": 13.527
     },
     {
       "date": "2025-04",
-      "value": 13.466
+      "value": 13.558
     },
     {
       "date": "2025-05",
-      "value": 13.447
+      "value": 13.535
     },
     {
       "date": "2025-06",
-      "value": 13.61
+      "value": 13.656
     },
     {
       "date": "2025-07",
-      "value": 13.707
+      "value": 13.724
     },
     {
       "date": "2025-08",
-      "value": 13.81
+      "value": 13.835
     },
     {
       "date": "2025-09",
-      "value": 13.828
+      "value": 13.917
     },
     {
       "date": "2025-10",
-      "value": 13.864
+      "value": 13.995
     },
     {
       "date": "2025-11",
-      "value": 13.789
+      "value": 13.927
     },
     {
       "date": "2025-12",
-      "value": 13.657
+      "value": 13.81
     },
     {
       "date": "2026-01",
@@ -5123,13 +5123,17 @@
     },
     {
       "date": "2026-04",
-      "value": 13.967
+      "value": 13.981
     },
     {
       "date": "2026-05",
-      "value": 13.714
+      "value": 13.755
+    },
+    {
+      "date": "2026-06",
+      "value": 13.792
     }
   ],
-  "last_checked": "2026-09-01",
-  "stale_after": "2026-08-09"
+  "last_checked": "2026-09-03",
+  "stale_after": "2026-09-08"
 }
