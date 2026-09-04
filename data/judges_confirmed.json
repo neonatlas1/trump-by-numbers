@@ -4,7 +4,7 @@
   "category": "Executive Power & Governance",
   "value": 54,
   "unit": "judges",
-  "as_of": "2026-09-03",
+  "as_of": "2026-09-04",
   "since": "2025-01-20",
   "direction": "neutral",
   "comparison": {
@@ -972,6 +972,6 @@
       "value": 54
     }
   ],
-  "last_checked": "2026-09-03",
-  "stale_after": "2026-09-17"
+  "last_checked": "2026-09-04",
+  "stale_after": "2026-09-18"
 }
