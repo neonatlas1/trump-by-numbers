@@ -2,9 +2,9 @@
   "id": "interest_on_debt",
   "name": "Interest on the public debt (fiscal-YTD)",
   "category": "Public Finances",
-  "value": 1170.0,
+  "value": 1267.8,
   "unit": "$B",
-  "as_of": "2026-07",
+  "as_of": "2026-08",
   "direction": "up_is_bad",
   "source": {
     "name": "U.S. Treasury \u2014 Fiscal Data",
@@ -14,7 +14,7 @@
   "note": "Cumulative interest paid on all federal debt this fiscal year (resets each October). Includes intragovernmental holdings; single months are lumpy.",
   "comparison": {
     "label": "Same period, prior fiscal year",
-    "value": 1017.3
+    "value": 1128.8
   },
   "series": [
     {
@@ -680,8 +680,12 @@
     {
       "date": "2026-07",
       "value": 1170.0
+    },
+    {
+      "date": "2026-08",
+      "value": 1267.8
     }
   ],
-  "last_checked": "2026-09-04",
-  "stale_after": "2026-10-09"
+  "last_checked": "2026-09-05",
+  "stale_after": "2026-11-09"
 }
