@@ -1,29 +1,29 @@
 {
   "https://ohss.dhs.gov/topics/immigration/immigration-enforcement/monthly-tables": {
-    "checked": "2026-09-07",
+    "checked": "2026-09-08",
     "etag": null,
     "last_modified": null,
     "pending_lm": null
   },
   "https://travel.state.gov/content/travel/en/legal/visa-law0/visa-statistics.html": {
-    "checked": "2026-09-07",
+    "checked": "2026-09-08",
     "etag": null,
     "last_modified": null,
     "pending_lm": null
   },
   "https://www.ice.gov/detain/detainee-death-reporting": {
-    "checked": "2026-09-07",
-    "etag": "\"1788797798\"",
+    "checked": "2026-09-08",
+    "etag": "\"1788876873\"",
     "flagged_lm": "2026-08-25",
-    "last_modified": "2026-09-07",
-    "pending_lm": "2026-09-07"
+    "last_modified": "2026-09-08",
+    "pending_lm": "2026-09-08"
   },
   "https://www.ice.gov/statistics": {
-    "checked": "2026-09-07",
-    "etag": "\"1788795912\"",
+    "checked": "2026-09-08",
+    "etag": "\"1788879121\"",
     "flagged_lm": "2026-08-25",
-    "last_modified": "2026-09-07",
-    "pending_lm": "2026-09-07"
+    "last_modified": "2026-09-08",
+    "pending_lm": "2026-09-08"
   },
   "https://www.justice.gov/pardon/clemency-statistics": {
     "checked": "2026-08-25",
@@ -33,13 +33,13 @@
     "pending_lm": "2026-08-22"
   },
   "https://www.justice.gov/usao-dc/capitol-breach-cases": {
-    "checked": "2026-09-07",
+    "checked": "2026-09-08",
     "etag": null,
     "last_modified": null,
     "pending_lm": null
   },
   "https://www.war.gov/casualty.pdf": {
-    "checked": "2026-09-07",
+    "checked": "2026-09-08",
     "etag": null,
     "last_modified": null,
     "pending_lm": null
