@@ -2,12 +2,12 @@
   "id": "clemency",
   "name": "Clemency (pardons & commutations)",
   "category": "Executive Power & Governance",
-  "value": 135,
+  "value": 165,
   "unit": "named grants",
-  "as_of": "2026-07-03",
+  "as_of": "2026-09-08",
   "since": "2025-01-20",
   "direction": "neutral",
-  "individuals_covered_approx": 1635,
+  "individuals_covered_approx": 1665,
   "jan6_proclamation": {
     "individuals_approx": 1500,
     "date": "2025-01-20",
@@ -73,8 +73,12 @@
     {
       "date": "2026-07",
       "value": 135
+    },
+    {
+      "date": "2026-09",
+      "value": 165
     }
   ],
-  "last_checked": "2026-09-09",
-  "stale_after": "2026-10-31"
+  "last_checked": "2026-09-10",
+  "stale_after": "2027-01-06"
 }
