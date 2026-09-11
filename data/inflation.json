@@ -4,7 +4,7 @@
   "category": "Cost of Living",
   "value": 3.4,
   "unit": "%",
-  "as_of": "2026-07",
+  "as_of": "2026-08",
   "direction": "up_is_bad",
   "target": {
     "label": "Federal Reserve target",
@@ -424,8 +424,12 @@
     {
       "date": "2026-07",
       "value": 3.4
+    },
+    {
+      "date": "2026-08",
+      "value": 3.4
     }
   ],
-  "last_checked": "2026-09-10",
-  "stale_after": "2026-10-09"
+  "last_checked": "2026-09-11",
+  "stale_after": "2026-11-09"
 }

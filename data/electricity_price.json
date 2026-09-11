@@ -2,9 +2,9 @@
   "id": "electricity_price",
   "name": "Electricity price (residential)",
   "category": "Energy",
-  "value": 0.197,
+  "value": 0.196,
   "unit": "$/kWh",
-  "as_of": "2026-07",
+  "as_of": "2026-08",
   "direction": "up_is_bad",
   "source": {
     "name": "Bureau of Labor Statistics (via FRED)",
@@ -2300,8 +2300,12 @@
     {
       "date": "2026-07",
       "value": 0.197
+    },
+    {
+      "date": "2026-08",
+      "value": 0.196
     }
   ],
-  "last_checked": "2026-09-10",
-  "stale_after": "2026-10-09"
+  "last_checked": "2026-09-11",
+  "stale_after": "2026-11-09"
 }
