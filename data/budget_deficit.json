@@ -2,9 +2,9 @@
   "id": "budget_deficit",
   "name": "Federal budget deficit (fiscal-YTD)",
   "category": "Public Finances",
-  "value": 1798.8,
+  "value": 1965.6,
   "unit": "$B",
-  "as_of": "2026-07",
+  "as_of": "2026-08",
   "direction": "up_is_bad",
   "source": {
     "name": "U.S. Treasury \u2014 Monthly Treasury Statement",
@@ -14,7 +14,7 @@
   "note": "Cumulative federal budget deficit so far this fiscal year (resets each October).",
   "comparison": {
     "label": "Same period, prior fiscal year",
-    "value": 1628.5
+    "value": 1973.3
   },
   "series": [
     {
@@ -476,8 +476,12 @@
     {
       "date": "2026-07",
       "value": 1798.8
+    },
+    {
+      "date": "2026-08",
+      "value": 1965.6
     }
   ],
-  "last_checked": "2026-09-11",
-  "stale_after": "2026-10-09"
+  "last_checked": "2026-09-12",
+  "stale_after": "2026-11-09"
 }

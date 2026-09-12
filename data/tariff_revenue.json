@@ -2,22 +2,22 @@
   "id": "tariff_revenue",
   "name": "Tariff revenue (customs duties, fiscal-YTD)",
   "category": "Trade & Tariffs",
-  "value": 269.2,
+  "value": 292.5,
   "unit": "$B",
-  "as_of": "2026-07",
+  "as_of": "2026-08",
   "direction": "neutral",
-  "net_fytd": 154.5,
-  "month_gross": 24.8,
-  "month_net": -8.5,
+  "net_fytd": 167.3,
+  "month_gross": 23.4,
+  "month_net": 12.8,
   "source": {
     "name": "U.S. Treasury \u2014 Monthly Treasury Statement",
     "url": "https://fiscaldata.treasury.gov/datasets/monthly-treasury-statement/receipts-of-the-u-s-government"
   },
   "cadence": "Monthly",
-  "note": "Customs duties collected this fiscal year (resets each October). Gross collections; net of refunds $154B. Courts ordered large tariff refunds in 2026, so both are shown \u2014 either alone misleads.",
+  "note": "Customs duties collected this fiscal year (resets each October). Gross collections; net of refunds $167B. Courts ordered large tariff refunds in 2026, so both are shown \u2014 either alone misleads.",
   "comparison": {
     "label": "Same period last fiscal year (gross)",
-    "value": 141.7
+    "value": 171.9
   },
   "series_net": [
     {
@@ -567,6 +567,10 @@
     {
       "date": "2026-07",
       "value": 154.5
+    },
+    {
+      "date": "2026-08",
+      "value": 167.3
     }
   ],
   "series": [
@@ -1117,8 +1121,12 @@
     {
       "date": "2026-07",
       "value": 269.2
+    },
+    {
+      "date": "2026-08",
+      "value": 292.5
     }
   ],
-  "last_checked": "2026-09-11",
-  "stale_after": "2026-10-09"
+  "last_checked": "2026-09-12",
+  "stale_after": "2026-11-09"
 }

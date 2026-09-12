@@ -2,9 +2,9 @@
   "id": "defense_outlays",
   "name": "Defense outlays (fiscal-YTD)",
   "category": "War & Defense",
-  "value": 764.7,
+  "value": 832.6,
   "unit": "$B",
-  "as_of": "2026-07",
+  "as_of": "2026-08",
   "direction": "neutral",
   "source": {
     "name": "U.S. Treasury Monthly Treasury Statement",
@@ -14,11 +14,11 @@
   "note": "Net outlays of the Department of Defense \u2014 Military Programs, fiscal-year-to-date (military pay, operations, procurement, R&D; excludes VA and civil programs). Congress appropriates; outlays lag decisions.",
   "comparison": {
     "label": "Same point last fiscal year",
-    "value": 718.9
+    "value": 797.0
   },
   "latest_month": {
-    "gross": 85.8,
-    "net": 86.0
+    "gross": 68.9,
+    "net": 67.9
   },
   "series": [
     {
@@ -568,8 +568,12 @@
     {
       "date": "2026-07",
       "value": 764.7
+    },
+    {
+      "date": "2026-08",
+      "value": 832.6
     }
   ],
-  "last_checked": "2026-09-11",
-  "stale_after": "2026-10-09"
+  "last_checked": "2026-09-12",
+  "stale_after": "2026-11-09"
 }
