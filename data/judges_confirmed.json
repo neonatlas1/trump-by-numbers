@@ -4,14 +4,14 @@
   "category": "Executive Power & Governance",
   "value": 54,
   "unit": "judges",
-  "as_of": "2026-09-13",
+  "as_of": "2026-09-14",
   "since": "2025-01-20",
   "direction": "neutral",
   "comparison": {
     "label": "His first term at the same point",
     "value": 69
   },
-  "biden_same_point": 80,
+  "biden_same_point": 81,
   "aligned": {
     "trump2": [
       {
@@ -972,6 +972,6 @@
       "value": 54
     }
   ],
-  "last_checked": "2026-09-13",
-  "stale_after": "2026-09-27"
+  "last_checked": "2026-09-14",
+  "stale_after": "2026-09-28"
 }
