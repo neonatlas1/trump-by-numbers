@@ -2,9 +2,9 @@
   "id": "border_encounters",
   "name": "Southwest border encounters",
   "category": "Immigration",
-  "value": 12730,
+  "value": 12242,
   "unit": "per month",
-  "as_of": "2026-07",
+  "as_of": "2026-08",
   "direction": "neutral",
   "source": {
     "name": "U.S. Customs and Border Protection",
@@ -14,7 +14,7 @@
   "note": "Monthly Southwest land border encounters. Counts events, not unique people; composition shifts at the May 2023 Title 42 \u2192 Title 8 change.",
   "comparison": {
     "label": "Same month, prior year",
-    "value": 7822
+    "value": 9731
   },
   "archive_checked": "2026-08-04",
   "series": [
@@ -616,25 +616,29 @@
     },
     {
       "date": "2026-03",
-      "value": 11734
+      "value": 11735
     },
     {
       "date": "2026-04",
-      "value": 12855
+      "value": 12857
     },
     {
       "date": "2026-05",
-      "value": 13538
+      "value": 13542
     },
     {
       "date": "2026-06",
-      "value": 12907
+      "value": 12905
     },
     {
       "date": "2026-07",
       "value": 12730
+    },
+    {
+      "date": "2026-08",
+      "value": 12242
     }
   ],
-  "last_checked": "2026-09-15",
-  "stale_after": "2026-10-09"
+  "last_checked": "2026-09-16",
+  "stale_after": "2026-11-09"
 }
