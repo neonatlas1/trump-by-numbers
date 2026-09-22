@@ -2,9 +2,9 @@
   "id": "military_deaths",
   "name": "US military deaths (current operations)",
   "category": "War & Defense",
-  "value": 18,
+  "value": 19,
   "unit": "deaths",
-  "as_of": "2026-09-18",
+  "as_of": "2026-09-21",
   "direction": "up_is_bad",
   "per_operation": {
     "Operation Epic Fury": {
@@ -12,7 +12,7 @@
       "wounded": 418
     },
     "Overseas Operations": {
-      "deaths": 4,
+      "deaths": 5,
       "wounded": 414
     }
   },
@@ -47,17 +47,17 @@
     },
     {
       "date": "2026-07",
-      "value": 14
+      "value": 18
     },
     {
       "date": "2026-08",
-      "value": 14
+      "value": 18
     },
     {
       "date": "2026-09",
-      "value": 14
+      "value": 19
     }
   ],
-  "last_checked": "2026-09-21",
-  "stale_after": "2026-10-18"
+  "last_checked": "2026-09-22",
+  "stale_after": "2026-10-21"
 }
