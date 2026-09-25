@@ -2,9 +2,9 @@
   "id": "judges_confirmed",
   "name": "Federal judges confirmed (Article III)",
   "category": "Executive Power & Governance",
-  "value": 56,
+  "value": 57,
   "unit": "judges",
-  "as_of": "2026-09-24",
+  "as_of": "2026-09-25",
   "since": "2025-01-20",
   "direction": "neutral",
   "comparison": {
@@ -96,7 +96,7 @@
       },
       {
         "month": 20,
-        "value": 56
+        "value": 57
       }
     ],
     "trump1": [
@@ -907,7 +907,7 @@
     },
     {
       "president": "Donald J. Trump",
-      "total": 293,
+      "total": 294,
       "from": "2017"
     },
     {
@@ -973,9 +973,9 @@
     },
     {
       "date": "2026-09",
-      "value": 56
+      "value": 57
     }
   ],
-  "last_checked": "2026-09-24",
-  "stale_after": "2026-10-08"
+  "last_checked": "2026-09-25",
+  "stale_after": "2026-10-09"
 }
