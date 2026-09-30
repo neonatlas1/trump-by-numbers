@@ -2,9 +2,9 @@
   "id": "crude_oil",
   "name": "US crude oil production",
   "category": "Energy",
-  "value": 13.792,
+  "value": 13.948,
   "unit": "M b/d",
-  "as_of": "2026-06",
+  "as_of": "2026-07",
   "direction": "neutral",
   "record": {
     "value": 13.995,
@@ -5127,13 +5127,17 @@
     },
     {
       "date": "2026-05",
-      "value": 13.755
+      "value": 13.811
     },
     {
       "date": "2026-06",
-      "value": 13.792
+      "value": 13.844
+    },
+    {
+      "date": "2026-07",
+      "value": 13.948
     }
   ],
-  "last_checked": "2026-09-29",
-  "stale_after": "2026-09-08"
+  "last_checked": "2026-09-30",
+  "stale_after": "2026-10-09"
 }
