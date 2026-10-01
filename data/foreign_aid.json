@@ -2,9 +2,9 @@
   "id": "foreign_aid",
   "name": "Foreign aid & international affairs (obligations)",
   "category": "War & Defense",
-  "value": 35.6,
+  "value": 71.6,
   "unit": "$B",
-  "as_of": "2026-06",
+  "as_of": "2025-09",
   "direction": "neutral",
   "source": {
     "name": "USAspending (budget function 150)",
@@ -13,11 +13,6 @@
   "cadence": "Quarterly",
   "stale_days": 160,
   "note": "Federal obligations under budget function 150 \u2014 International Affairs \u2014 the official category covering development and humanitarian aid, security assistance, State operations and multilateral contributions. Obligations are commitments, not cash delivered; the USAID\u2192State transition muddies 2025 reporting (cross-checked against foreignassistance.gov).",
-  "comparison": {
-    "label": "Same point FY2025",
-    "value": 39.2
-  },
-  "fytd_quarter": 3,
   "series": [
     {
       "date": "2017-09",
@@ -64,6 +59,6 @@
       "value": 35.6
     }
   ],
-  "last_checked": "2026-09-30",
-  "stale_after": "2026-12-07"
+  "last_checked": "2026-10-01",
+  "stale_after": "2026-03-09"
 }
