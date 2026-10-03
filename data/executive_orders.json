@@ -4,12 +4,12 @@
   "category": "Executive Power & Governance",
   "value": 289,
   "unit": "orders",
-  "as_of": "2026-10-02",
+  "as_of": "2026-10-03",
   "since": "2025-01-20",
   "direction": "neutral",
   "comparison": {
     "label": "Biden at the same point in his term",
-    "value": 100
+    "value": 101
   },
   "source": {
     "name": "Federal Register",
@@ -901,6 +901,6 @@
       "value": 289
     }
   ],
-  "last_checked": "2026-10-02",
-  "stale_after": "2026-10-14"
+  "last_checked": "2026-10-03",
+  "stale_after": "2026-10-15"
 }

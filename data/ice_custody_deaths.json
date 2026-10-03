@@ -4,7 +4,7 @@
   "category": "Immigration",
   "value": 0,
   "unit": "deaths, FY2027 to date",
-  "as_of": "2026-10-02",
+  "as_of": "2026-10-03",
   "direction": "up_is_bad",
   "fy_counts": {
     "2018": 6,
@@ -62,6 +62,6 @@
       "value": 36
     }
   ],
-  "last_checked": "2026-10-02",
-  "stale_after": "2026-12-31"
+  "last_checked": "2026-10-03",
+  "stale_after": "2027-01-01"
 }
