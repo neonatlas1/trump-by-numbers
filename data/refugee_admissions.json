@@ -2,13 +2,13 @@
   "id": "refugee_admissions",
   "name": "Refugee admissions (fiscal-YTD)",
   "category": "Immigration",
-  "value": 10258,
+  "value": 16292,
   "unit": "arrivals",
-  "as_of": "2026-07-31",
+  "as_of": "2026-09-30",
   "direction": "neutral",
   "source": {
     "name": "State Dept Refugee Processing Center (monthly report)",
-    "url": "https://www.rpc.state.gov/documents/Refugee%20Arrivals%20by%20State%20and%20Nationality%20as%20of%20July%2031,%202026.pdf"
+    "url": "https://www.rpc.state.gov/documents/Refugee%20Arrivals%20by%20State%20and%20Nationality%20as%20of%20September%2030,%202026.pdf"
   },
   "cadence": "Monthly",
   "stale_days": 100,
@@ -21,8 +21,12 @@
     {
       "date": "2026-07",
       "value": 10258
+    },
+    {
+      "date": "2026-09",
+      "value": 16292
     }
   ],
-  "last_checked": "2026-10-05",
-  "stale_after": "2026-11-08"
+  "last_checked": "2026-10-06",
+  "stale_after": "2027-01-08"
 }
