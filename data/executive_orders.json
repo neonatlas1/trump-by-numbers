@@ -4,7 +4,7 @@
   "category": "Executive Power & Governance",
   "value": 289,
   "unit": "orders",
-  "as_of": "2026-10-07",
+  "as_of": "2026-10-08",
   "since": "2025-01-20",
   "direction": "neutral",
   "comparison": {
@@ -901,6 +901,6 @@
       "value": 289
     }
   ],
-  "last_checked": "2026-10-07",
-  "stale_after": "2026-10-19"
+  "last_checked": "2026-10-08",
+  "stale_after": "2026-10-20"
 }
