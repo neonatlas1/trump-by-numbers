@@ -2,19 +2,19 @@
   "id": "approval_rating",
   "name": "Presidential approval",
   "category": "Executive Power & Governance",
-  "value": 35.7,
+  "value": 36.5,
   "unit": "% approve",
-  "as_of": "2026-08-28",
+  "as_of": "2026-10-06",
   "direction": "neutral",
-  "disapprove": 58.0,
-  "net": -22.3,
-  "n_polls": 3,
+  "disapprove": 62.0,
+  "net": -25.5,
+  "n_polls": 2,
   "source": {
     "name": "VoteHub poll aggregate (CC-BY)",
     "url": "https://votehub.com/polls/"
   },
   "cadence": "Weekly",
-  "note": "Simple average of 3 national polls (one per pollster). Opinion data, not a government statistic \u2014 the board's one survey-derived metric. VoteHub's public feed has carried no new national approval poll since Aug 28, 2026; the figure shown is the last aggregate, checked daily.",
+  "note": "Simple average of 2 national polls (one per pollster, last ~2 weeks). Opinion data, not a government statistic \u2014 the board's one survey-derived metric.",
   "gallup": {
     "term_quarter": 7,
     "same_quarter": {
@@ -95,7 +95,6 @@
     "method_note": "Gallup measured approval by daily tracking 2009-2017 (~90 polls/quarter, Obama), weekly averages in 2018, and roughly monthly discrete surveys from 2019 (Trump-1 later quarters ~3-13 polls, Biden ~3). Averages are comparable; poll density is not - stated in the card's caveats.",
     "source_note": "Verified 12 Aug 2026 directly against news.gallup.com pages. Canonical same-point table (7th-quarter averages, all three presidents in one Gallup table): news.gallup.com/poll/403970. Per-quarter articles: Biden Q1-13 table in poll/644252 (Q1-10 re-confirmed in poll/509186; Q14 in poll/647633); Trump-1 per-quarter articles poll/214322, 220742, 226154, 233135, 237878, 249041, 260780, 267536, 283910, 322310 (+ tables in 644252/647633); Obama per-quarter articles poll/117598, 123806, 125096, 143921, 145742, 147218, 150230, 154037, 155918, 159965 (+ shared tables)."
   },
-  "source_stalled_since": "2026-08-28",
   "series": [
     {
       "date": "2026-06-29",
@@ -108,8 +107,12 @@
     {
       "date": "2026-08-28",
       "value": 35.7
+    },
+    {
+      "date": "2026-10-06",
+      "value": 36.5
     }
   ],
-  "last_checked": "2026-10-09",
-  "stale_after": "2026-09-11"
+  "last_checked": "2026-10-10",
+  "stale_after": "2026-10-20"
 }

@@ -2,21 +2,21 @@
   "id": "military_deaths",
   "name": "US military deaths (current operations)",
   "category": "War & Defense",
-  "value": 19,
+  "value": 21,
   "unit": "deaths",
-  "as_of": "2026-09-29",
+  "as_of": "2026-10-09",
   "direction": "up_is_bad",
   "per_operation": {
     "Operation Epic Fury": {
-      "deaths": 14,
-      "wounded": 418
+      "deaths": 15,
+      "wounded": 417
     },
     "Overseas Operations": {
-      "deaths": 5,
-      "wounded": 443
+      "deaths": 6,
+      "wounded": 448
     }
   },
-  "wounded_total": 861,
+  "wounded_total": 865,
   "source": {
     "name": "Defense Casualty Analysis System (DMDC)",
     "url": "https://dcas.dmdc.osd.mil/dcas/conflictCasualties"
@@ -31,33 +31,37 @@
     },
     {
       "date": "2026-03",
-      "value": 13
+      "value": 14
     },
     {
       "date": "2026-04",
-      "value": 13
+      "value": 14
     },
     {
       "date": "2026-05",
-      "value": 13
+      "value": 14
     },
     {
       "date": "2026-06",
-      "value": 13
+      "value": 14
     },
     {
       "date": "2026-07",
-      "value": 18
+      "value": 19
     },
     {
       "date": "2026-08",
-      "value": 18
+      "value": 19
     },
     {
       "date": "2026-09",
-      "value": 19
+      "value": 21
+    },
+    {
+      "date": "2026-10",
+      "value": 21
     }
   ],
-  "last_checked": "2026-10-09",
-  "stale_after": "2026-10-29"
+  "last_checked": "2026-10-10",
+  "stale_after": "2026-11-08"
 }
