@@ -2,9 +2,9 @@
   "id": "overdose_deaths",
   "name": "Drug overdose deaths (trailing 12 months)",
   "category": "Health & Safety Net",
-  "value": 66937,
+  "value": 66478,
   "unit": "deaths/12mo",
-  "as_of": "2026-04",
+  "as_of": "2026-05",
   "direction": "up_is_bad",
   "source": {
     "name": "CDC \u2014 NCHS provisional overdose counts",
@@ -548,21 +548,25 @@
     },
     {
       "date": "2026-01",
-      "value": 69800
+      "value": 69835
     },
     {
       "date": "2026-02",
-      "value": 69150
+      "value": 69216
     },
     {
       "date": "2026-03",
-      "value": 67923
+      "value": 68080
     },
     {
       "date": "2026-04",
-      "value": 66937
+      "value": 67209
+    },
+    {
+      "date": "2026-05",
+      "value": 66478
     }
   ],
-  "last_checked": "2026-10-13",
-  "stale_after": "2026-12-26"
+  "last_checked": "2026-10-14",
+  "stale_after": "2027-01-26"
 }

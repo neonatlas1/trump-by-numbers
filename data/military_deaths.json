@@ -4,7 +4,7 @@
   "category": "War & Defense",
   "value": 21,
   "unit": "deaths",
-  "as_of": "2026-10-09",
+  "as_of": "2026-10-13",
   "direction": "up_is_bad",
   "per_operation": {
     "Operation Epic Fury": {
@@ -62,6 +62,6 @@
       "value": 21
     }
   ],
-  "last_checked": "2026-10-13",
-  "stale_after": "2026-11-08"
+  "last_checked": "2026-10-14",
+  "stale_after": "2026-11-12"
 }
