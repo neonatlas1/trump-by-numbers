@@ -16,11 +16,11 @@
   "cadence": "Weekly",
   "note": "Simple average of 2 national polls (one per pollster, last ~2 weeks). Opinion data, not a government statistic \u2014 the board's one survey-derived metric.",
   "gallup": {
-    "term_quarter": 7,
+    "term_quarter": 8,
     "same_quarter": {
-      "biden": 42.0,
-      "trump1": 41.1,
-      "obama": 44.7
+      "biden": 40.5,
+      "trump1": 39.3,
+      "obama": 46.0
     },
     "quarterly": {
       "biden": {
@@ -113,6 +113,6 @@
       "value": 36.5
     }
   ],
-  "last_checked": "2026-10-19",
+  "last_checked": "2026-10-20",
   "stale_after": "2026-10-20"
 }

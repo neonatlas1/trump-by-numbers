@@ -2,9 +2,9 @@
   "id": "national_debt",
   "name": "National debt",
   "category": "Public Finances",
-  "value": 40388317675071.91,
+  "value": 40387508795231.67,
   "unit": "USD",
-  "as_of": "2026-10-15",
+  "as_of": "2026-10-16",
   "direction": "up_is_bad",
   "baseline": {
     "label": "At inauguration (2025-01-17)",
@@ -9844,8 +9844,12 @@
     {
       "date": "2026-10-15",
       "value": 40388317675071.91
+    },
+    {
+      "date": "2026-10-16",
+      "value": 40387508795231.67
     }
   ],
-  "last_checked": "2026-10-19",
-  "stale_after": "2026-10-20"
+  "last_checked": "2026-10-20",
+  "stale_after": "2026-10-21"
 }
