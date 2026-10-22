@@ -2,9 +2,9 @@
   "id": "gas_price",
   "name": "Gas price (regular)",
   "category": "Cost of Living",
-  "value": 4.331,
+  "value": 4.284,
   "unit": "$/gal",
-  "as_of": "2026-10-12",
+  "as_of": "2026-10-19",
   "direction": "up_is_bad",
   "baseline": {
     "label": "At inauguration (Jan 2025)",
@@ -7540,8 +7540,12 @@
     {
       "date": "2026-10-12",
       "value": 4.331
+    },
+    {
+      "date": "2026-10-19",
+      "value": 4.284
     }
   ],
-  "last_checked": "2026-10-20",
-  "stale_after": "2026-10-26"
+  "last_checked": "2026-10-22",
+  "stale_after": "2026-11-02"
 }

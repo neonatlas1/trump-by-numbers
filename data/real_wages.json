@@ -2,9 +2,9 @@
   "id": "real_wages",
   "name": "Real wages (median weekly earnings)",
   "category": "Economy & Jobs",
-  "value": 378.0,
+  "value": 370.0,
   "unit": "$/wk (1982-84 $)",
-  "as_of": "2026-06",
+  "as_of": "2026-09",
   "direction": "up_is_good",
   "source": {
     "name": "Bureau of Labor Statistics (via FRED)",
@@ -772,8 +772,12 @@
     {
       "date": "2026-06",
       "value": 378.0
+    },
+    {
+      "date": "2026-09",
+      "value": 370.0
     }
   ],
-  "last_checked": "2026-10-20",
-  "stale_after": "2026-11-07"
+  "last_checked": "2026-10-22",
+  "stale_after": "2027-02-07"
 }
