@@ -2,9 +2,9 @@
   "id": "renewable_share",
   "name": "Renewable share of electricity generation",
   "category": "Energy",
-  "value": 21.9,
+  "value": 21.4,
   "unit": "%",
-  "as_of": "2026-07",
+  "as_of": "2026-08",
   "direction": "neutral",
   "source": {
     "name": "EIA Electric Power Monthly, Table 1.1",
@@ -15,7 +15,7 @@
   "note": "Share of US utility-scale electricity generated from renewables (conventional hydro, wind, solar, geothermal, biomass) \u2014 a computed ratio of EIA's own generation-by-source figures. Excludes small-scale rooftop solar and pumped storage; the mix is seasonal (hydro peaks in spring, solar in summer), so same-month comparisons matter.",
   "baseline": {
     "label": "At inauguration (Jan 2025)",
-    "value": 21.3
+    "value": 21.0
   },
   "series": [
     {
@@ -68,31 +68,31 @@
     },
     {
       "date": "2025-01",
-      "value": 21.3
+      "value": 21.0
     },
     {
       "date": "2025-02",
-      "value": 23.7
+      "value": 23.4
     },
     {
       "date": "2025-03",
-      "value": 30.5
+      "value": 30.4
     },
     {
       "date": "2025-04",
-      "value": 31.3
+      "value": 31.5
     },
     {
       "date": "2025-05",
-      "value": 27.9
+      "value": 28.3
     },
     {
       "date": "2025-06",
-      "value": 24.2
+      "value": 24.5
     },
     {
       "date": "2025-07",
-      "value": 20.3
+      "value": 20.5
     },
     {
       "date": "2025-08",
@@ -104,19 +104,19 @@
     },
     {
       "date": "2025-10",
-      "value": 24.8
+      "value": 24.6
     },
     {
       "date": "2025-11",
-      "value": 24.8
+      "value": 24.2
     },
     {
       "date": "2025-12",
-      "value": 24.0
+      "value": 23.3
     },
     {
       "date": "2026-01",
-      "value": 24.0
+      "value": 23.9
     },
     {
       "date": "2026-02",
@@ -124,25 +124,29 @@
     },
     {
       "date": "2026-03",
-      "value": 32.5
+      "value": 32.6
     },
     {
       "date": "2026-04",
-      "value": 32.4
+      "value": 32.3
     },
     {
       "date": "2026-05",
-      "value": 29.7
+      "value": 29.4
     },
     {
       "date": "2026-06",
-      "value": 27.4
+      "value": 27.3
     },
     {
       "date": "2026-07",
-      "value": 21.9
+      "value": 21.6
+    },
+    {
+      "date": "2026-08",
+      "value": 21.4
     }
   ],
-  "last_checked": "2026-10-23",
-  "stale_after": "2026-10-29"
+  "last_checked": "2026-10-24",
+  "stale_after": "2026-11-29"
 }
