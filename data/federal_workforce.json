@@ -2,9 +2,9 @@
   "id": "federal_workforce",
   "name": "Federal workforce (civilian employment)",
   "category": "Economy & Jobs",
-  "value": 2682.0,
+  "value": 2677.0,
   "unit": "thousand employees",
-  "as_of": "2026-09",
+  "as_of": "2026-10",
   "direction": "neutral",
   "source": {
     "name": "Bureau of Labor Statistics (via FRED)",
@@ -4223,13 +4223,17 @@
     },
     {
       "date": "2026-08",
-      "value": 2683.0
+      "value": 2681.0
     },
     {
       "date": "2026-09",
-      "value": 2682.0
+      "value": 2678.0
+    },
+    {
+      "date": "2026-10",
+      "value": 2677.0
     }
   ],
-  "last_checked": "2026-11-05",
-  "stale_after": "2026-12-09"
+  "last_checked": "2026-11-06",
+  "stale_after": "2027-01-09"
 }
