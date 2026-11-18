@@ -2,7 +2,7 @@
   "id": "foreign_aid",
   "name": "Foreign aid & international affairs (obligations)",
   "category": "War & Defense",
-  "value": 67.7,
+  "value": 67.8,
   "unit": "$B",
   "as_of": "2026-09",
   "direction": "neutral",
@@ -60,9 +60,9 @@
     },
     {
       "date": "2026-09",
-      "value": 67.7
+      "value": 67.8
     }
   ],
-  "last_checked": "2026-11-17",
+  "last_checked": "2026-11-18",
   "stale_after": "2027-03-09"
 }
