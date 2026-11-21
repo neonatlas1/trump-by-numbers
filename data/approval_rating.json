@@ -6,8 +6,8 @@
   "unit": "% approve",
   "as_of": "2026-11-16",
   "direction": "neutral",
-  "disapprove": 61.3,
-  "net": -25.0,
+  "disapprove": 61.0,
+  "net": -24.7,
   "n_polls": 9,
   "source": {
     "name": "VoteHub poll aggregate (CC-BY)",
@@ -117,6 +117,6 @@
       "value": 36.3
     }
   ],
-  "last_checked": "2026-11-20",
+  "last_checked": "2026-11-21",
   "stale_after": "2026-11-30"
 }
