@@ -2,9 +2,9 @@
   "id": "ice_custody_deaths",
   "name": "Deaths in ICE custody",
   "category": "Immigration",
-  "value": 0,
+  "value": 1,
   "unit": "deaths, FY2027 to date",
-  "as_of": "2026-11-22",
+  "as_of": "2026-11-23",
   "direction": "up_is_bad",
   "fy_counts": {
     "2018": 6,
@@ -15,7 +15,8 @@
     "2023": 4,
     "2024": 12,
     "2025": 24,
-    "2026": 37
+    "2026": 38,
+    "2027": 1
   },
   "source": {
     "name": "ICE Detainee Death Reporting",
@@ -59,9 +60,13 @@
     },
     {
       "date": "2025-10",
-      "value": 37
+      "value": 38
+    },
+    {
+      "date": "2026-10",
+      "value": 1
     }
   ],
-  "last_checked": "2026-11-22",
-  "stale_after": "2027-02-20"
+  "last_checked": "2026-11-23",
+  "stale_after": "2027-02-21"
 }
