@@ -2,11 +2,11 @@
   "id": "real_gdp",
   "name": "Real GDP growth",
   "category": "Economy & Jobs",
-  "value": 3.4,
+  "value": 4.3,
   "unit": "% (annualized)",
   "as_of": "2026-09",
   "direction": "up_is_good",
-  "term_avg": 2.3,
+  "term_avg": 2.5,
   "term_quarters": 7,
   "source": {
     "name": "Bureau of Economic Analysis (via FRED)",
@@ -1289,9 +1289,9 @@
     },
     {
       "date": "2026-09",
-      "value": 3.4
+      "value": 4.3
     }
   ],
-  "last_checked": "2026-11-24",
+  "last_checked": "2026-11-25",
   "stale_after": "2027-02-07"
 }

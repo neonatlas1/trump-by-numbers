@@ -2,19 +2,19 @@
   "id": "approval_rating",
   "name": "Presidential approval",
   "category": "Executive Power & Governance",
-  "value": 36.2,
+  "value": 35.1,
   "unit": "% approve",
-  "as_of": "2026-11-16",
+  "as_of": "2026-11-23",
   "direction": "neutral",
-  "disapprove": 60.8,
-  "net": -24.6,
-  "n_polls": 8,
+  "disapprove": 61.7,
+  "net": -26.6,
+  "n_polls": 9,
   "source": {
     "name": "VoteHub poll aggregate (CC-BY)",
     "url": "https://votehub.com/polls/"
   },
   "cadence": "Weekly",
-  "note": "Simple average of 8 national polls (one per pollster, last ~2 weeks). Opinion data, not a government statistic \u2014 the board's one survey-derived metric.",
+  "note": "Simple average of 9 national polls (one per pollster, last ~2 weeks). Opinion data, not a government statistic \u2014 the board's one survey-derived metric.",
   "gallup": {
     "term_quarter": 8,
     "same_quarter": {
@@ -115,8 +115,12 @@
     {
       "date": "2026-11-16",
       "value": 36.2
+    },
+    {
+      "date": "2026-11-23",
+      "value": 35.1
     }
   ],
-  "last_checked": "2026-11-24",
-  "stale_after": "2026-11-30"
+  "last_checked": "2026-11-25",
+  "stale_after": "2026-12-07"
 }

@@ -2,9 +2,9 @@
   "id": "executive_orders",
   "name": "Executive orders signed",
   "category": "Executive Power & Governance",
-  "value": 293,
+  "value": 294,
   "unit": "orders",
-  "as_of": "2026-11-24",
+  "as_of": "2026-11-25",
   "since": "2025-01-20",
   "direction": "neutral",
   "comparison": {
@@ -903,8 +903,12 @@
     {
       "date": "2026-10",
       "value": 293
+    },
+    {
+      "date": "2026-11",
+      "value": 294
     }
   ],
-  "last_checked": "2026-11-24",
-  "stale_after": "2026-12-06"
+  "last_checked": "2026-11-25",
+  "stale_after": "2026-12-07"
 }
